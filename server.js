@@ -34,6 +34,22 @@ const deptMasterRoute = require('./routes/departmentMaster');
 const empMasterRoute = require('./routes/employeeMaster');
 const employeeProfileRoute = require('./routes/employeeProfile');
 const companyProfileRoute = require('./routes/companyProfile');
+
+
+
+var corsoption={
+origin:'http://localhost:4200',
+optionsSuccessStatus:200,
+methods:"GET,PUT,POST,DELETE"
+}
+app.use(cors(corsoption));
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
+    res.setHeader('Access-Control-Allow-Headers','Content-Type');
+    next();
+});
+
 //app.use("/", LeaveRoute);
 app.use("/", employeeProfileRoute);
 app.use("/", companyProfileRoute);
@@ -61,13 +77,8 @@ app.use("/", cmpMasterRoute);
 app.use("/", deptMasterRoute);
 app.use("/", empMasterRoute);
 
-app.use(cors());
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
-    res.setHeader('Access-Control-Allow-Headers','Content-Type');
-    next();
-});
+
+
 
 const PORT = process.env.PORT || 3500;
 

@@ -28,7 +28,9 @@ exports.getCompanyRegistrationNumber= (req,res)=>{
             res.status(httpCodes.NotFound).json(err)
           })
   }
-  
+
+
+
 
 /*********************************************************************************************************************************************************************************************** 
 Method Type: addcompanyMaster
@@ -40,46 +42,54 @@ Created By and Date: Santoshkumar 02-Dec-2020
 Modified By and Date:
 Version: V.01
 *************************************************************************************************************************************************************************************************/ 
-exports.addcompanyMaster = (req,res) =>{
-    var insertQuery = 'INSERT INTO company_master(company_name, company_registration_number, company_logo, company_registered_address1, company_registered_address2, company_registered_address3, ' 
-        +' city, state, pincode, country, gst_no, website, contact_no, alternative_contact_no, contact_person, tan, pan, email, alternative_email, company_type, industry, status, remarks, '
-        +' created_by, created_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25)';
-    var created_date=new Date();
-   
-    db.query(insertQuery, [req.body.company_name,
-        req.body.company_registration_number,
-        req.body.company_logo,
-        req.body.company_registered_address1, 
-        req.body.company_registered_address2,
-        req.body.company_registered_address3,
-        req.body.city, 
-        req.body.state,
-        req.body.pincode,
-        req.body.country,
-        req.body.gst_no,
-        req.body.website,
-        req.body.contact_no,
-        req.body.alternative_contact_no,
-        req.body.contact_person,
-        req.body.tan, 
-        req.body.pan,
-        req.body.email,
-        req.body.alternative_email, 
-        req.body.company_type,
-        req.body.industry,
-        req.body.status,
-        req.body.remarks,
-        req.body.created_by,
-        created_date])
-       
-    .then(result =>{
-        res.status(httpCodes.Created).json({message:"Company record added Successfully"})
-    })
-    .catch(err =>{
+
+
+
+
+exports.addcompanyMaster = async(req,res) =>{
+    try{
+        var created_date=new Date();
+        const data = [
+            req.body.company_name,
+            req.body.company_registration_number,
+            req.body.company_logo,
+            req.body.company_registered_address1, 
+            req.body.company_registered_address2,
+            req.body.company_registered_address3,
+            req.body.city, 
+            req.body.state,
+            req.body.pincode,
+            req.body.country,
+            req.body.gst_no,
+            req.body.website,
+            req.body.contact_no,
+            req.body.alternative_contact_no,
+            req.body.contact_person,
+            req.body.tan, 
+            req.body.pan,
+            req.body.email,
+            req.body.alternative_email, 
+            req.body.company_type,
+            req.body.industry,
+            req.body.status,
+            req.body.remarks,
+            req.body.created_by
+          ]
+        var insertQuery = "INSERT INTO company_master(company_name, company_registration_number, company_logo, company_registered_address1, company_registered_address2, company_registered_address3, city, state, pincode, country, gst_no, website, contact_no, alternative_contact_no, contact_person, tan, pan, email, alternative_email, company_type, industry, status, remarks, created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        await db.query(insertQuery,data,(err,result)=>{
+            console.log("Department record added Successfully")
+            res.status(httpCodes.Created).json({message:"Company_master record added Successfully"})
+            
+        })
+    }catch(err){
         console.log(err.message)
         res.status(httpCodes.InternalServerError).json(err.message)
-    })
+
+    }
+    
 }
+
+
 /***************************************************************************************************************************************************************************************** 
 Method Type: getcompanyMaster
 Parameter list: NA
@@ -88,16 +98,24 @@ Created By and Date: Santoshkumar 02-Dec-2020
 Modified By and Date:
 Version: V.01
 **********************************************************************************************************************************************************************************************/   
-exports.getcompanyMaster =  (req, res) => {    
-    db.query('SELECT * FROM company_master').then(allConditions => {
-        res.status(httpCodes.OK).json(allConditions.rows);
-    }).catch(err => {
-        res.status(httpCodes.InternalServerError).json({
-            error_message: "could not get all Company data",
-            error: err
-        })
-    })
-}
+
+exports.getcompanyMaster = async (req, res) => {
+    try {
+      var sql = "SELECT * FROM company_master";
+      await db.query(sql, (err, result) => {
+        console.log(result)
+        return res.status(200).json(result)
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        success: false,
+        message: err.message
+      })
+    }
+  }
+
+
  /**********************************************************************************************************************************************************************
 Method Type: getcompanyMasterById
 Parameter list: company_id
@@ -106,24 +124,29 @@ Created By and Date: Santoshkumar 02-Dec-2020
 Modified By and Date:
 Version: V.01
 ************************************************************************************************************************************************************************/   
-exports.getcompanyMasterById = (req, res) => {
-    let company_Id = req.params.company_id;  
-    let sql = 'SELECT * FROM company_master where company_id=$1';
-    db.query(sql, [company_Id])
-        .then((result) => {            
-            if (result == null) {
-                res
-                    .status(httpCodes.BadRequest)
-                    .json({ message: "Company Id does not exists" });
-            } else {
-                res.status(httpCodes.OK).json(result.rows);
-            }
-        })
-        .catch((err) => {
-            console.log(err.message);
-            res.status(httpCodes.InternalServerError).json(err.message);
-        });
-}
+
+
+exports.getcompanyMasterById = async (req, res) => {
+    try {
+      let data = [req.params.company_id];
+      let sql = "SELECT * FROM company_master where company_id=?";
+      await db.query(sql, data, (err, result) => {
+  
+        console.log(result)
+        return res.status(200).json(result)
+  
+      });
+  
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        success: false,
+        message: err.message
+      })
+    }
+  }
+
+
 /************************************************************************************************************ 
 Method Type: updatecompanyMasterById
 Parameter list: company_id
@@ -132,51 +155,55 @@ Created By and Date: Santoshkumar 02-Dec-2020
 Modified By and Date:
 Version: V.01
 ************************************************************************************************************/  
-exports.updatecompanyMasterById = (req,res) =>{
-    var company_Id = req.params.company_id;
-    var updated_date = new Date();
-      var data = [
-        req.body.company_name,
-        req.body.company_registration_number,
-        req.body.company_logo,
-        req.body.company_registered_address1, 
-        req.body.company_registered_address2,
-        req.body.company_registered_address3,
-        req.body.city, 
-        req.body.state,
-        req.body.pincode,
-        req.body.country,
-        req.body.gst_no,
-        req.body.website,
-        req.body.contact_no,
-        req.body.alternative_contact_no,
-        req.body.contact_person,
-        req.body.tan, 
-        req.body.pan,
-        req.body.email,
-        req.body.alternative_email, 
-        req.body.company_type,
-        req.body.industry,
-        req.body.status,
-        req.body.remarks,
-        req.body.updated_by,
-        updated_date, 
-        company_Id]
 
-    var updateQuery = 'UPDATE company_master SET company_name=$1, company_registration_number=$2, company_logo=$3, '
-                      +' company_registered_address1=$4, company_registered_address2=$5, company_registered_address3=$6,'
-                      +' city=$7, state=$8, pincode=$9, country=$10, gst_no=$11, website=$12, contact_no=$13, alternative_contact_no=$14,'
-                      +' contact_person=$15, tan=$16, pan=$17, email=$18, alternative_email=$19, company_type=$20, industry=$21, status=$22, '
-                      +' remarks=$23, updated_by=$24, updated_date=$25 WHERE company_id=$26 RETURNING *';
-    db.query(updateQuery, data)
-    .then(result =>{
-        res.status(httpCodes.Created).json({message:"Company record updated Successfully"})
-    })
-    .catch(err =>{
-        console.log(err.message)
-        res.status(httpCodes.InternalServerError).json(err.message)
-    })
-}  
+exports.updatecompanyMasterById = async (req,res) => {
+    try{
+        var companyId = req.params.company_id;
+        const data = [
+          req.body.company_name,
+          req.body.company_registration_number,
+          req.body.company_logo,
+          req.body.company_registered_address1, 
+          req.body.company_registered_address2,
+          req.body.company_registered_address3,
+          req.body.city, 
+          req.body.state,
+          req.body.pincode,
+          req.body.country,
+          req.body.gst_no,
+          req.body.website,
+          req.body.contact_no,
+          req.body.alternative_contact_no,
+          req.body.contact_person,
+          req.body.tan, 
+          req.body.pan,
+          req.body.email,
+          req.body.alternative_email, 
+          req.body.company_type,
+          req.body.industry,
+          req.body.status,
+          req.body.remarks,
+          req.body.created_by,
+        companyId];
+        var updateQuery = 'UPDATE company_master SET company_name=?, company_registration_number=?, company_logo=?,'
+        +' company_registered_address1=?, company_registered_address2=?, company_registered_address3=?,'
+        +' city=?, state=?, pincode=?, country=?, gst_no=?, website=?, contact_no=?, alternative_contact_no=?,'
+        +' contact_person=?, tan=?, pan=?, email=?, alternative_email=?, company_type=?, industry=?, status=?,'
+        +' remarks=?, created_by=? WHERE company_id=?';
+        await db.query(updateQuery, data ,(err,result)=>{
+          console.log('Data updated succesfully')
+          return res.status(httpCodes.OK).json('Data updated succesfully');
+      })
+  }catch(err){
+      console.log(err.message)
+      res.status(httpCodes.InternalServerError).json(err.message)
+  }
+  
+}
+
+
+
+
 /***************************************************************************************************************************************************************************************** 
 Method Type: getcityFromCompanyMaster
 Parameter list: NA

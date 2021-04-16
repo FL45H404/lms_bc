@@ -11,13 +11,12 @@ const {
   getemployeeMasterById,
   addemployeeMaster,
   updateemployeeMasterById
-
 } = require('../controllers/employeeMasterController');
 
- router.get("/getEmployeeCodee",getEmployeeCode);
+ router.get("/getEmployeeCode",getEmployeeCode);
 router.get('/employeeMaster', getemployeeMaster);
 router.get('/employeeMaster/:employee_id', getemployeeMasterById);
-router.post('/employeeMasterr',  addemployeeMaster);
+router.post('/employeeMaster',  addemployeeMaster);
 router.put('/employeeMaster/:employee_id', updateemployeeMasterById);
 //router.get("/getEmployeeCode",getEmployeeCode);
 
