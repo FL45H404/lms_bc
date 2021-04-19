@@ -116,29 +116,51 @@ Created By and Date: Santoshkumar 05-DEC-2020
 Modified By and Date:
 Version: V.01
 **********************************************************************************************************************************************************************************************************************************************************************************************************/
-exports.getemployeeMaster = (req, res) => {
-  db.query('SELECT empProf.employee_id, empProf.employee_fname, empProf.employee_mname,empProf.employee_lname,empProf.employee_code, empProf.role_id,roleMast.role_description, empProf.department_id, dept.department_name, empProf.designation_id,desg.designation_name, empProf.reporting_manager_id, '
+exports.getemployeeMaster =async (req, res) => {
+  try{
+   await db.query('SELECT empProf.employee_id, empProf.employee_fname, empProf.employee_mname,empProf.employee_lname,empProf.employee_code, empProf.role_id,roleMast.role_description, empProf.department_id, dept.department_name, empProf.designation_id,desg.designation_name, empProf.reporting_manager_id, '
     + ' empProf.date_of_birth, empProf.gender, empProf.joining_date, empProf.nationality, empProf.emp_photo, empProf.marital_status, empProf.blood_group, empProf.employee_status,empProf.payroll_status, empProf.base_location, '
     + ' empProf.background_verification_check, empProf.id_proof, empProf.address_proof, empProf.employee_category_id, empCateg.employee_category_name, empProf.aadhar_card_number, empProf.pan_card_number, empProf.passport_number, '
-    + ' empProf.created_date, empProf.created_by, empProf.updated_date, empProf.updated_by,empProf.background_verification_date, empProf.background_verification_done_by,empEdu.employee_education_id,empEdu.qualification_id, qualMast.qualification,empEdu.year_of_pass,empEdu.specialization, '
+    + ' empProf.created_date, empProf.created_by,empProf.background_verification_date, empProf.background_verification_done_by,empEdu.employee_education_id,empEdu.qualification_id, qualMast.qualification,empEdu.year_of_pass,empEdu.specialization, '
     + ' empEdu.institute_name, empEdu.university, empEdu.grade '
     + ' FROM employee_master empProf LEFT OUTER JOIN role_master roleMast on empProf.role_id = roleMast.role_id '
     + ' LEFT OUTER JOIN department_master dept on empProf.department_id = dept.department_id '
     + ' LEFT OUTER JOIN designation desg on empProf.designation_id = desg.designation_id '
     + ' LEFT OUTER JOIN employee_category empCateg on empProf.employee_category_id = empCateg.employee_category_id '
     + ' LEFT OUTER JOIN employee_education empEdu on empProf.employee_id = empEdu.employee_id '
-    + ' LEFT OUTER JOIN qualification_master qualMast on empEdu.qualification_id = qualMast.qualification_id order by empProf.employee_id'
-
-    //+' AND empProf.employee_status="Active" '
-  )
-    .then(allConditions => {
-      res.status(httpCodes.OK).json(allConditions.rows);
-    }).catch(err => {
+    + ' LEFT OUTER JOIN qualification_master qualMast on empEdu.qualification_id = qualMast.qualification_id order by empProf.employee_id',(err,result)=>{
+if (err) throw err;
+console.log(result)
+      res.status(httpCodes.OK).json(result);
+    })
+  }catch(err){
       res.status(httpCodes.InternalServerError).json({
         error_message: "could not get all Employee Profile",
         error: err
       })
-    })
+  }
+  // db.query('SELECT empProf.employee_id, empProf.employee_fname, empProf.employee_mname,empProf.employee_lname,empProf.employee_code, empProf.role_id,roleMast.role_description, empProf.department_id, dept.department_name, empProf.designation_id,desg.designation_name, empProf.reporting_manager_id, '
+  //   + ' empProf.date_of_birth, empProf.gender, empProf.joining_date, empProf.nationality, empProf.emp_photo, empProf.marital_status, empProf.blood_group, empProf.employee_status,empProf.payroll_status, empProf.base_location, '
+  //   + ' empProf.background_verification_check, empProf.id_proof, empProf.address_proof, empProf.employee_category_id, empCateg.employee_category_name, empProf.aadhar_card_number, empProf.pan_card_number, empProf.passport_number, '
+  //   + ' empProf.created_date, empProf.created_by, empProf.updated_date, empProf.updated_by,empProf.background_verification_date, empProf.background_verification_done_by,empEdu.employee_education_id,empEdu.qualification_id, qualMast.qualification,empEdu.year_of_pass,empEdu.specialization, '
+  //   + ' empEdu.institute_name, empEdu.university, empEdu.grade '
+  //   + ' FROM employee_master empProf LEFT OUTER JOIN role_master roleMast on empProf.role_id = roleMast.role_id '
+  //   + ' LEFT OUTER JOIN department_master dept on empProf.department_id = dept.department_id '
+  //   + ' LEFT OUTER JOIN designation desg on empProf.designation_id = desg.designation_id '
+  //   + ' LEFT OUTER JOIN employee_category empCateg on empProf.employee_category_id = empCateg.employee_category_id '
+  //   + ' LEFT OUTER JOIN employee_education empEdu on empProf.employee_id = empEdu.employee_id '
+  //   + ' LEFT OUTER JOIN qualification_master qualMast on empEdu.qualification_id = qualMast.qualification_id order by empProf.employee_id'
+
+  //   //+' AND empProf.employee_status="Active" '
+  // )
+  //   .then(allConditions => {
+  //     res.status(httpCodes.OK).json(allConditions.rows);
+  //   }).catch(err => {
+  //     res.status(httpCodes.InternalServerError).json({
+  //       error_message: "could not get all Employee Profile",
+  //       error: err
+  //     })
+  //   })
 }
 /**********************************************************************************************************************************************************************
 Method Type: getemployeeMasterById
@@ -148,36 +170,64 @@ Created By and Date: Santoshkumar 05-DEC-2020
 Modified By and Date:
 Version: V.01
 ************************************************************************************************************************************************************************/
-exports.getemployeeMasterById = (req, res) => {
-  let employee_Id = req.params.employee_id;
-  let sql = 'SELECT empProf.employee_id, empProf.employee_fname, empProf.employee_mname,empProf.employee_lname,empProf.employee_code, empProf.role_id,roleMast.role_description, empProf.department_id, dept.department_name, empProf.designation_id,desg.designation_name, empProf.reporting_manager_id, '
-    + ' empProf.date_of_birth, empProf.gender, empProf.joining_date, empProf.nationality, empProf.emp_photo, empProf.marital_status, empProf.blood_group, empProf.employee_status,empProf.payroll_status, empProf.base_location, '
-    + ' empProf.background_verification_check, empProf.id_proof, empProf.address_proof, empProf.employee_category_id, empCateg.employee_category_name, empProf.aadhar_card_number, empProf.pan_card_number, empProf.passport_number, '
-    + ' empProf.created_date, empProf.created_by, empProf.updated_date, empProf.updated_by,empProf.background_verification_date, empProf.background_verification_done_by,empEdu.employee_education_id,empEdu.qualification_id, qualMast.qualification,empEdu.year_of_pass,empEdu.specialization, '
-    + ' empEdu.institute_name, empEdu.university, empEdu.grade '
-    + ' FROM employee_master empProf LEFT OUTER JOIN role_master roleMast on empProf.role_id = roleMast.role_id '
-    + ' LEFT OUTER JOIN department_master dept on empProf.department_id = dept.department_id '
-    + ' LEFT OUTER JOIN designation desg on empProf.designation_id = desg.designation_id '
-    + ' LEFT OUTER JOIN employee_category empCateg on empProf.employee_category_id = empCateg.employee_category_id '
-    + ' LEFT OUTER JOIN employee_education empEdu on empProf.employee_id = empEdu.employee_id '
-    + ' LEFT OUTER JOIN qualification_master qualMast on empEdu.qualification_id = qualMast.qualification_id  '
-
-    // +' AND empProf.employee_status="Active" '
-    + ' WHERE empProf.employee_id = $1';
-  db.query(sql, [employee_Id])
-    .then((result) => {
+exports.getemployeeMasterById = async (req, res) => {
+  try{
+    let employee_Id = req.params.employee_id;
+    let sql = 'SELECT empProf.employee_id, empProf.employee_fname, empProf.employee_mname,empProf.employee_lname,empProf.employee_code, empProf.role_id,roleMast.role_description, empProf.department_id, dept.department_name, empProf.designation_id,desg.designation_name, empProf.reporting_manager_id, '
+      + ' empProf.date_of_birth, empProf.gender, empProf.joining_date, empProf.nationality, empProf.emp_photo, empProf.marital_status, empProf.blood_group, empProf.employee_status,empProf.payroll_status, empProf.base_location, '
+      + ' empProf.background_verification_check, empProf.id_proof, empProf.address_proof, empProf.employee_category_id, empCateg.employee_category_name, empProf.aadhar_card_number, empProf.pan_card_number, empProf.passport_number, '
+      + ' empProf.created_date, empProf.created_by,empProf.background_verification_date, empProf.background_verification_done_by,empEdu.employee_education_id,empEdu.qualification_id, qualMast.qualification,empEdu.year_of_pass,empEdu.specialization, '
+      + ' empEdu.institute_name, empEdu.university, empEdu.grade '
+      + ' FROM employee_master empProf LEFT OUTER JOIN role_master roleMast on empProf.role_id = roleMast.role_id '
+      + ' LEFT OUTER JOIN department_master dept on empProf.department_id = dept.department_id '
+      + ' LEFT OUTER JOIN designation desg on empProf.designation_id = desg.designation_id '
+      + ' LEFT OUTER JOIN employee_category empCateg on empProf.employee_category_id = empCateg.employee_category_id '
+      + ' LEFT OUTER JOIN employee_education empEdu on empProf.employee_id = empEdu.employee_id '
+      + ' LEFT OUTER JOIN qualification_master qualMast on empEdu.qualification_id = qualMast.qualification_id  '
+     + ' WHERE empProf.employee_id = ?';
+    db.query(sql, [employee_Id],(err,result)=>{
+      if (err) throw err;
       if (result == null) {
         res
           .status(httpCodes.BadRequest)
           .json({ message: "Employee Id does not exists" });
       } else {
-        res.status(httpCodes.OK).json(result.rows);
+        res.status(httpCodes.OK).json(result);
       }
     })
-    .catch((err) => {
-      console.log(err.message);
-      res.status(httpCodes.InternalServerError).json(err.message);
-    });
+  }catch(err){
+    console.log(err.message);
+    res.status(httpCodes.InternalServerError).json(err.message);
+  }
+  // let employee_Id = req.params.employee_id;
+  // let sql = 'SELECT empProf.employee_id, empProf.employee_fname, empProf.employee_mname,empProf.employee_lname,empProf.employee_code, empProf.role_id,roleMast.role_description, empProf.department_id, dept.department_name, empProf.designation_id,desg.designation_name, empProf.reporting_manager_id, '
+  //   + ' empProf.date_of_birth, empProf.gender, empProf.joining_date, empProf.nationality, empProf.emp_photo, empProf.marital_status, empProf.blood_group, empProf.employee_status,empProf.payroll_status, empProf.base_location, '
+  //   + ' empProf.background_verification_check, empProf.id_proof, empProf.address_proof, empProf.employee_category_id, empCateg.employee_category_name, empProf.aadhar_card_number, empProf.pan_card_number, empProf.passport_number, '
+  //   + ' empProf.created_date, empProf.created_by, empProf.updated_date, empProf.updated_by,empProf.background_verification_date, empProf.background_verification_done_by,empEdu.employee_education_id,empEdu.qualification_id, qualMast.qualification,empEdu.year_of_pass,empEdu.specialization, '
+  //   + ' empEdu.institute_name, empEdu.university, empEdu.grade '
+  //   + ' FROM employee_master empProf LEFT OUTER JOIN role_master roleMast on empProf.role_id = roleMast.role_id '
+  //   + ' LEFT OUTER JOIN department_master dept on empProf.department_id = dept.department_id '
+  //   + ' LEFT OUTER JOIN designation desg on empProf.designation_id = desg.designation_id '
+  //   + ' LEFT OUTER JOIN employee_category empCateg on empProf.employee_category_id = empCateg.employee_category_id '
+  //   + ' LEFT OUTER JOIN employee_education empEdu on empProf.employee_id = empEdu.employee_id '
+  //   + ' LEFT OUTER JOIN qualification_master qualMast on empEdu.qualification_id = qualMast.qualification_id  '
+
+  //   // +' AND empProf.employee_status="Active" '
+  //   + ' WHERE empProf.employee_id = $1';
+  // db.query(sql, [employee_Id])
+    // .then((result) => {
+      // if (result == null) {
+      //   res
+      //     .status(httpCodes.BadRequest)
+      //     .json({ message: "Employee Id does not exists" });
+      // } else {
+      //   res.status(httpCodes.OK).json(result.rows);
+      // }
+    // })
+    // .catch((err) => {
+      // console.log(err.message);
+      // res.status(httpCodes.InternalServerError).json(err.message);
+    // });
 }
 /****************************************************************************************************************************************************************************************************** 
 Method Type: updateemployeeMasterById

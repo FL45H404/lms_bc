@@ -9,16 +9,17 @@ Created By and Date: Santoshkumar 11-NOV-2020
 Modified By and Date:
 Version: V.01
 ************************************************************************************************************/ 
-exports.addQualificationType = (req,res) =>{
-    var insertQuery = 'INSERT INTO qualification_type(qualification_type, created_by, created_date) VALUES ($1, $2, $3)';
-    db.query(insertQuery, [req.body.qualification_type, req.body.created_by, new Date()])
-    .then(result =>{
-        res.status(httpCodes.Created).json({message:"Qualification Type record added Successfully"})
-    })
-    .catch(err =>{
+exports.addQualificationType =async (req,res) =>{
+    try{
+        var insertQuery = 'INSERT INTO qualification_type(qualification_type, created_by, created_date) VALUES (?,?,?)';
+        await db.query(insertQuery, [req.body.qualification_type, req.body.created_by, new Date()],(err,data)=>{
+            if (err) throw err;
+            res.status(httpCodes.Created).json({message:"Qualification Type record added Successfully"})
+        })
+    }catch(err){
         console.log(err.message)
         res.status(httpCodes.InternalServerError).json(err.message)
-    })
+    }
 }
 /************************************************************************************************************ 
 Method Type: getQualificationType
@@ -28,15 +29,18 @@ Created By and Date: Santoshkumar 11-NOV-2020
 Modified By and Date:
 Version: V.01
 ************************************************************************************************************/   
-exports.getQualificationType =  (req, res) => {
-    db.query('SELECT * FROM qualification_type').then(allConditions => {
-        res.status(httpCodes.OK).json(allConditions.rows);
-    }).catch(err => {
+exports.getQualificationType = async (req, res) => {
+    try{
+        await db.query('SELECT * FROM qualification_type',(err,result)=>{
+            if (err) throw err;
+            res.status(httpCodes.OK).json(result);
+        })
+    }catch(err){
         res.status(httpCodes.InternalServerError).json({
             error_message: "could not get all Qualification Type",
             error: err
         })
-    })
+    }
 }
  /************************************************************************************************************ 
 Method Type: getQualificationTypeById
@@ -46,23 +50,24 @@ Created By and Date: Santoshkumar 11-NOV-2020
 Modified By and Date:
 Version: V.01
 ************************************************************************************************************/   
-exports.getQualificationTypeById = (req, res) => {
-    let qualificationTypeId = req.params.qualification_type_id;  
-    let sql = "SELECT * FROM qualification_type where qualification_type_id=$1";
-    db.query(sql, [qualificationTypeId])
-        .then((result) => {            
+exports.getQualificationTypeById =async (req, res) => {
+    try{
+        let qualificationTypeId = req.params.qualification_type_id;  
+        let sql = "SELECT * FROM qualification_type where qualification_type_id=?";
+        await db.query(sql, [qualificationTypeId],(err,result)=>{
+            if (err) throw err;
             if (result == null) {
                 res
                     .status(httpCodes.BadRequest)
                     .json({ message: "Qualification Type Id does not exists" });
             } else {
-                res.status(httpCodes.OK).json(result.rows);
+                res.status(httpCodes.OK).json(result);
             }
         })
-        .catch((err) => {
-            console.log(err.message);
-            res.status(httpCodes.InternalServerError).json(err.message);
-        });
+    }catch(err){
+        console.log(err.message);
+        res.status(httpCodes.InternalServerError).json(err.message);
+    }
 } 
   /************************************************************************************************************ 
 Method Type: updateQualificationTypeById
@@ -72,24 +77,25 @@ Created By and Date: Santoshkumar 11-NOV-2020
 Modified By and Date:
 Version: V.01
 ************************************************************************************************************/  
-exports.updateQualificationTypeById = (req,res) =>{
-    var qualificationTypeId = req.params.qualification_type_id;
-    var updated_date=new Date();
-    var data=[
-    req.body.qualification_type,
-    req.body.updated_by,
-    updated_date ,
-    qualificationTypeId]
-
-    var updateQuery = 'UPDATE qualification_type SET qualification_type=$1, updated_by=$2, updated_date=$3 WHERE qualification_type_id=$4 RETURNING *';
-    db.query(updateQuery, data)
-    .then(result =>{
-        res.status(httpCodes.Created).json({message:"Qualification Type record updated Successfully"})
-    })
-    .catch(err =>{
+exports.updateQualificationTypeById =async (req,res) =>{
+    try{
+        var qualificationTypeId = req.params.qualification_type_id;
+        var created_date=new Date();
+        var data=[
+        req.body.qualification_type,
+        req.body.created_by,
+        created_date ,
+        qualificationTypeId]
+    
+        var updateQuery = 'UPDATE qualification_type SET qualification_type=?, created_by=?, created_date=? WHERE qualification_type_id=?';
+        await db.query(updateQuery, data,(err,result)=>{
+            if (err) throw err;
+            res.status(httpCodes.Created).json({message:"Qualification Type record updated Successfully"})
+        })
+    }catch(err){
         console.log(err.message)
         res.status(httpCodes.InternalServerError).json(err.message)
-    })
+    }
 }  
 /************************************************************************************************************ 
 Method Type: getAllQualifications
@@ -99,13 +105,17 @@ Created By and Date: Santoshkumar 12-Dec-2020
 Modified By and Date:
 Version: V.01
 ************************************************************************************************************/   
-exports.getAllQualifications =  (req, res) => {
-    db.query('SELECT * FROM qualification_master').then(allConditions => {
-        res.status(httpCodes.OK).json(allConditions.rows);
-    }).catch(err => {
+exports.getAllQualifications = async (req, res) => {
+    try{
+        await db.query('SELECT * FROM qualification_master',(err,result)=>{
+            if (err) throw err;
+            console.log(result)
+            res.status(httpCodes.OK).json(result);
+        })
+    }catch(err){
         res.status(httpCodes.InternalServerError).json({
             error_message: "could not get all Qualifications",
             error: err
         })
-    })
+    }
 }
