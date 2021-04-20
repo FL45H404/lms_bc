@@ -11,7 +11,7 @@ Version: V.01
 ************************************************************************************************************/ 
 exports.getDesignation = async (req, res) => {
     try{
-        await db.query('SELECT * FROM designation',(err,result)=>{
+        await db.query('SELECT * FROM designation ORDER BY designation_id DESC',(err,result)=>{
 console.log(result)
             res.status(httpCodes.OK).json(result);
         })
@@ -47,7 +47,8 @@ exports.getDesignationById = async (req, res) => {
         let data = [req.params.designation_id]; 
         let sql = "SELECT * FROM designation where designation_id=?";
         await db.query(sql, data,(err,result)=>{
-            if (result == null) {
+            if (result==0) {
+                console.log("id doesnot exists")
                 res.status(httpCodes.BadRequest).json({ message: "Designation Id does not exists" });
             } else {
                 console.log(result)
@@ -107,7 +108,7 @@ exports.updateDesignationById = async (req,res) =>{
         var designationId = req.params.designation_id;
         var created_date=new Date();
         var data=[
-        req.body.designation_name,
+        req.body.designation_name,   
         req.body.created_by,
         created_date ,
         designationId]

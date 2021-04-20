@@ -187,7 +187,7 @@ exports.getemployeeMasterById = async (req, res) => {
      + ' WHERE empProf.employee_id = ?';
     db.query(sql, [employee_Id],(err,result)=>{
       if (err) throw err;
-      if (result == null) {
+      if (result == 0) {
         res
           .status(httpCodes.BadRequest)
           .json({ message: "Employee Id does not exists" });

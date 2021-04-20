@@ -48,8 +48,8 @@ Version: V.01
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.addRole = async(req,res) =>{
     try{
-var data=[req.body.role_description, req.body.created_by, new Date(), req.body.avatar]
-        var insertQuery = 'INSERT INTO role_master(role_description, created_by, created_date,avatar) VALUES (?,?,?,?)';
+var data=[req.body.role_name,req.body.role_description, 'vipul', new Date()]
+        var insertQuery = 'INSERT INTO role_master(role_name,role_description, created_by, created_date) VALUES (?,?,?,?)';
         await db.query(insertQuery, data,(err,result)=>{
             if (err) throw err;
             console.log(result)
@@ -78,7 +78,7 @@ Version: V.01
 ************************************************************************************************************/   
 exports.getRole =  async(req, res) => {
     try{
-        await db.query('SELECT * FROM role_master',(err,result)=>{
+        await db.query('SELECT * FROM role_master ORDER BY role_id DESC',(err,result)=>{
             if (err) throw err;
             console.log(result)
             res.status(httpCodes.OK).json(result);
@@ -112,7 +112,7 @@ exports.getRoleById = async (req, res) => {
         let sql = "SELECT * FROM role_master where role_id=?";
         db.query(sql,roleId,(err,result)=>{
             if (err) throw err;
-            if (result == null) {
+            if (result == 0) {
                 res
                     .status(httpCodes.BadRequest)
                     .json({ message: "Role Id does not exists" });
@@ -151,13 +151,13 @@ Version: V.01
 exports.updateRoleById =async (req,res) =>{
     try{
         var roleId = req.params.role_id;
-        var created_date=new Date();
+        var updated_date=new Date();
         var data=[
+            req.body.role_name,
         req.body.role_description,
-        req.body.created_by,
-        created_date ,
+        updated_date ,
         roleId]
-        var updateQuery = 'UPDATE role_master SET role_description=?, created_by=?, created_date=? WHERE role_id=?';
+        var updateQuery = 'UPDATE role_master SET role_name=?, role_description=?, updated_date=? WHERE role_id=?';
         await db.query(updateQuery, data,(err,result)=>{
             res.status(httpCodes.Created).json({message:"Role record updated Successfully"})
         })
@@ -175,3 +175,18 @@ exports.updateRoleById =async (req,res) =>{
     // })
 }  
   
+exports.deleteRoleById =async (req,res) =>{
+    try{
+        var roleId = req.params.role_id;
+        var data=[
+        roleId]
+        var deleteQuery = 'DELETE FROM role_master WHERE role_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+            console.log("role deleted succesfully");
+            res.status(httpCodes.Created).json({message:"Role record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
+    }
+}

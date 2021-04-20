@@ -43,7 +43,13 @@ optionsSuccessStatus:200,
 methods:"GET,PUT,POST,DELETE"
 }
 
-
+app.use(cors(corsoption));
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
+    res.setHeader('Access-Control-Allow-Headers','Content-Type');
+    next();
+});
 //app.use("/", LeaveRoute);
 app.use("/", employeeProfileRoute);
 app.use("/", companyProfileRoute);
@@ -73,13 +79,7 @@ app.use("/", empMasterRoute);
 
 
 
-app.use(cors(corsoption));
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
-    res.setHeader('Access-Control-Allow-Headers','Content-Type');
-    next();
-});
+
 const PORT = process.env.PORT || 3500;
 
 app.listen(PORT, () => console.log('server is listening on port', PORT))

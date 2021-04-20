@@ -48,7 +48,7 @@ Version: V.01
 
 exports.addcompanyMaster = async(req,res) =>{
     try{
-        var created_date=new Date();
+        var created_by='vipul';
         const data = [
             req.body.company_name,
             req.body.company_registration_number,
@@ -73,10 +73,11 @@ exports.addcompanyMaster = async(req,res) =>{
             req.body.industry,
             req.body.status,
             req.body.remarks,
-            req.body.created_by
+            created_by
           ]
         var insertQuery = "INSERT INTO company_master(company_name, company_registration_number, company_logo, company_registered_address1, company_registered_address2, company_registered_address3, city, state, pincode, country, gst_no, website, contact_no, alternative_contact_no, contact_person, tan, pan, email, alternative_email, company_type, industry, status, remarks, created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         await db.query(insertQuery,data,(err,result)=>{
+          if (err) throw err;
             console.log("Department record added Successfully")
             res.status(httpCodes.Created).json({message:"Company_master record added Successfully"})
             
@@ -212,15 +213,20 @@ Created By and Date: Santoshkumar 03-Dec-2020
 Modified By and Date:
 Version: V.01
 **********************************************************************************************************************************************************************************************/   
-exports.getcityFromCompanyMaster =  (req, res) => {    
-    db.query('select distinct(city) from company_master order by city').then(allConditions => {
-        res.status(httpCodes.OK).json(allConditions.rows);
-    }).catch(err => {
-        res.status(httpCodes.InternalServerError).json({
-            error_message: "could not get all city names from Company",
-            error: err
-        })
+exports.getcityFromCompanyMaster = async (req, res) => {
+  try{
+    db.query('select distinct(city) from company_master order by city',(err,result)=>{
+      if (err) throw err;
+
+      res.status(httpCodes.OK).json(allConditions.rows);
     })
+  } catch(err){
+    res.status(httpCodes.InternalServerError).json({
+      error_message: "could not get all city names from Company",
+      error: err
+  })
+  }   
+
 }
 /***************************************************************************************************************************************************************************************** 
 Method Type: getcompanyNames
@@ -230,13 +236,16 @@ Created By and Date: Santoshkumar 08-Dec-2020
 Modified By and Date:
 Version: V.01
 **********************************************************************************************************************************************************************************************/   
-exports.getcompanyNames =  (req, res) => {    
-    db.query('select company_id,company_name from company_master').then(allConditions => {
-        res.status(httpCodes.OK).json(allConditions.rows);
-    }).catch(err => {
-        res.status(httpCodes.InternalServerError).json({
-            error_message: "could not get all company names from Company",
-            error: err
-        })
+exports.getcompanyNames =async  (req, res) => {
+  try{
+   await  db.query('select company_id,company_name from company_master',(err,result)=>{
+      res.status(httpCodes.OK).json(result);
     })
+      
+  }catch(err){
+    res.status(httpCodes.InternalServerError).json({
+      error_message: "could not get all company names from Company",
+      error: err
+  })
+  }
 }

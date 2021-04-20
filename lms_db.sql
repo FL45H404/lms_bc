@@ -314,6 +314,32 @@ INSERT INTO `employee_contacts` VALUES (1,102,'8197100673',NULL,'97318899999','v
 UNLOCK TABLES;
 
 --
+-- Table structure for table `employee_dependents`
+--
+
+DROP TABLE IF EXISTS `employee_dependents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employee_dependents` (
+  `employee_dependent_id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int DEFAULT NULL,
+  `relation_type` varchar(45) DEFAULT NULL,
+  `relation_age` varchar(45) DEFAULT NULL,
+  `relation_gender` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`employee_dependent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employee_dependents`
+--
+
+LOCK TABLES `employee_dependents` WRITE;
+/*!40000 ALTER TABLE `employee_dependents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `employee_dependents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `employee_education`
 --
 
@@ -330,7 +356,7 @@ CREATE TABLE `employee_education` (
   `university` varchar(45) DEFAULT NULL,
   `grade` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`employee_education_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -339,8 +365,36 @@ CREATE TABLE `employee_education` (
 
 LOCK TABLES `employee_education` WRITE;
 /*!40000 ALTER TABLE `employee_education` DISABLE KEYS */;
-INSERT INTO `employee_education` VALUES (1,1,1,'2020','MCA','DSCE','VTU','A'),(2,3,2,'2020','MTech','abcd','xyz','88'),(3,4,2,'2020','MTech','abcd','xyz','88'),(4,5,3,'2020','MTech','abcd','vtu','88'),(5,2,3,'2020','MTech -up','abcd','vtu','88'),(6,NULL,3,'2020','MTech -up','abcd','vtu','88'),(7,NULL,3,'2020','MTech -up','abcd','vtu','88'),(8,8,3,'2020','MTech -up','abcd','vtu','88');
+INSERT INTO `employee_education` VALUES (1,1,1,'2020','MCA','DSCE','VTU','A'),(2,3,2,'2020','MTech','abcd','xyz','88'),(3,4,2,'2020','MTech','abcd','xyz','88'),(4,5,3,'2020','MTech','abcd','vtu','88'),(5,2,3,'2020','MTech -up','abcd','vtu','88'),(6,NULL,3,'2020','MTech -up','abcd','vtu','88'),(7,NULL,3,'2020','MTech -up','abcd','vtu','88'),(8,8,3,'2020','MTech -up','abcd','vtu','88'),(9,6,3,'2020','MTech -up','abcd','vtu','88');
 /*!40000 ALTER TABLE `employee_education` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `employee_experience`
+--
+
+DROP TABLE IF EXISTS `employee_experience`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employee_experience` (
+  `employee_experience_id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int DEFAULT NULL,
+  `previous_company_name` varchar(45) DEFAULT NULL,
+  `previous_company_designation` varchar(45) DEFAULT NULL,
+  `previous_experience_start_date` varchar(45) DEFAULT NULL,
+  `previous_experience_end_date` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`employee_experience_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employee_experience`
+--
+
+LOCK TABLES `employee_experience` WRITE;
+/*!40000 ALTER TABLE `employee_experience` DISABLE KEYS */;
+INSERT INTO `employee_experience` VALUES (1,1,'wipro','developer','20-11-2010','20-11-2020'),(2,2,'samsung','tester','1-10-2005','1-12-2021'),(3,3,'xiomi','web','20-11-2010','20-11-2020');
+/*!40000 ALTER TABLE `employee_experience` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -382,7 +436,7 @@ CREATE TABLE `employee_master` (
   `background_verification_date` varchar(45) DEFAULT NULL,
   `background_verification_done_by` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`employee_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -391,7 +445,7 @@ CREATE TABLE `employee_master` (
 
 LOCK TABLES `employee_master` WRITE;
 /*!40000 ALTER TABLE `employee_master` DISABLE KEYS */;
-INSERT INTO `employee_master` VALUES (1,'vipul',NULL,'waghamode','1','101','1','1','10001','1-11-1997','male','1-1-2020','indian',NULL,'single','B+','ACTIVE','confirmed','MUMBAI','yes','Pan card','aadhar card','1','30382718','pan202012','3789987378',NULL,'vipul','1-11-2020','vipul'),(2,'balu','','k','1000001','2','2','2','010','1998-12-08T00:00:00.000','male','2020-10-02T00:00:00.000Z','Indian','','Single','AB+','Active','Confirmed','Mumbai','Yes','PAN Card','Aadhar Card','3','12345678888','v109889','345623456234','2021-04-15 22:29:32.900','vipul','2020-12-27T00:00:00.000Z','vipul'),(3,'balu','','kosuri','1000001','2','2','2','0101','1998-12-08T00:00:00.000','male','2020-10-02T00:00:00.000Z','Indian','','Single','AB+','Active','Confirmed','Mumbai','Yes','PAN Card','Aadhar Card','3','12345678888','v109889','345623456234','2021-04-15 22:48:15.942','vipul','2020-12-27T00:00:00.000Z','vipul'),(4,'vips','','j','1000001','1','1','1','000010','1998-12-08T00:00:00.000','male','2020-10-02T00:00:00.000Z','Indian','','Single','B+','Active','Confirmed','Gurgaon','Yes','PAN Card','Aadhar Card','2','12345678888','vhhu456756','345623456234','2021-04-15 21:21:01.975','Garima','2020-12-27T00:00:00.000Z','vipul'),(5,'balu','','k','1000002','2','2','2','000010','1998-12-08T00:00:00.000','male','2020-10-02T00:00:00.000Z','Indian','','Single','AB+','Active','Confirmed','Mumbai','Yes','PAN Card','Aadhar Card','3','12345678888','v109889','345623456234','2021-04-15 21:40:13.062','vipul','2020-12-27T00:00:00.000Z','vipul');
+INSERT INTO `employee_master` VALUES (1,'vipul',NULL,'waghamode','1','101','1','1','10001','1-11-1997','male','1-1-2020','indian',NULL,'single','B+','ACTIVE','confirmed','MUMBAI','yes','Pan card','aadhar card','1','30382718','pan202012','3789987378',NULL,'vipul','1-11-2020','vipul'),(2,'balu','','kosuri','1000001','2','2','2','0101','1998-12-08T00:00:00.000','male','2020-10-02T00:00:00.000Z','Indian','','Single','AB+','Active','Confirmed','Mumbai','Yes','PAN Card','Aadhar Card','3','12345678888','v109889','345623456234','2021-04-16 19:28:32.037','vipul','2020-12-27T00:00:00.000Z','vipul'),(3,'balu','','kosuri','1000001','2','2','2','0101','1998-12-08T00:00:00.000','male','2020-10-02T00:00:00.000Z','Indian','','Single','AB+','Active','Confirmed','Mumbai','Yes','PAN Card','Aadhar Card','3','12345678888','v109889','345623456234','2021-04-15 22:48:15.942','vipul','2020-12-27T00:00:00.000Z','vipul'),(4,'vips','','j','1000001','1','1','1','000010','1998-12-08T00:00:00.000','male','2020-10-02T00:00:00.000Z','Indian','','Single','B+','Active','Confirmed','Gurgaon','Yes','PAN Card','Aadhar Card','2','12345678888','vhhu456756','345623456234','2021-04-15 21:21:01.975','Garima','2020-12-27T00:00:00.000Z','vipul'),(5,'balu','','k','1000002','2','2','2','000010','1998-12-08T00:00:00.000','male','2020-10-02T00:00:00.000Z','Indian','','Single','AB+','Active','Confirmed','Mumbai','Yes','PAN Card','Aadhar Card','3','12345678888','v109889','345623456234','2021-04-15 21:40:13.062','vipul','2020-12-27T00:00:00.000Z','vipul'),(6,'balu','','kosuri','1000003','2','2','2','0101','1998-12-08T00:00:00.000','male','2020-10-02T00:00:00.000Z','Indian','','Single','AB+','Active','Confirmed','Mumbai','Yes','PAN Card','Aadhar Card','3','12345678888','v109889','345623456234','2021-04-16 19:25:11.906','vipul','2020-12-27T00:00:00.000Z','vipul');
 /*!40000 ALTER TABLE `employee_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -444,6 +498,141 @@ LOCK TABLES `employee_profile` WRITE;
 /*!40000 ALTER TABLE `employee_profile` DISABLE KEYS */;
 INSERT INTO `employee_profile` VALUES (102,'vips-updated','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,NULL,'ab+','Non-Active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-12 23:19:21.425','vipul'),(103,'vipul','12',1,1,NULL,'112','01-1-2000','male',NULL,'indian',NULL,'single','b-','Non-Active','banglore',NULL,NULL,'335467575764','dtdfygf46y','786544',NULL,NULL,NULL,'vipul'),(104,'ashwin','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,'single','ab+','active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-11 15:40:21.804','vipul'),(105,'vips','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,NULL,'ab+','Non-Active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-12 23:10:32.816','vipul');
 /*!40000 ALTER TABLE `employee_profile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `employee_promotion`
+--
+
+DROP TABLE IF EXISTS `employee_promotion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employee_promotion` (
+  `promotion_id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int DEFAULT NULL,
+  `designation_id` int DEFAULT NULL,
+  `effective_promotion_date` varchar(45) DEFAULT NULL,
+  `compensation_percentage` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`promotion_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employee_promotion`
+--
+
+LOCK TABLES `employee_promotion` WRITE;
+/*!40000 ALTER TABLE `employee_promotion` DISABLE KEYS */;
+INSERT INTO `employee_promotion` VALUES (1,1,1,'20-11-2020','12%'),(2,3,2,'2-12-2021','20%'),(3,3,3,'20-11-2020','50');
+/*!40000 ALTER TABLE `employee_promotion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `employee_qualification`
+--
+
+DROP TABLE IF EXISTS `employee_qualification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employee_qualification` (
+  `employee_qualification_id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int DEFAULT NULL,
+  `qualification_type_id` varchar(45) DEFAULT NULL,
+  `qualification_specialization_id` varchar(45) DEFAULT NULL,
+  `year_of_pass` varchar(45) DEFAULT NULL,
+  `specialization` varchar(45) DEFAULT NULL,
+  `institute_name` varchar(45) DEFAULT NULL,
+  `university` varchar(45) DEFAULT NULL,
+  `grade` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`employee_qualification_id`),
+  KEY `employee_id_idx` (`employee_id`),
+  CONSTRAINT `fk1_employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employee_master` (`employee_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employee_qualification`
+--
+
+LOCK TABLES `employee_qualification` WRITE;
+/*!40000 ALTER TABLE `employee_qualification` DISABLE KEYS */;
+INSERT INTO `employee_qualification` VALUES (1,1,'1','1','2020','MCA','DSCE','VTU',NULL);
+/*!40000 ALTER TABLE `employee_qualification` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qualification_master`
+--
+
+DROP TABLE IF EXISTS `qualification_master`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `qualification_master` (
+  `qualification_id` int NOT NULL AUTO_INCREMENT,
+  `qualification` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`qualification_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='	';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `qualification_master`
+--
+
+LOCK TABLES `qualification_master` WRITE;
+/*!40000 ALTER TABLE `qualification_master` DISABLE KEYS */;
+INSERT INTO `qualification_master` VALUES (1,'Graduation'),(2,'Post Graduation'),(3,'Diploma'),(4,'under Graduation');
+/*!40000 ALTER TABLE `qualification_master` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qualification_specialization`
+--
+
+DROP TABLE IF EXISTS `qualification_specialization`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `qualification_specialization` (
+  `qualification_specialization_id` int NOT NULL AUTO_INCREMENT,
+  `qualification_specialization_type` varchar(45) DEFAULT NULL,
+  `qualification_type_id` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`qualification_specialization_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `qualification_specialization`
+--
+
+LOCK TABLES `qualification_specialization` WRITE;
+/*!40000 ALTER TABLE `qualification_specialization` DISABLE KEYS */;
+INSERT INTO `qualification_specialization` VALUES (1,'Btech','1'),(2,'MCA','2');
+/*!40000 ALTER TABLE `qualification_specialization` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qualification_type`
+--
+
+DROP TABLE IF EXISTS `qualification_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `qualification_type` (
+  `qualification_type_id` int NOT NULL AUTO_INCREMENT,
+  `qualification_type` varchar(45) DEFAULT NULL,
+  `created_by` varchar(45) DEFAULT NULL,
+  `created_date` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`qualification_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `qualification_type`
+--
+
+LOCK TABLES `qualification_type` WRITE;
+/*!40000 ALTER TABLE `qualification_type` DISABLE KEYS */;
+INSERT INTO `qualification_type` VALUES (1,'Graduation','vipul','16-04-2021'),(2,'Post-Graduation','vipul','16-04-2021'),(3,'Diploma','vipul','16-04-2021'),(4,'Under Graduation','vipul','2021-04-17 00:11:11.609');
+/*!40000 ALTER TABLE `qualification_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -510,4 +699,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-16 14:10:19
+-- Dump completed on 2021-04-19 14:27:51

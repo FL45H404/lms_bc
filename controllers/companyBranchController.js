@@ -149,7 +149,7 @@ Version: V.01
 
 exports.getcompanyBranch = async (req, res) => {
     try {
-      var sql = "SELECT * FROM company_branch";
+      var sql = "SELECT branch.branch_id,master.company_name,branch.branch_name,branch.status FROM company_branch branch INNER JOIN company_master master ON branch.company_id =master.company_id ORDER BY branch_id DESC";
       await db.query(sql, (err, result) => {
         console.log(result)
         return res.status(200).json(result)
@@ -291,7 +291,7 @@ exports.updatecompanyBranchById = async (req,res) => {
 exports.getBranchCode= async (req,res)=>{
     try{
         var branch_code;
-        db.query('SELECT branch_code FROM company_branch ORDER BY branch_code  DESC',(err,result)=>{
+        await db.query('SELECT branch_code FROM company_branch ORDER BY branch_code  DESC',(err,result)=>{
             if (err) throw err;
             if (result.length > 0 && result[0].branch_code!=null ) {
                 let lastId = parseInt(result[0].branch_code);

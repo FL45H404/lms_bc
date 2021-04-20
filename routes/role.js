@@ -48,7 +48,8 @@ const {
   getRole,
   getRoleById,
   addRole,
-  updateRoleById
+  updateRoleById,
+  deleteRoleById
 } = require('../controllers/roleController');
 
 router.get('/role', getRole);
@@ -56,22 +57,22 @@ router.get('/role/:role_id', getRoleById);
 //router.post('/role',  addRole, upload.single('avatar'));
 router.post('/role',  addRole);
 router.put('/role/:role_id', updateRoleById);
-
-router.post('/upload',  upload.single('avatar'),(req,res) =>{
-   try{ 
-     var insertQuery = 'INSERT INTO role_master(role_description, created_by, created_date, avatar) VALUES (?,?,?,?)';
-  db.query(insertQuery, [req.body.role_description,'vipul',  new Date(), avatarFile],(err,result)=>{
-  //.then(result =>{
-if (err) throw err;
-      res.status(httpCodes.Created).json({message:"Role record added Successfully"})
-  });
+router.delete('/role/:role_id',deleteRoleById);
+// router.post('/upload',  upload.single('avatar'),(req,res) =>{
+//    try{ 
+//      var insertQuery = 'INSERT INTO role_master(role_description, created_by, created_date, avatar) VALUES (?,?,?,?)';
+//   db.query(insertQuery, [req.body.role_description,'vipul',  new Date(), avatarFile],(err,result)=>{
+//   //.then(result =>{
+// if (err) throw err;
+//       res.status(httpCodes.Created).json({message:"Role record added Successfully"})
+//   });
  
-   }
-   catch (error)
-   {
-     console.error(error);
-   }
-});
+//    }
+//    catch (error)
+//    {
+//      console.error(error);
+//    }
+// });
 
  module.exports = router;
 

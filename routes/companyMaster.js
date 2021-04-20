@@ -6,7 +6,7 @@ var app = express();
 const router = express.Router();
 
 const {
-  getCompanyRegistrationNumber,
+  //getCompanyRegistrationNumber,
   getcompanyMaster,
   getcompanyMasterById,
   addcompanyMaster,
@@ -14,7 +14,7 @@ const {
   getcompanyNames
 } = require('../controllers/companyMasterController');
 
-router.get('/getCompanyRegistrationNumber', getCompanyRegistrationNumber);
+//router.get('/getCompanyRegistrationNumber', getCompanyRegistrationNumber);
 router.get('/companyMaster', getcompanyMaster);
 router.get('/companyMaster/:company_id', getcompanyMasterById);
 router.post('/companyMaster',  addcompanyMaster);
