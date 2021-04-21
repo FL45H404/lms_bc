@@ -176,4 +176,18 @@ exports.updateQualificationById = async (req,res) =>{
         // res.status(httpCodes.InternalServerError).json(err.message)
     // })
 }  
-  
+exports.deleteQualificationById =async (req,res) =>{
+    try{
+        var Id = req.params.employee_qualification_id;
+        var data=[
+        Id]
+        var deleteQuery = 'DELETE FROM employee_qualification WHERE employee_qualification_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+            console.log("Employee qualification deleted succesfully");
+            res.status(httpCodes.Created).json({message:"Employee qualification record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
+    }
+}

@@ -9,7 +9,8 @@ const {
   getemployeeCategory,
   getemployeeCategoryById,
   addemployeeCategory,
-  updateemployeeCategoryById
+  updateemployeeCategoryById,
+  deleteCategoryById
 
 } = require('../controllers/employeeCategoryController');
 
@@ -17,6 +18,6 @@ router.get('/employeeCategory', getemployeeCategory);
 router.get('/employeeCategory/:employee_category_id', getemployeeCategoryById);
 router.post('/employeeCategory',  addemployeeCategory);
 router.put('/employeeCategory/:employee_category_id', updateemployeeCategoryById);
-
+router.delete('/employeeCategory/:employee_category_id', deleteCategoryById);
  module.exports = router;
 

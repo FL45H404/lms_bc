@@ -76,7 +76,7 @@ Version: V.01
 exports.addDesignation =async (req,res) =>{
     try{
 
-    var data=[req.body.designation_name, req.body.created_by, new Date()];
+    var data=[req.body.designation_name, 'vipul', new Date()];
     var insertQuery = 'INSERT INTO designation(designation_name, created_by, created_date) VALUES (?,?,?)';
     await db.query(insertQuery,data,(err,result)=>{
         res.status(httpCodes.Created).json({message:"Designation record added Successfully"})
@@ -106,13 +106,13 @@ exports.updateDesignationById = async (req,res) =>{
     try{
 
         var designationId = req.params.designation_id;
-        var created_date=new Date();
+        var updated_date=new Date();
         var data=[
         req.body.designation_name,   
-        req.body.created_by,
-        created_date ,
+        'vipul',
+        updated_date ,
         designationId]
-        var updateQuery = 'UPDATE designation SET designation_name=?, created_by=?, created_date=? WHERE designation_id=?';
+        var updateQuery = 'UPDATE designation SET designation_name=?, updated_by=?, created_date=? WHERE designation_id=?';
         await db.query(updateQuery, data,(err,result)=>{
             console.log("Designation record updated Successfully for id "+designationId)
             res.status(httpCodes.Created).json({message:"Designation record updated Successfully for id "+designationId})  
@@ -129,4 +129,18 @@ exports.updateDesignationById = async (req,res) =>{
     //     res.status(httpCodes.InternalServerError).json(err.message)
     // })
 }
-
+exports.deleteDesignationById =async (req,res) =>{
+    try{
+        var Id = req.params.designation_id;
+        var data=[
+        Id]
+        var deleteQuery = 'DELETE FROM designation WHERE designation_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+            console.log("Designation deleted succesfully");
+            res.status(httpCodes.Created).json({message:"Designation record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
+    }
+}

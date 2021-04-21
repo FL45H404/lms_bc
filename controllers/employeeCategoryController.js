@@ -11,7 +11,7 @@ Version: V.01
 ************************************************************************************************************/ 
 exports.addemployeeCategory = async (req,res) =>{
     try{
-        const data=[req.body.employee_category_name, req.body.created_by, new Date()]
+        const data=[req.body.employee_category_name, 'vipul', new Date()]
         var insertQuery = 'INSERT INTO employee_category(employee_category_name, created_by, created_date) VALUES (?,?,?)';
         await db.query(insertQuery, data,(err,result)=>{
             if (err) throw err;
@@ -106,14 +106,14 @@ Version: V.01
 exports.updateemployeeCategoryById =async (req,res) =>{
     try{
         var employee_categoryId = req.params.employee_category_id;
-        var created_date=new Date();
+        var updated_date=new Date();
         var data=[
         req.body.employee_category_name,
-        req.body.created_by,
-        created_date ,
+        'vipul',
+        updated_date ,
         employee_categoryId]
     
-        var updateQuery = 'UPDATE employee_category SET employee_category_name=?, created_by=?, created_date=? WHERE employee_category_id=?';
+        var updateQuery = 'UPDATE employee_category SET employee_category_name=?, created_by=?, updated_date=? WHERE employee_category_id=?';
         await db.query(updateQuery, data,(err,result)=>{
             if (err) throw err;
             res.status(httpCodes.Created).json({message:"Employee Category record updated Successfully"})
@@ -141,3 +141,18 @@ exports.updateemployeeCategoryById =async (req,res) =>{
     // })
 }  
 
+exports.deleteCategoryById =async (req,res) =>{
+    try{
+        var Id = req.params.employee_category_id;
+        var data=[
+        Id]
+        var deleteQuery = 'DELETE FROM employee_category WHERE employee_category_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+            console.log("Employee category deleted succesfully");
+            res.status(httpCodes.Created).json({message:"Employee category record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
+    }
+}

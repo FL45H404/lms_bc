@@ -80,14 +80,14 @@ Version: V.01
 exports.updateQualificationTypeById =async (req,res) =>{
     try{
         var qualificationTypeId = req.params.qualification_type_id;
-        var created_date=new Date();
+        var updated_date=new Date();
         var data=[
         req.body.qualification_type,
-        req.body.created_by,
-        created_date ,
+        'vipul',
+        updated_date ,
         qualificationTypeId]
     
-        var updateQuery = 'UPDATE qualification_type SET qualification_type=?, created_by=?, created_date=? WHERE qualification_type_id=?';
+        var updateQuery = 'UPDATE qualification_type SET qualification_type=?, created_by=?, updated_date=? WHERE qualification_type_id=?';
         await db.query(updateQuery, data,(err,result)=>{
             if (err) throw err;
             res.status(httpCodes.Created).json({message:"Qualification Type record updated Successfully"})
@@ -117,5 +117,20 @@ exports.getAllQualifications = async (req, res) => {
             error_message: "could not get all Qualifications",
             error: err
         })
+    }
+}
+exports.deleteQualificationTypeById =async (req,res) =>{
+    try{
+        var Id = req.params.qualification_type_id;
+        var data=[
+        Id]
+        var deleteQuery = 'DELETE FROM qualification_type WHERE qualification_type_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+            console.log("qualification deleted succesfully");
+            res.status(httpCodes.Created).json({message:"qualification record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
     }
 }

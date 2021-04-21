@@ -11,7 +11,8 @@ const {
   getDepartments,
   getDepartmentById,
   addDepartment,
-  updateDepartmentById
+  updateDepartmentById,
+  deleteDepartmentById
 
 } = require('../controllers/departmentController');
 
@@ -19,6 +20,6 @@ router.get('/department', getDepartments);
 router.get('/department/:department_id', getDepartmentById);
 router.post('/department',  addDepartment);
 router.put('/department/:department_id', updateDepartmentById);
-
+router.delete('/department/:department_id', deleteDepartmentById);
 
  module.exports = router;

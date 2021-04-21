@@ -169,3 +169,18 @@ exports.updateemployeeBankById = async (req,res) =>{
     // })
 }  
 
+exports.deleteemployeeBankById =async (req,res) =>{
+    try{
+        var Id = req.params.bank_details_id;
+        var data=[
+        Id]
+        var deleteQuery = 'DELETE FROM employee_bank_details WHERE bank_details_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+            console.log("Employee bank details deleted succesfully");
+            res.status(httpCodes.Created).json({message:"Employee bank details record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
+    }
+}

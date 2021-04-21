@@ -106,4 +106,19 @@ exports.updateemployeeExperienceById =async(req,res) =>{
         res.status(httpCodes.InternalServerError).json(err.message)
     }
 }  
-
+exports.deleteemployeeExperienceById =async (req,res) =>{
+    try{
+        var empId = req.params.employee_experience_id;
+        var data=[
+        empId]
+        var deleteQuery = 'DELETE FROM employee_experience WHERE employee_experience_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+          if (err) throw err;
+            console.log("employee experience deleted succesfully");
+            res.status(httpCodes.Created).json({message:"Employee experience record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
+    }
+  }

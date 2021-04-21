@@ -169,4 +169,19 @@ exports.updateemployeeAddressById = async(req,res) =>{
     //     res.status(httpCodes.InternalServerError).json(err.message)
     // })
 }  
+exports.deleteemployeeAddressById =async (req,res) =>{
+    try{
+        var Id = req.params.employee_address_id;
+        var data=[
+        Id]
+        var deleteQuery = 'DELETE FROM employee_address WHERE employee_address_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+            console.log("Employee adress deleted succesfully");
+            res.status(httpCodes.Created).json({message:"Employee adress record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
+    }
+}
 

@@ -98,4 +98,21 @@ exports.updateEmployeePerformanceById = (req,res) =>{
         res.status(httpCodes.InternalServerError).json(err.message)
     })
 }  
+exports.deleteEmployeePerformanceById =async (req,res) =>{
+    try{
+        var empId = req.params.employee_performance_id;
+        var data=[
+        empId]
+        var deleteQuery = 'DELETE FROM employee_experience WHERE employee_performance_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+          if (err) throw err;
+            console.log("employee performance record deleted succesfully");
+            res.status(httpCodes.Created).json({message:"Employee performance record record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
+    }
+  }
+
   

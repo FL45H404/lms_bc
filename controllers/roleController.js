@@ -23,7 +23,7 @@ Version: V.01
 //     callback(null, 'uploads');
 //   },
  
-//   filename:  (req, file, callback) => {
+//   filename:  (  req, file, callback) => {
 //     avatarFile = file.originalname;
 //    // let date_var= new Date().toLocaleString("en-GB",{ timeZone: "Asia/Kolkata" });
 //     let date_var= new Date().toLocaleDateString();

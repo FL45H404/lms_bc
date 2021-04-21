@@ -9,7 +9,8 @@ const {
   getemployeeExperience,
   getemployeeExperienceById,
   addemployeeExperience,
-  updateemployeeExperienceById
+  updateemployeeExperienceById,
+  deleteemployeeExperienceById
 
 } = require('../controllers/employeeExperienceController');
 
@@ -17,6 +18,7 @@ router.get('/employeeExperience', getemployeeExperience);
 router.get('/employeeExperience/:employee_experience_id', getemployeeExperienceById);
 router.post('/employeeExperience',  addemployeeExperience);
 router.put('/employeeExperience/:employee_experience_id', updateemployeeExperienceById);
+router.delete('/employeeExperience/:employee_experience_id', deleteemployeeExperienceById);
 
  module.exports = router;
 

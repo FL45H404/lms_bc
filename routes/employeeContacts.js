@@ -9,7 +9,8 @@ const {
   getemployeeContacts,
   getemployeeContactsById,
   addemployeeContacts,
-  updateemployeeContactsById
+  updateemployeeContactsById,
+  deleteemployeeContactsById
 
 } = require('../controllers/employeeContactController');
 
@@ -17,6 +18,7 @@ router.get('/employeeContact', getemployeeContacts);
 router.get('/employeeContact/:employee_contact_id', getemployeeContactsById);
 router.post('/employeeContact',  addemployeeContacts);
 router.put('/employeeContact/:employee_contact_id', updateemployeeContactsById);
+router.delete('/employeeContact/:employee_contact_id', deleteemployeeContactsById);
 
  module.exports = router;
 

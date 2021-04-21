@@ -10,7 +10,8 @@ const {
   getemployeeMaster,
   getemployeeMasterById,
   addemployeeMaster,
-  updateemployeeMasterById
+  updateemployeeMasterById,
+  deletemployeeMasterById
 } = require('../controllers/employeeMasterController');
 
  router.get("/getEmployeeCode",getEmployeeCode);
@@ -18,6 +19,7 @@ router.get('/employeeMaster', getemployeeMaster);
 router.get('/employeeMaster/:employee_id', getemployeeMasterById);
 router.post('/employeeMaster',  addemployeeMaster);
 router.put('/employeeMaster/:employee_id', updateemployeeMasterById);
+router.delete('/employeeMaster/:employee_id', deletemployeeMasterById);
 //router.get("/getEmployeeCode",getEmployeeCode);
 
 

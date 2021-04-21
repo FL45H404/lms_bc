@@ -90,7 +90,7 @@ exports.addDepartment =async (req,res) =>{
         // console.log("hii")
         // console.log(req.body.department_name+"depname");
         // console.log(req.body.created_by+"createdby");
-        const data= [req.body.department_name, req.body.created_by, new Date()]
+        const data= [req.body.department_name, 'vipul', new Date()]
         var insertQuery = 'INSERT INTO department(department_name, created_by, created_date) VALUES (?,?,?)'; 
         await db.query(insertQuery,data,(err,result)=>{
             console.log('Data created for id '+result.insertId)
@@ -119,14 +119,14 @@ Version: V.01
 exports.updateDepartmentById = async(req,res) =>{
     try{
         var departmentId = req.params.department_id;
-        var created_date=new Date();
+        var updated_date=new Date();
         var data=[
         req.body.department_name,
-        req.body.created_by,
-        created_date ,
+        'vipul',
+        updated_date ,
         departmentId]
         console.log(data)
-        var updateQuery = 'UPDATE department SET department_name=?, created_by=?, created_date=? WHERE department_id=?';
+        var updateQuery = 'UPDATE department SET department_name=?, created_by=?, updated_date=? WHERE department_id=?';
         await db.query(updateQuery, data,(err,result)=>{
             console.log(result)
             return res.status(httpCodes.OK).json('Rows affected: '+result.affectedRows);
@@ -150,3 +150,18 @@ exports.updateDepartmentById = async(req,res) =>{
     getDepartment : getDepartment,
     addDepartment : addDepartment
 } */
+exports.deleteDepartmentById =async (req,res) =>{
+    try{
+        var Id = req.params.department_id;
+        var data=[
+        Id]
+        var deleteQuery = 'DELETE FROM role_master WHERE department_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+            console.log("Department deleted succesfully");
+            res.status(httpCodes.Created).json({message:"Department record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
+    }
+}

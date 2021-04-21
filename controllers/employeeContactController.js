@@ -131,3 +131,18 @@ exports.updateemployeeContactsById = async (req,res) =>{
     }
 }  
 
+exports.deleteemployeeContactsById =async (req,res) =>{
+    try{
+        var Id = req.params.employee_contact_id;
+        var data=[
+        Id]
+        var deleteQuery = 'DELETE FROM employee_contacts WHERE employee_contact_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+            console.log("Employee contacts deleted succesfully");
+            res.status(httpCodes.Created).json({message:"Employee contacts record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
+    }
+}

@@ -13,7 +13,7 @@ Version: V.01
 ************************************************************************************************************/ 
 exports.getDepartmentMaster =  async (req, res) => {
     try{
-        var sql="SELECT * FROM department_master";
+        var sql="SELECT * FROM department_master ORDER BY department_id DESC";
     await db.query(sql,(err,result)=>{
 
         console.log(result)
@@ -108,7 +108,7 @@ exports.addDepartmentMaster = async(req,res) =>{
             req.body.department_head,
             req.body.department_type,
             req.body.department_location, 
-            req.body.created_by,
+            'vipul',
             created_date
           ]
         var insertQuery = "INSERT INTO department_master (department_name,department_code, department_head, department_type, department_location, created_by, created_date) VALUES (?,?,?,?,?,?,?)";
@@ -141,18 +141,18 @@ exports.updateDepartmentMasterById = async (req,res) =>{
     try{
 
         var departmentId = req.params.department_id;
-        var created_date=new Date();
+        var updated_date=new Date();
         var data=[
         req.body.department_name,
         req.body.department_code,
         req.body.department_head,
         req.body.department_type,
         req.body.department_location,
-        req.body.created_by,
-        created_date,
+        'vipul',
+        updated_date,
         departmentId]
         console.log(data)
-        var updateQuery = "UPDATE department_master SET department_name=? ,department_code=?, department_head=?, department_type=?, department_location=?, created_by=?, created_date=? WHERE department_id=?";
+        var updateQuery = "UPDATE department_master SET department_name=? ,department_code=?, department_head=?, department_type=?, department_location=?, created_by=?, updated_date=? WHERE department_id=?";
         await db.query(updateQuery, data ,(err,result)=>{
             console.log(result)
             return res.status(httpCodes.OK).json('Rows affected: '+result.affectedRows);
@@ -175,8 +175,15 @@ exports.getDepartmentCode= async(req,res)=>{
     try{
         var department_code;
         await db.query('SELECT department_code FROM department_master ORDER BY department_id  DESC',(err,result)=>{
-            console.log(result)
-            res.status(httpCodes.OK).json(result)
+            if (err) throw err;
+            if (result.length > 0 && result[0].department_code!=null ) {
+                        let lastId = parseInt(result[0].department_code);
+                        department_code=lastId+1;
+                        res.status(httpCodes.OK).json(department_code)
+                    } else {
+                        department_code = 100001; 
+                      res.status(httpCodes.OK).json(department_code)
+                    }
         })
     }catch(err){
         console.log(err);
@@ -197,3 +204,18 @@ exports.getDepartmentCode= async(req,res)=>{
         //     res.status(httpCodes.NotFound).json(err)
         //   })
   }
+  exports.deleteDepartmentMasterById =async (req,res) =>{
+    try{
+        var id =req.params.department_id;
+        var data=[
+        id]
+        var deleteQuery = 'DELETE FROM department_master WHERE department_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+            console.log("Department deleted succesfully");
+            res.status(httpCodes.Created).json({message:"Department record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
+    }
+}
