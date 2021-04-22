@@ -175,7 +175,7 @@ exports.updateRoleById =async (req,res) =>{
     // })
 }  
   
-exports.deleteRoleById =async (req,res) =>{
+exports.deleteRoleById =async (req,res) =>{   
     try{
         var roleId = req.params.role_id;
         var data=[

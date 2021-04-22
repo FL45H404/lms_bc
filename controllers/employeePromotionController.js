@@ -112,3 +112,19 @@ exports.updateEmployeePromotionById = async (req,res) =>{
     }
 }  
   
+exports.deleteEmployeePromotionById =async (req,res) =>{
+    try{
+        var empId = req.params.promotion_id;
+        var data=[
+        empId]
+        var deleteQuery = 'DELETE FROM employee_promotion WHERE promotion_id=?';
+        await db.query(deleteQuery, data,(err,result)=>{
+          if (err) throw err;
+            console.log("employee promotion deleted succesfully");
+            res.status(httpCodes.Created).json({message:"Employee promotion record deleted Successfully"})
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(httpCodes.InternalServerError).json(err.message)
+    }
+  }

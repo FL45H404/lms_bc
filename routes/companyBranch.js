@@ -10,7 +10,8 @@ const {
   getcompanyBranchById,
   addcompanyBranch,
   updatecompanyBranchById,
-  getBranchCode
+  getBranchCode,
+  deleteBranchById
 
 } = require('../controllers/companyBranchController');
 
@@ -19,6 +20,7 @@ router.get('/companyBranch/:branch_id', getcompanyBranchById);
 router.post('/companyBranch',  addcompanyBranch);
 router.put('/companyBranch/:branch_id', updatecompanyBranchById);
 router.get("/companyBranchCode",getBranchCode);
+router.delete('/companyBranch/:branch_id',deleteBranchById)
 
  module.exports = router;
 

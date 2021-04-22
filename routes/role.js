@@ -57,7 +57,7 @@ router.get('/role/:role_id', getRoleById);
 //router.post('/role',  addRole, upload.single('avatar'));
 router.post('/role',  addRole);
 router.put('/role/:role_id', updateRoleById);
-router.delete('/role/:role_id',deleteRoleById);
+router.delete('/role/:role_id',deleteRoleById); 
 // router.post('/upload',  upload.single('avatar'),(req,res) =>{
 //    try{ 
 //      var insertQuery = 'INSERT INTO role_master(role_description, created_by, created_date, avatar) VALUES (?,?,?,?)';

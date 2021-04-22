@@ -100,8 +100,9 @@ exports.addcompanyBranch = async(req,res) =>{
             req.body.email, 
             req.body.alternative_email, 
             req.body.status, 
-            req.body.created_by]
-        var insertQuery = "INSERT INTO company_branch(company_id, branch_name, branch_code, branch_address1, branch_address2, branch_address3, city, state, country, pincode, contact_no, alternative_contact_no, email, alternative_email, status, created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            'vipul',
+          created_date]
+        var insertQuery = "INSERT INTO company_branch(company_id, branch_name, branch_code, branch_address1, branch_address2, branch_address3, city, state, country, pincode, contact_no, alternative_contact_no, email, alternative_email, status, created_by,created_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         await db.query(insertQuery,data,(err,result)=>{
             console.log("Department record added Successfully")
             res.status(httpCodes.Created).json({message:"Company_branch record added Successfully"})
@@ -149,7 +150,7 @@ Version: V.01
 
 exports.getcompanyBranch = async (req, res) => {
     try {
-      var sql = "SELECT branch.branch_id,master.company_name,branch.branch_name,branch.status FROM company_branch branch INNER JOIN company_master master ON branch.company_id =master.company_id ORDER BY branch_id DESC";
+      var sql = "SELECT branch.branch_id,master.company_name,branch.branch_name,branch.status,branch.city FROM company_branch branch INNER JOIN company_master master ON branch.company_id =master.company_id ORDER BY branch_id DESC";
       await db.query(sql, (err, result) => {
         console.log(result)
         return res.status(200).json(result)
@@ -243,6 +244,7 @@ Version: V.01
 exports.updatecompanyBranchById = async (req,res) => {
   try{
       var branchId = req.params.branch_id;
+      var updated_date=new Date();
       const data = [
         req.body.company_id,
              req.body.branch_name, 
@@ -259,10 +261,11 @@ exports.updatecompanyBranchById = async (req,res) => {
             req.body.email, 
             req.body.alternative_email, 
             req.body.status, 
-            req.body.created_by,
+            'vipul',
+            updated_date,
           branchId];
       var updateQuery = 'UPDATE company_branch SET company_id=?, branch_name=?, branch_code=?, branch_address1=?, branch_address2=?, branch_address3=?, city=?, state=?, '
-      +'country=?, pincode=?, contact_no=?, alternative_contact_no=?, email=?, alternative_email=?, status=?, created_by=? WHERE branch_id=?';
+      +'country=?, pincode=?, contact_no=?, alternative_contact_no=?, email=?, alternative_email=?, status=?, created_by=? ,updated_date=? WHERE branch_id=?';
       await db.query(updateQuery, data ,(err,result)=>{
         console.log('Data updated succesfully')
         return res.status(httpCodes.OK).json('Data updated succesfully');
@@ -273,10 +276,6 @@ exports.updatecompanyBranchById = async (req,res) => {
 }
 
 }
-
-
-
-
 
 
 
@@ -314,4 +313,19 @@ exports.getBranchCode= async (req,res)=>{
         //     console.log(err)
         //     res.status(httpCodes.NotFound).json(err)
         //   })
+  }
+  exports.deleteBranchById = async (req, res) => {
+    try {
+      var branchId = req.params.branch_id;
+      var data = [
+        branchId]
+      var deleteQuery = 'Delete FROM company_branch WHERE branch_id=?';
+      await db.query(deleteQuery, data, (err, result) => {
+        console.log("Company branch deleted succesfully");
+        res.status(httpCodes.Created).json({ message: "Company branch record deleted succesfully" })
+      })
+    } catch (err) {
+      console.log(err.message)
+      res.status(httpCodes.InternalServerError).json(err.message)
+    }
   }
