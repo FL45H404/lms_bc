@@ -6,10 +6,10 @@ const mysql = require('mysql');
 // const db = new Pool({
 //connectionString: 'postgres://isvfxhjtvulgxc:21c91a20eeab3d0f830a27a94393d2ba07d8d80d67304df45322e1b9266520ca@ec2-174-129-199-54.compute-1.amazonaws.com:5432/ddkmpapq4co4ko',
 var db = mysql.createConnection({
-  user: 'root',
-  host: 'localhost',
-  database: 'lms',
-  password: 'root',
+user: 'hostman',
+  host: 'mysql-5-b0c0.hostman.site',
+  database: 'database',
+  password: '2d677f0d',
 
 ssl: {
     rejectUnauthorized: false
