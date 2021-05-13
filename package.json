@@ -4,7 +4,7 @@
   "description": "lms-dev",
   "main": "server.js",
   "engines":{
-    "node":"^15.0.0",
+    "node":"^14.0.0",
     "npm":"^5.0.0"
   },
   "dependencies": {
@@ -26,6 +26,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start":"node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
