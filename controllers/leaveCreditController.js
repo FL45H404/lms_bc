@@ -12,8 +12,8 @@ Version: V.01
 exports.getLeaveCreditData =  (req, res) => {   
     db.query('SELECT leavCrd.leave_credit_id, leavCrd.employee_id,empProf.employee_name, leavCrd.cl_sl, leavCrd.pl, '
     +' leavCrd.rh, leavCrd.remarks '
-    +' FROM leave_credit leavCrd, employee_profile empProf'
-    +' WHERE leavCrd.employee_id = empProf.employee_id')
+    +' FROM leave_credit leavCrd, employee_master empProf'
+    +' WHERE leavCrd.employee_id = empProf.employee_id ORDER BY leaveCrd.leave_credit_id DESC')
     .then(allConditions => {
         res.status(httpCodes.OK).json(allConditions.rows);
     }).catch(err => {
@@ -35,7 +35,7 @@ exports.getLeaveCreditDataByLeaveCrId = (req, res) => {
     let leaveCrId = req.params.leave_credit_id;    
     let sql = 'SELECT leavCrd.leave_credit_id, leavCrd.employee_id,empProf.employee_name, leavCrd.cl_sl, leavCrd.pl, '
     +' leavCrd.rh, leavCrd.remarks '
-    +' FROM leave_credit leavCrd, employee_profile empProf'
+    +' FROM leave_credit leavCrd, employee_master empProf'
     +' WHERE leavCrd.employee_id = empProf.employee_id AND leavCrd.leave_credit_id=$1';
     db.query(sql, [leaveCrId])
         .then((result) => {            

@@ -9,32 +9,87 @@ Created By and Date: Santoshkumar 12-NOV-2020
 Modified By and Date:
 Version: V.01
 ************************************************************************************************************/ 
-exports.addemployeeBank = async (req,res) =>{
-    try{
-        var data=[ req.body.employee_id, req.body.bank_account_number, req.body.bank_ifsc, req.body.bank_upi, req.body.bank_name,
-            req.body.bank_address, req.body.bank_account_status, req.body.bank_micr_code]
-        var insertQuery = 'INSERT INTO employee_bank_details(employee_id, bank_account_number, bank_ifsc, bank_upi, bank_name,bank_address, bank_account_status, bank_micr_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        await db.query(insertQuery, data,(err,result)=>{
-                    if (err) throw err;
-                    console.log(result)
-                    res.status(httpCodes.Created).json({message:"Employee Bank record added Successfully"})
-                })
+// exports.addemployeeBank = async (req,res) =>{
+//     try{
+//         var data=[ req.body.employee_id, req.body.bank_account_number, req.body.bank_ifsc, req.body.bank_upi, req.body.bank_name,
+//             req.body.bank_address, req.body.bank_account_status, req.body.bank_micr_code]
+//         var insertQuery = 'INSERT INTO employee_bank_details(employee_id, bank_account_number, bank_ifsc, bank_upi, bank_name,bank_address, bank_account_status, bank_micr_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+//         await db.query(insertQuery, data,(err,result)=>{
+//                     if (err) throw err;
+//                     console.log(result)
+//                     res.status(httpCodes.Created).json({message:"Employee Bank record added Successfully"})
+//                 })
         
-    }catch(err){
+//     }catch(err){
+//         console.log(err.message)
+//         res.status(httpCodes.InternalServerError).json(err.message)
+//     }
+   
+// }
+
+
+
+
+
+
+exports.addemployeeBank = async (req, res) => {
+    try {
+        var bank_detailsid;
+        db.query("select * from employee_bank_details ORDER BY bank_details_id DESC", (err, result) => {
+            if (result.length > 0 && result[0].bank_details_id != null) {
+                let lastId = (result[0].bank_details_id);
+                let id = (lastId.match(/(\d+)/));
+                let intid = parseInt(id) + 1;
+                bank_detailsid = 'EBD000000' + intid;
+
+            } else {
+                bank_detailsid = 'EBD0000001';
+            }
+            var data = [bank_detailsid,
+                req.body.employee_id, 
+                req.body.bank_account_number, 
+                req.body.bank_ifsc, 
+                req.body.bank_upi, 
+                req.body.bank_name,
+                req.body.bank_address, 
+                req.body.bank_account_status, 
+                req.body.bank_micr_code
+                ]
+                var insertQuery = 'INSERT INTO employee_bank_details(bank_details_id, employee_id, bank_account_number, bank_ifsc, bank_upi, bank_name,bank_address, bank_account_status, bank_micr_code) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)';
+            db.query(insertQuery, data, (err, result) => {
+                if (err) throw err;
+                console.log(data)
+                res.status(httpCodes.Created).json({ message: "Employee Bank Details record added Successfully" })
+            })
+
+        })
+    } catch (err) {
         console.log(err.message)
         res.status(httpCodes.InternalServerError).json(err.message)
     }
-    // var insertQuery = 'INSERT INTO employee_bank_details(employee_id, bank_account_number, bank_ifsc, bank_upi, bank_name,bank_address, bank_account_status, bank_micr_code) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
-    // db.query(insertQuery, [ req.body.employee_id, req.body.bank_account_number, req.body.bank_ifsc, req.body.bank_upi, req.body.bank_name,
-    //         req.body.bank_address, req.body.bank_account_status, req.body.bank_micr_code])
-    // .then(result =>{
-        // res.status(httpCodes.Created).json({message:"Employee Bank record added Successfully"})
-    // })
-    // .catch(err =>{
-        // console.log(err.message)
-        // res.status(httpCodes.InternalServerError).json(err.message)
-    // })
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /************************************************************************************************************ 
 Method Type: getemployeeBank
 Parameter list: NA
@@ -47,7 +102,7 @@ exports.getemployeeBank =  async (req, res) => {
     try{
        await db.query('SELECT empBank.employee_id, empBank.bank_details_id, empBank.bank_account_number, empBank.bank_ifsc, empBank.bank_upi, empBank.bank_name, '
         + ' empBank.bank_address, empBank.bank_account_status, empBank.bank_micr_code '
-        + ' FROM employee_bank_details empBank, employee_profile empProf WHERE empBank.employee_id = empProf.employee_id ',(err,result)=>{
+        + ' FROM employee_bank_details empBank, employee_master empProf WHERE empBank.employee_id = empProf.employee_id ORDER empBank.bank_details_id DESC ',(err,result)=>{
             if (err) throw err;
                     console.log(result)
                     res.status(httpCodes.Created).json(result)
@@ -60,7 +115,7 @@ exports.getemployeeBank =  async (req, res) => {
     }
     // db.query('SELECT empBank.employee_id, empBank.bank_details_id, empBank.bank_account_number, empBank.bank_ifsc, empBank.bank_upi, empBank.bank_name, '
     // + ' empBank.bank_address, empBank.bank_account_status, empBank.bank_micr_code '
-    // + ' FROM employee_bank_details empBank, employee_profile empProf WHERE empBank.employee_id = empProf.employee_id ')
+    // + ' FROM employee_bank_details empBank, employee_master empProf WHERE empBank.employee_id = empProf.employee_id ')
     //  .then(allConditions => {
         // res.status(httpCodes.OK).json(allConditions.rows);
     // }).catch(err => {
@@ -83,7 +138,7 @@ exports.getemployeeBankById = async(req, res) => {
         let bank_detailsId = req.params.bank_details_id;  
         let sql = 'SELECT empBank.employee_id, empBank.bank_details_id, empBank.bank_account_number, empBank.bank_ifsc, empBank.bank_upi, empBank.bank_name, '
         + ' empBank.bank_address, empBank.bank_account_status, empBank.bank_micr_code '
-        + ' FROM employee_bank_details empBank, employee_profile empProf WHERE empBank.employee_id = empProf.employee_id ' 	
+        + ' FROM employee_bank_details empBank, employee_master empProf WHERE empBank.employee_id = empProf.employee_id ' 	
         + ' AND empBank.bank_details_id = ?';
         await db.query(sql, [bank_detailsId],(err,result)=>{
             if (err) throw err;
@@ -99,7 +154,7 @@ exports.getemployeeBankById = async(req, res) => {
     // let bank_detailsId = req.params.bank_details_id;  
     // let sql = 'SELECT empBank.employee_id, empBank.bank_details_id, empBank.bank_account_number, empBank.bank_ifsc, empBank.bank_upi, empBank.bank_name, '
     // + ' empBank.bank_address, empBank.bank_account_status, empBank.bank_micr_code '
-    // + ' FROM employee_bank_details empBank, employee_profile empProf WHERE empBank.employee_id = empProf.employee_id ' 	
+    // + ' FROM employee_bank_details empBank, employee_master empProf WHERE empBank.employee_id = empProf.employee_id ' 	
     // + ' AND empBank.bank_details_id = ?';
     // db.query(sql, [bank_detailsId])
         // .then((result) => {            

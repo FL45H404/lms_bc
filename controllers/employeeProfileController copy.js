@@ -16,7 +16,7 @@ Version: V.01
 ************************************************************************************************************/
 
 exports.getEmployeeProfile =  (req, res) =>{
-    const sql = db.query('SELECT * FROM employee_profile')
+    const sql = db.query('SELECT * FROM employee_master')
       .then(result => { 
         res.status(httpCodes.OK).json(result.rows)        
       })
@@ -38,7 +38,7 @@ Version: V.01
   exports.getEmployeeProfileById =  (req, res) => {
     var EmployeeId = req.params.employee_id;
     data=[EmployeeId]
-       db.query('SELECT * FROM employee_profile where employee_id=$1',data)
+       db.query('SELECT * FROM employee_master where employee_id=$1',data)
       .then(result => { 
         res.status(httpCodes.OK).json(result.rows)        
       })
@@ -51,7 +51,7 @@ Version: V.01
 /************************************************************************************************************
 Method Name: addEmployeeProfile
 Parameter list: employee_name, role_id, department_id, designation_id, reporting_manager_id, company_id, date_of_birth, gender, joining_date, nationality, emp_photo, marital_status, blood_group, employee_status, base_location, hr_point_of_contact_id, employee_category_id, aadhar_card_number, pan_card_number, passport_number, passport_issued_date, passport_expiry_date, created_date, created_by
-Purpose: Add record to employee_profile table
+Purpose: Add record to employee_master table
 Created By and Date: GarimaJain 24-Oct-2020
 Modified By and Date: GarimaJain 13-Nov-2020
 Version: V.01
@@ -59,7 +59,7 @@ Version: V.01
 
 exports.getEmployeeCode= (req,res)=>{
   var employee_code;
-  db.query('SELECT employee_code FROM employee_profile ORDER BY employee_id  DESC')
+  db.query('SELECT employee_code FROM employee_master ORDER BY employee_id  DESC')
       .then((result1) => {
           if (result1.rows.length > 0 && result1.rows[0].employee_code!=null ) {
               let lastId = parseInt(result1.rows[0].employee_code);
@@ -107,7 +107,7 @@ exports.addEmployeeProfile =  (req, res) =>{
             created_date,
             req.body.created_by
           ]
-                      db.query('INSERT INTO employee_profile (employee_code,employee_name, role_id, department_id, designation_id, reporting_manager_id, company_id, date_of_birth, gender, joining_date, nationality, emp_photo, marital_status, blood_group, employee_status, base_location, hr_point_of_contact_id, employee_category_id, aadhar_card_number, pan_card_number, passport_number, passport_issued_date, passport_expiry_date, created_date, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24,$25)',
+                      db.query('INSERT INTO employee_master (employee_code,employee_name, role_id, department_id, designation_id, reporting_manager_id, company_id, date_of_birth, gender, joining_date, nationality, emp_photo, marital_status, blood_group, employee_status, base_location, hr_point_of_contact_id, employee_category_id, aadhar_card_number, pan_card_number, passport_number, passport_issued_date, passport_expiry_date, created_date, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24,$25)',
                         data)
                         .then(result => {
                           res.status(httpCodes.OK).json({
@@ -163,7 +163,7 @@ Version: V.01
     req.body.updated_by,
     EmployeeId
   ]
-              db.query('UPDATE employee_profile SET employee_name=$1, role_id=$2, department_id=$3, designation_id=$4, reporting_manager_id=$5, company_id=$6, date_of_birth=$7, gender=$8, joining_date=$9, nationality=$10, emp_photo=$11, marital_status=$12, blood_group=$13, employee_status=$14, base_location=$15, hr_point_of_contact_id=$16, employee_category_id=$17, aadhar_card_number=$18, pan_card_number=$19, passport_number=$20, passport_issued_date=$21, passport_expiry_date=$22, updated_date=$23, updated_by=$24 where employee_id=$25 RETURNING *',
+              db.query('UPDATE employee_master SET employee_name=$1, role_id=$2, department_id=$3, designation_id=$4, reporting_manager_id=$5, company_id=$6, date_of_birth=$7, gender=$8, joining_date=$9, nationality=$10, emp_photo=$11, marital_status=$12, blood_group=$13, employee_status=$14, base_location=$15, hr_point_of_contact_id=$16, employee_category_id=$17, aadhar_card_number=$18, pan_card_number=$19, passport_number=$20, passport_issued_date=$21, passport_expiry_date=$22, updated_date=$23, updated_by=$24 where employee_id=$25 RETURNING *',
                 data)
                 .then(result => {
                   res.status(httpCodes.OK).json({
@@ -182,7 +182,7 @@ Version: V.01
 /************************************************************************************************************
 Method Name: deleteEmployeeProfileById
 Parameter list: employee_id
-Purpose: Delete record from employee_profile
+Purpose: Delete record from employee_master
 Created By and Date: GarimaJain 02-Nov-2020
 Modified By and Date: GarimaJain 13-Nov-2020
 Version: V.01
@@ -195,7 +195,7 @@ Version: V.01
         status,
         EmployeeId
     ]
-    db.query('UPDATE employee_profile SET status=$1 where employee_id = $2 RETURNING *',
+    db.query('UPDATE employee_master SET status=$1 where employee_id = $2 RETURNING *',
                 data)
       .then( result => {
         res.status(httpCodes.OK).json(result.rows)
@@ -220,7 +220,7 @@ exports.getemployeeProfile =  (req, res) => {
     +' empProf.company_id, cmpProf.company_name, empProf.date_of_birth, empProf.gender, empProf.joining_date, empProf.nationality, empProf.emp_photo, empProf.marital_status, empProf.blood_group, empProf.employee_status, empProf.base_location, '
     +' empProf.hr_point_of_contact_id, empProf.employee_category_id, empCateg.employee_category_name, empProf.aadhar_card_number, empProf.pan_card_number, empProf.passport_number, empProf.passport_issued_date, empProf.passport_expiry_date, '
     +' empProf.created_date, empProf.created_by, empProf.updated_date, empProf.updated_by '
-	+' FROM employee_profile empProf,role_master roleMast, department dept, designation desg, company_profile cmpProf,employee_category empCateg '
+	+' FROM employee_master empProf,role_master roleMast, department dept, designation desg, company_profile cmpProf,employee_category empCateg '
 	+' WHERE empProf.role_id = roleMast.role_id AND empProf.department_id = dept.department_id '
 	+' AND empProf.designation_id = desg.designation_id AND empProf.company_id = cmpProf.company_id '
     +' AND empProf.employee_category_id = empCateg.employee_category_id '
@@ -249,7 +249,7 @@ exports.getemployeeProfileById = (req, res) => {
     +' empProf.company_id, cmpProf.company_name, empProf.date_of_birth, empProf.gender, empProf.joining_date, empProf.nationality, empProf.emp_photo, empProf.marital_status, empProf.blood_group, empProf.employee_status, empProf.base_location, '
     +' empProf.hr_point_of_contact_id, empProf.employee_category_id, empCateg.employee_category_name, empProf.aadhar_card_number, empProf.pan_card_number, empProf.passport_number, empProf.passport_issued_date, empProf.passport_expiry_date, '
     +' empProf.created_date, empProf.created_by, empProf.updated_date, empProf.updated_by '
-	+' FROM employee_profile empProf,role_master roleMast, department dept, designation desg, company_profile cmpProf,employee_category empCateg '
+	+' FROM employee_master empProf,role_master roleMast, department dept, designation desg, company_profile cmpProf,employee_category empCateg '
 	+' WHERE empProf.role_id = roleMast.role_id AND empProf.department_id = dept.department_id '
 	+' AND empProf.designation_id = desg.designation_id AND empProf.company_id = cmpProf.company_id '
     +' AND empProf.employee_category_id = empCateg.employee_category_id '

@@ -73,27 +73,62 @@ Created By and Date: Santoshkumar 03-Nov-2020
 Modified By and Date:
 Version: V.01
 *************************************************************************************************************/
-exports.addDesignation =async (req,res) =>{
-    try{
+// exports.addDesignation =async (req,res) =>{
+//     try{
 
-    var data=[req.body.designation_name, 'vipul', new Date()];
-    var insertQuery = 'INSERT INTO designation(designation_name, created_by, created_date) VALUES (?,?,?)';
-    await db.query(insertQuery,data,(err,result)=>{
-        res.status(httpCodes.Created).json({message:"Designation record added Successfully"})
-    })
-}catch(err){
-        console.log(err.message)
-        res.status(httpCodes.InternalServerError).json(err.message)
+//     var data=[req.body.designation_name,req.body.level, 'vipul', new Date()];
+//     var insertQuery = 'INSERT INTO designation(designation_name,level ,created_by, created_date) VALUES (?,?,?,?)';
+//     await db.query(insertQuery,data,(err,result)=>{
+//         res.status(httpCodes.Created).json({message:"Designation record added Successfully"})
+//     })
+// }catch(err){
+//         console.log(err.message)
+//         res.status(httpCodes.InternalServerError).json(err.message)
 
-}
-    // .then(result =>{
-        // res.status(httpCodes.Created).json({message:"Designation record added Successfully"})
-    // })
-    // .catch(err =>{
-    //     console.log(err.message)
-    //     res.status(httpCodes.InternalServerError).json(err.message)
-    // })
-}
+// }
+    
+// }
+
+
+
+
+
+exports.addDesignation = async (req, res) => {
+    try {
+      var designationid;
+      db.query("select * from designation ORDER BY designation_id DESC", (err, result) => {
+        if (result.length > 0 && result[0].designation_id != null) {
+          let lastId = (result[0].designation_id);
+          let id = (lastId.match(/(\d+)/));
+          let intid = parseInt(id) + 1;
+          designationid = 'DSN000000' + intid;
+  
+        } else {
+          designationid = 'DSN0000001';
+        }
+        var data = [designationid, 
+            req.body.designation_name,
+            req.body.level, 
+            req.body.created_by,
+         new Date()]
+         var insertQuery = 'INSERT INTO designation(designation_id, designation_name,level ,created_by, created_date) VALUES (?,?,?,?,?)';
+        db.query(insertQuery, data, (err, result) => {
+          if (err) throw err;
+          console.log(data)
+          res.status(httpCodes.Created).json({ message: "Designation record added Successfully" })
+        })
+  
+      })
+    } catch (err) {
+      console.log(err.message)
+      res.status(httpCodes.InternalServerError).json(err.message)
+    }
+  
+  }
+
+
+
+
 /************************************************************************************************************
 Method Name: updateDesignationById
 Parameter list: designationId,designation_name,updated_by,updated_date
@@ -109,10 +144,11 @@ exports.updateDesignationById = async (req,res) =>{
         var updated_date=new Date();
         var data=[
         req.body.designation_name,   
+        req.body.level,
         'vipul',
         updated_date ,
         designationId]
-        var updateQuery = 'UPDATE designation SET designation_name=?, updated_by=?, created_date=? WHERE designation_id=?';
+        var updateQuery = 'UPDATE designation SET designation_name=?,level=?, updated_by=?, created_date=? WHERE designation_id=?';
         await db.query(updateQuery, data,(err,result)=>{
             console.log("Designation record updated Successfully for id "+designationId)
             res.status(httpCodes.Created).json({message:"Designation record updated Successfully for id "+designationId})  

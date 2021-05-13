@@ -9,18 +9,59 @@ Created By and Date: Santoshkumar 12-NOV-2020
 Modified By and Date:
 Version: V.01
 ****************************************************************************************************************************************************************/ 
-exports.addemployeeExperience = async(req,res) =>{
-    try{
-        var insertQuery = 'INSERT INTO employee_experience(employee_id, previous_company_name, previous_company_designation, previous_experience_start_date, previous_experience_end_date) VALUES (?, ?, ?, ?, ?)';
-        await db.query(insertQuery, [req.body.employee_id, req.body.previous_company_name, req.body.previous_company_designation, req.body.previous_experience_start_date, req.body.previous_experience_end_date],(err,result)=>{
-            if (err) throw err;
-            res.status(httpCodes.Created).json({message:"Employee Experience record added Successfully"})    
+// exports.addemployeeExperience = async(req,res) =>{
+//     try{
+//         var insertQuery = 'INSERT INTO employee_experience(employee_id, previous_company_name, previous_company_designation, previous_experience_start_date, previous_experience_end_date,remarks) VALUES (?, ?, ?, ?, ?,?)';
+//         await db.query(insertQuery, [req.body.employee_id, req.body.previous_company_name, req.body.previous_company_designation, req.body.previous_experience_start_date, req.body.previous_experience_end_date,req.body.remarks],(err,result)=>{
+//             if (err) throw err;
+//             res.status(httpCodes.Created).json({message:"Employee Experience record added Successfully"})    
+//         })
+//     }catch(err){
+//         console.log(err.message)
+//         res.status(httpCodes.InternalServerError).json(err.message)
+//     }
+// }
+
+
+exports.addemployeeExperience = async (req, res) => {
+    try {
+        var employee_experienceid;
+        db.query("select * from employee_experience ORDER BY employee_experience_id DESC", (err, result) => {
+            if (result.length > 0 && result[0].employee_experience_id != null) {
+                let lastId = (result[0].employee_experience_id);
+                let id = (lastId.match(/(\d+)/));
+                let intid = parseInt(id) + 1;
+                employee_experienceid = 'EXP000000' + intid;
+
+            } else {
+                employee_experienceid = 'EXP0000001';
+            }
+            var data = [employee_experienceid,
+                req.body.employee_id, 
+                req.body.previous_company_name, 
+                req.body.previous_company_designation, 
+                req.body.previous_experience_start_date, 
+                req.body.previous_experience_end_date,
+                req.body.remarks
+                ]
+                var insertQuery = 'INSERT INTO employee_experience(employee_experience_id, employee_id, previous_company_name, previous_company_designation, previous_experience_start_date, previous_experience_end_date,remarks) VALUES (?, ?, ?, ?, ?, ?,?)';
+            db.query(insertQuery, data, (err, result) => {
+                if (err) throw err;
+                console.log(data)
+                res.status(httpCodes.Created).json({ message: "Employee Bank Details record added Successfully" })
+            })
+
         })
-    }catch(err){
+    } catch (err) {
         console.log(err.message)
         res.status(httpCodes.InternalServerError).json(err.message)
     }
+
 }
+
+
+
+
 /****************************************************************************************************************************************************************** 
 Method Type: getemployeeExperience
 Parameter list: NA
@@ -31,8 +72,8 @@ Version: V.01
 *****************************************************************************************************************************************************************/   
 exports.getemployeeExperience = async (req, res) => {
     try{
-        await db.query('SELECT empExper.employee_experience_id,empProf.employee_fname, empExper.employee_id, empExper.previous_company_name, empExper.previous_company_designation, empExper.previous_experience_start_date, empExper.previous_experience_end_date '
-        + 'FROM employee_experience empExper, employee_master empProf WHERE empExper.employee_id = empProf.employee_id',(err,result)=>{
+        var sql='SELECT empExper.employee_experience_id,empProf.employee_fname, empExper.employee_id, empExper.previous_company_name, empExper.previous_company_designation, empExper.previous_experience_start_date, empExper.previous_experience_end_date,empExper.remarks FROM employee_experience empExper, employee_master empProf WHERE empExper.employee_id = empProf.employee_id';
+        await db.query(sql,(err,result)=>{
             if (err) throw err;
             console.log(result)
             res.status(httpCodes.OK).json(result);
@@ -57,7 +98,7 @@ Version: V.01
 exports.getemployeeExperienceById = async (req, res) => {
     try{
         let employee_experienceId = req.params.employee_experience_id;  
-        let sql = 'SELECT empExper.employee_id, empExper.previous_company_name, empExper.previous_company_designation, empExper.previous_experience_start_date, empExper.previous_experience_end_date '
+        let sql = 'SELECT empExper.employee_id, empExper.previous_company_name, empExper.previous_company_designation, empExper.previous_experience_start_date, empExper.previous_experience_end_date,empExper.remarks'
         +' FROM employee_experience empExper, employee_master empProf WHERE empExper.employee_id = empProf.employee_id' 	
         +' AND empExper.employee_experience_id = ?';
         await db.query(sql, [employee_experienceId],(err,result)=>{
@@ -94,9 +135,10 @@ exports.updateemployeeExperienceById =async(req,res) =>{
             req.body.previous_company_designation, 
             req.body.previous_experience_start_date,
             req.body.previous_experience_end_date,
+            req.body.remarks,
              employee_experienceId]
     
-        var updateQuery = 'UPDATE employee_experience SET employee_id=?, previous_company_name=?, previous_company_designation=?, previous_experience_start_date=?, previous_experience_end_date=? WHERE employee_experience_id=?';
+        var updateQuery = 'UPDATE employee_experience SET employee_id=?, previous_company_name=?, previous_company_designation=?, previous_experience_start_date=?, previous_experience_end_date=? ,remarks=? WHERE employee_experience_id=?';
         await db.query(updateQuery, data,(err,result)=>{
             if (err) throw err;
             res.status(httpCodes.Created).json({message:"Employee Experience record updated Successfully"})

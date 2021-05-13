@@ -20,6 +20,10 @@ exports.addemployeeDependents = (req,res) =>{
         res.status(httpCodes.InternalServerError).json(err.message)
     })
 }
+
+
+
+
 /************************************************************************************************************ 
 Method Type: getemployeeDependents
 Parameter list: NA
@@ -30,7 +34,7 @@ Version: V.01
 ************************************************************************************************************/   
 exports.getemployeeDependents =  (req, res) => {
     db.query('SELECT empDependt.employee_dependent_id, empDependt.employee_id, empDependt.relation_type, empDependt.relation_name, empDependt.relation_age, empDependt.relation_gender'
-	+' FROM employee_dependents empDependt, employee_profile empProf'
+	+' FROM employee_dependents empDependt, employee_master empProf'
 	+' WHERE empDependt.employee_id = empProf.employee_id ').then(allConditions => {
         res.status(httpCodes.OK).json(allConditions.rows);
     }).catch(err => {
@@ -51,7 +55,7 @@ Version: V.01
 exports.getemployeeDependentsById = (req, res) => {
     let employee_dependentId = req.params.employee_dependent_id;  
     let sql = 'SELECT empDependt.employee_dependent_id, empDependt.employee_id, empDependt.relation_type, empDependt.relation_name, empDependt.relation_age, empDependt.relation_gender'
-    +' FROM employee_dependents empDependt, employee_profile empProf'
+    +' FROM employee_dependents empDependt, employee_master empProf'
     +' WHERE empDependt.employee_id = empProf.employee_id ' 	
     +' AND empDependt.employee_dependent_id = $1';
     db.query(sql, [employee_dependentId])

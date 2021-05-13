@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
--- Host: localhost    Database: lms
+-- Host: 127.0.0.1    Database: lms
 -- ------------------------------------------------------
 -- Server version	8.0.23
 
@@ -69,7 +69,7 @@ CREATE TABLE `company_master` (
   `company_id` int NOT NULL AUTO_INCREMENT,
   `company_name` varchar(45) NOT NULL,
   `company_registration_number` varchar(45) DEFAULT NULL,
-  `company_logo` varchar(45) DEFAULT NULL,
+  `company_logo` varchar(100) DEFAULT NULL,
   `company_registered_address1` varchar(45) DEFAULT NULL,
   `company_registered_address2` varchar(45) DEFAULT NULL,
   `company_registered_address3` varchar(45) DEFAULT NULL,
@@ -79,8 +79,8 @@ CREATE TABLE `company_master` (
   `country` varchar(45) DEFAULT NULL,
   `gst_no` varchar(45) DEFAULT NULL,
   `website` varchar(45) DEFAULT NULL,
-  `contact_no` int DEFAULT NULL,
-  `alternative_contact_no` int DEFAULT NULL,
+  `contact_no` varchar(45) DEFAULT NULL,
+  `alternative_contact_no` varchar(45) DEFAULT NULL,
   `contact_person` varchar(45) DEFAULT NULL,
   `tan` varchar(45) DEFAULT NULL,
   `pan` varchar(45) DEFAULT NULL,
@@ -94,7 +94,7 @@ CREATE TABLE `company_master` (
   `created_date` date DEFAULT NULL,
   `updated_date` date DEFAULT NULL,
   PRIMARY KEY (`company_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +103,7 @@ CREATE TABLE `company_master` (
 
 LOCK TABLES `company_master` WRITE;
 /*!40000 ALTER TABLE `company_master` DISABLE KEYS */;
-INSERT INTO `company_master` VALUES (1,'finch',NULL,':)','indraagar','baashankari','hsr layout','MUMBAI','maharashta','580096','india','finchgst2018','finchtech.in',890412926,545341215,'swathi rao','finchtan2018','finchpan2018','contactfinchtech@gmail.com','swathirao@gmail.com','product and services','IT','active','good','neel',NULL,NULL),(2,'accenture','accen123',':)','indraagar updated','baashankari','hsr layout','PUNE','karnataka','580096','india','finchgst2018','finchtech.in',890412926,545341215,'swathi rao','finchtan2018','finchpan2018','contactfinchtech@gmail.com','swathirao@gmail.com','product and services','IT','active','good','Swathi rao',NULL,'2021-04-20'),(4,'finch','fich2018',':)','indraagar','baashankari','hsr layout','HYDERBAD','karnataka','580096','india','finchgst2018','finchtech.in',890412926,545341215,'swathi rao','finchtan2018','finchpan2018','contactfinchtech@gmail.com','swathirao@gmail.com','product and services','IT','active','good','neel',NULL,NULL),(5,'finch',NULL,':)','indraagar updated','banshankari','belgaum','Bengalore','karnataka','580096','india','finchgst2018','finchtech.in',890412926,545341215,'vipul','finchtan2018','finchpan2018','contactfinchtech@gmail.com','vp@gmail.com','product and services','IT','active','good','neel',NULL,NULL),(6,'accenture','accen123',':)','indraagar updated','baashankari','hsr layout','DELHI','karnataka','580096','india','finchgst2018','finchtech.in',890412926,545341215,'swathi rao','finchtan2018','finchpan2018','contactfinchtech@gmail.com','swathirao@gmail.com','product and services','IT','active','good','neel','2021-04-20','2021-04-20');
+INSERT INTO `company_master` VALUES (1,'finch',NULL,':)','indraagar','baashankari','hsr layout','MUMBAI','maharashta','580096','india','finchgst2018','finchtech.in','890412926','545341215','swathi rao','finchtan2018','finchpan2018','contactfinchtech@gmail.com','swathirao@gmail.com','product and services','IT','active','good','neel',NULL,NULL),(2,'accenture','accen123',':)','indraagar updated','baashankari','hsr layout','PUNE','karnataka','580096','india','finchgst2018','finchtech.in','890412926','545341215','swathi rao','finchtan2018','finchpan2018','contactfinchtech@gmail.com','swathirao@gmail.com','product and services','IT','active','good','Swathi rao',NULL,'2021-04-20'),(4,'finch','fich2018',':)','indraagar','baashankari','hsr layout','HYDERBAD','karnataka','580096','india','finchgst2018','finchtech.in','890412926','545341215','swathi rao','finchtan2018','finchpan2018','contactfinchtech@gmail.com','swathirao@gmail.com','product and services','IT','active','good','neel',NULL,NULL),(5,'finch',NULL,':)','indraagar updated','banshankari','belgaum','Bengalore','karnataka','580096','india','finchgst2018','finchtech.in','890412926','545341215','vipul','finchtan2018','finchpan2018','contactfinchtech@gmail.com','vp@gmail.com','product and services','IT','active','good','neel',NULL,NULL),(6,'accenture','accen123',':)','indraagar updated','baashankari','hsr layout','DELHI','karnataka','580096','india','finchgst2018','finchtech.in','890412926','545341215','swathi rao','finchtan2018','finchpan2018','contactfinchtech@gmail.com','swathirao@gmail.com','product and services','IT','active','good','neel','2021-04-20','2021-04-20');
 /*!40000 ALTER TABLE `company_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -175,6 +175,7 @@ DROP TABLE IF EXISTS `designation`;
 CREATE TABLE `designation` (
   `designation_id` int NOT NULL AUTO_INCREMENT,
   `designation_name` varchar(45) DEFAULT NULL,
+  `level` varchar(45) DEFAULT NULL,
   `created_by` varchar(45) DEFAULT NULL,
   `created_date` varchar(45) DEFAULT NULL,
   `updated_date` varchar(45) DEFAULT NULL,
@@ -188,7 +189,7 @@ CREATE TABLE `designation` (
 
 LOCK TABLES `designation` WRITE;
 /*!40000 ALTER TABLE `designation` DISABLE KEYS */;
-INSERT INTO `designation` VALUES (1,'manager','xyz',NULL,NULL),(2,'manager','xyz',NULL,NULL),(3,'xxgfhth','pqr',NULL,NULL),(4,'manager','balu','2021-04-11',NULL),(5,'hod','vipul','2021-04-11',NULL),(6,'hod','vipul','2021-04-20 22:34:49.876',NULL);
+INSERT INTO `designation` VALUES (1,'manager','level 1','xyz',NULL,NULL),(2,'hod','level 2','xyz',NULL,NULL),(3,'employee','level 3','pqr',NULL,NULL);
 /*!40000 ALTER TABLE `designation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -306,7 +307,7 @@ CREATE TABLE `employee_contacts` (
   `contact_relation_name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`employee_contact_id`),
   KEY `_idx` (`employee_id`),
-  CONSTRAINT `fk_employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employee_profile` (`employee_id`)
+  CONSTRAINT `fk_employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employee_master` (`employee_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -393,6 +394,7 @@ CREATE TABLE `employee_experience` (
   `previous_company_designation` varchar(45) DEFAULT NULL,
   `previous_experience_start_date` varchar(45) DEFAULT NULL,
   `previous_experience_end_date` varchar(45) DEFAULT NULL,
+  `remarks` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`employee_experience_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -403,7 +405,7 @@ CREATE TABLE `employee_experience` (
 
 LOCK TABLES `employee_experience` WRITE;
 /*!40000 ALTER TABLE `employee_experience` DISABLE KEYS */;
-INSERT INTO `employee_experience` VALUES (1,1,'wipro','developer','20-11-2010','20-11-2020'),(3,3,'xiomi','web','20-11-2010','20-11-2020');
+INSERT INTO `employee_experience` VALUES (1,1,'wipro','developer','20-11-2010','20-11-2020','good'),(3,3,'xiomi','web','20-11-2010','20-11-2020','good');
 /*!40000 ALTER TABLE `employee_experience` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -461,13 +463,13 @@ INSERT INTO `employee_master` VALUES (2,'Balu','','kosuri','1000001','2','2','2'
 UNLOCK TABLES;
 
 --
--- Table structure for table `employee_profile`
+-- Table structure for table `employee_master`
 --
 
-DROP TABLE IF EXISTS `employee_profile`;
+DROP TABLE IF EXISTS `employee_master`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `employee_profile` (
+CREATE TABLE `employee_master` (
   `employee_id` int NOT NULL,
   `employee_name` varchar(45) DEFAULT NULL,
   `role_id` varchar(45) DEFAULT NULL,
@@ -502,13 +504,13 @@ CREATE TABLE `employee_profile` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `employee_profile`
+-- Dumping data for table `employee_master`
 --
 
-LOCK TABLES `employee_profile` WRITE;
-/*!40000 ALTER TABLE `employee_profile` DISABLE KEYS */;
-INSERT INTO `employee_profile` VALUES (102,'vips-updated','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,NULL,'ab+','Non-Active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-12 23:19:21.425','vipul'),(103,'vipul','12',1,1,NULL,'112','01-1-2000','male',NULL,'indian',NULL,'single','b-','Non-Active','banglore',NULL,NULL,'335467575764','dtdfygf46y','786544',NULL,NULL,NULL,'vipul'),(104,'ashwin','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,'single','ab+','active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-11 15:40:21.804','vipul'),(105,'vips','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,NULL,'ab+','Non-Active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-12 23:10:32.816','vipul');
-/*!40000 ALTER TABLE `employee_profile` ENABLE KEYS */;
+LOCK TABLES `employee_master` WRITE;
+/*!40000 ALTER TABLE `employee_master` DISABLE KEYS */;
+INSERT INTO `employee_master` VALUES (102,'vips-updated','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,NULL,'ab+','Non-Active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-12 23:19:21.425','vipul'),(103,'vipul','12',1,1,NULL,'112','01-1-2000','male',NULL,'indian',NULL,'single','b-','Non-Active','banglore',NULL,NULL,'335467575764','dtdfygf46y','786544',NULL,NULL,NULL,'vipul'),(104,'ashwin','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,'single','ab+','active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-11 15:40:21.804','vipul'),(105,'vips','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,NULL,'ab+','Non-Active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-12 23:10:32.816','vipul');
+/*!40000 ALTER TABLE `employee_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -712,4 +714,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-22 11:37:01
+-- Dump completed on 2021-04-26 15:15:04

@@ -33,7 +33,7 @@ exports.generateOtp = (request, response) => {
     var isUser = false;
     var status;
     var date=new Date();
-    db.query('select employee_status from employee_profile where employee_id=$1',[id])
+    db.query('select employee_status from employee_master where employee_id=$1',[id])
     .then(result1=>{
         if (result1.rows.length == 0 || null) {
             console.log(request.body.id + " " + "Emp Id doesnot exist");
@@ -149,7 +149,7 @@ exports.validateOtp = (request, response, next) => {
             });
   console.log(request.validateOtp);
     if(request.validateOtp){ 
-        db.query('select role_description from role_master where role_id=(select role_id from employee_profile where employee_id=$1)'
+        db.query('select role_description from role_master where role_id=(select role_id from employee_master where employee_id=$1)'
                   ,[id])
                   .then(result=>{
                     role=result.rows[0].role_description;  

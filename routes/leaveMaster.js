@@ -7,17 +7,22 @@ const router = express.Router();
 
 
 const {
-  getLeaveData,
+  //getLeaveData,
+  getLeaveMaster,
   getLeaveDataByLeaveId,
-  addLeaveData,
-  updateLeaveDataByLeaveId
+  addLeaveMaster,
+  updateLeaveDataByLeaveId,
+  deleteleaveById
 
 } = require('../controllers/leaveMasterController');
 
-router.get('/leave', getLeaveData);
-router.get('/leave/:leave_id', getLeaveDataByLeaveId);
-router.post('/leave',  addLeaveData);
-router.put('/leave/:leave_id', updateLeaveDataByLeaveId);
+//router.get('/leave', getLeaveData);
+router.get('/leaveMaster/:leave_id', getLeaveDataByLeaveId);
+router.post('/leaveMaster',  addLeaveMaster);
+router.get('/leaveMaster',getLeaveMaster)
+router.put('/leaveMaster/:leave_id', updateLeaveDataByLeaveId);
+router.delete('/leaveMaster/:leave_id',deleteleaveById)
 
 
  module.exports = router;
+

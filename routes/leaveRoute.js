@@ -143,7 +143,7 @@ router.post("/employeeProfile",function(req,res){
   created_date,
   req.body.created_by
 ]
-            db.query('INSERT INTO employee_profile (employee_name, role_id, department_id, designation_id, reporting_manager_id, company_id, date_of_birth, gender, joining_date, nationality, emp_photo, marital_status, blood_group, employee_status, base_location, hr_point_of_contact_id, employee_category_id, aadhar_card_number, pan_card_number, passport_number, passport_issued_date, passport_expiry_date, created_date, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24)',
+            db.query('INSERT INTO employee_master (employee_name, role_id, department_id, designation_id, reporting_manager_id, company_id, date_of_birth, gender, joining_date, nationality, emp_photo, marital_status, blood_group, employee_status, base_location, hr_point_of_contact_id, employee_category_id, aadhar_card_number, pan_card_number, passport_number, passport_issued_date, passport_expiry_date, created_date, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24)',
               data)
               .then(result => {
                 res.status(httpCodes.OK).json({
@@ -161,7 +161,7 @@ router.post("/employeeProfile",function(req,res){
 
 //Get all Employee
 router.get("/employeeProfile", async (req, res) => {
-  const sql = await db.query('SELECT * FROM employee_profile')
+  const sql = await db.query('SELECT * FROM employee_master')
     .then(result => { 
       res.status(httpCodes.OK).json(result.rows)        
     })
@@ -175,7 +175,7 @@ router.get("/employeeProfile", async (req, res) => {
 router.get("/employeeProfile/:employee_id", async (req, res) => {
   var EmployeeId = req.params.employee_id;
   data=[EmployeeId]
-     db.query('SELECT * FROM employee_profile where employee_id=$1',data)
+     db.query('SELECT * FROM employee_master where employee_id=$1',data)
     .then(result => { 
       res.status(httpCodes.OK).json(result.rows)        
     })
@@ -216,7 +216,7 @@ var data=[
   req.body.updated_by,
   EmployeeId
 ]
-            db.query('UPDATE employee_profile SET employee_name=$1, role_id=$2, department_id=$3, designation_id=$4, reporting_manager_id=$5, company_id=$6, date_of_birth=$7, gender=$8, joining_date=$9, nationality=$10, emp_photo=$11, marital_status=$12, blood_group=$13, employee_status=$14, base_location=$15, hr_point_of_contact_id=$16, employee_category_id=$17, aadhar_card_number=$18, pan_card_number=$19, passport_number=$20, passport_issued_date=$21, passport_expiry_date=$22, updated_date=$23, updated_by=$24 where employee_id=$25 RETURNING *',
+            db.query('UPDATE employee_master SET employee_name=$1, role_id=$2, department_id=$3, designation_id=$4, reporting_manager_id=$5, company_id=$6, date_of_birth=$7, gender=$8, joining_date=$9, nationality=$10, emp_photo=$11, marital_status=$12, blood_group=$13, employee_status=$14, base_location=$15, hr_point_of_contact_id=$16, employee_category_id=$17, aadhar_card_number=$18, pan_card_number=$19, passport_number=$20, passport_issued_date=$21, passport_expiry_date=$22, updated_date=$23, updated_by=$24 where employee_id=$25 RETURNING *',
               data)
               .then(result => {
                 res.status(httpCodes.OK).json({
@@ -235,7 +235,7 @@ var data=[
 //Delete Employee by employee_id 
 router.delete("/employeeProfile/:employee_id", async (req, res) => {
   var EmployeeId = req.params.employee_id;
-    const sql = 'DELETE FROM employee_profile WHERE employee_id = $1'
+    const sql = 'DELETE FROM employee_master WHERE employee_id = $1'
     db.query(sql, [EmployeeId])
     .then( result => {
       res.status(httpCodes.OK).json(result.rows)
@@ -1145,7 +1145,7 @@ router.post("/employeeQualification",function(req,res){
 router.get("/employeeQualification", async (req, res) => {
   const sql = await db.query('SELECT empQual.employee_id, empQual.employee_qualification_id, empQual.qualification_type_id, empQual.qualification_specialization_id,' 
 	+' empQual.year_of_pass, empQual.specialization, empQual.institute_name, empQual.university, empQual.grade'
-	+' FROM employee_qualification empQual,qualification_specialization qualSpec,qualification_type qualType, employee_profile empProf '
+	+' FROM employee_qualification empQual,qualification_specialization qualSpec,qualification_type qualType, employee_master empProf '
 	+' WHERE empQual.employee_id = empProf.employee_id '
 	+' AND empQual.qualification_type_id = qualType.qualification_type_id'
 	+' AND empQual.qualification_specialization_id = qualSpec.qualification_specialization_id'	)
@@ -1164,7 +1164,7 @@ router.get("/employeeQualification/:employee_qualification_id", async (req, res)
   data=[employee_qualificationId]
      db.query('SELECT empQual.employee_id, empQual.employee_qualification_id, empQual.qualification_type_id, empQual.qualification_specialization_id, ' 
      +' empQual.year_of_pass, empQual.specialization, empQual.institute_name, empQual.university, empQual.grade '
-     +' FROM employee_qualification empQual,qualification_specialization qualSpec,qualification_type qualType, employee_profile empProf '
+     +' FROM employee_qualification empQual,qualification_specialization qualSpec,qualification_type qualType, employee_master empProf '
      +' WHERE empQual.employee_id = empProf.employee_id '
      +' AND empQual.qualification_type_id = qualType.qualification_type_id '
      +' AND empQual.qualification_specialization_id = qualSpec.qualification_specialization_id ' 	
@@ -1250,7 +1250,7 @@ router.post("/employeePerformance",function(req,res){
 //Get all Employee Performance 
 router.get("/employeePerformance", async (req, res) => {
   const sql = await db.query('SELECT empPerform.employee_id, empPerform.employee_performance_id, empPerform.assessment_year, empPerform.performance_rating, empPerform.increment_percentage, empPerform.bonus_percentage'
-	+' FROM employee_performance empPerform, employee_profile empProf '
+	+' FROM employee_performance empPerform, employee_master empProf '
 	+' WHERE empPerform.employee_id = empProf.employee_id ')
     .then(result => { 
       res.status(httpCodes.OK).json(result.rows)        
@@ -1266,7 +1266,7 @@ router.get("/employeePerformance/:employee_performance_id", async (req, res) => 
   var employee_performanceId = req.params.employee_performance_id;
   data=[employee_performanceId]
      db.query('SELECT empPerform.employee_id, empPerform.employee_performance_id, empPerform.assessment_year, empPerform.performance_rating, empPerform.increment_percentage, empPerform.bonus_percentage'
-     +' FROM employee_performance empPerform, employee_profile empProf '
+     +' FROM employee_performance empPerform, employee_master empProf '
      +' WHERE empPerform.employee_id = empProf.employee_id ' 	
      +' AND empPerform.employee_performance_id=$1',data)
     .then(result => { 
@@ -1346,7 +1346,7 @@ router.post("/employeePromotion",function(req,res){
 //Get all Employee Promotion 
 router.get("/employeePromotion", async (req, res) => {
   const sql = await db.query('SELECT empPromotion.promotion_id, empPromotion.employee_id, empPromotion.designation_id, desig.designation_name, empPromotion.effective_promotion_date, empPromotion.compensation_percentage'
-	+' FROM employee_promotion empPromotion, employee_profile empProf, designation desig'
+	+' FROM employee_promotion empPromotion, employee_master empProf, designation desig'
 	+' WHERE empPromotion.employee_id = empProf.employee_id AND empPromotion.designation_id = desig.designation_id ')
     .then(result => { 
       res.status(httpCodes.OK).json(result.rows)        
@@ -1362,7 +1362,7 @@ router.get("/employeePromotion/:promotion_id", async (req, res) => {
   var promotionId = req.params.promotion_id;
   data=[promotionId]
      db.query('SELECT empPromotion.promotion_id, empPromotion.employee_id, empPromotion.designation_id, desig.designation_name, empPromotion.effective_promotion_date, empPromotion.compensation_percentage'
-     +' FROM employee_promotion empPromotion, employee_profile empProf, designation desig'
+     +' FROM employee_promotion empPromotion, employee_master empProf, designation desig'
      +' WHERE empPromotion.employee_id = empProf.employee_id AND empPromotion.designation_id = desig.designation_id ' 	
      +' AND empPromotion.promotion_id = $1',data)
     .then(result => { 

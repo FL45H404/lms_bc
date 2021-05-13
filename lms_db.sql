@@ -206,7 +206,7 @@ CREATE TABLE `employee_address` (
   `pincode` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`employee_address_id`),
   KEY `employee_id` (`employee_id`),
-  CONSTRAINT `employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employee_profile` (`employee_id`)
+  CONSTRAINT `employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employee_master (`employee_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -299,7 +299,7 @@ CREATE TABLE `employee_contacts` (
   `contact_relation_name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`employee_contact_id`),
   KEY `_idx` (`employee_id`),
-  CONSTRAINT `fk_employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employee_profile` (`employee_id`)
+  CONSTRAINT `fk_employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employee_master (`employee_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -450,13 +450,13 @@ INSERT INTO `employee_master` VALUES (1,'vipul',NULL,'waghamode','1','101','1','
 UNLOCK TABLES;
 
 --
--- Table structure for table `employee_profile`
+-- Table structure for table `employee_master
 --
 
-DROP TABLE IF EXISTS `employee_profile`;
+DROP TABLE IF EXISTS `employee_master;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `employee_profile` (
+CREATE TABLE `employee_master (
   `employee_id` int NOT NULL,
   `employee_name` varchar(45) DEFAULT NULL,
   `role_id` varchar(45) DEFAULT NULL,
@@ -491,13 +491,13 @@ CREATE TABLE `employee_profile` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `employee_profile`
+-- Dumping data for table `employee_master
 --
 
-LOCK TABLES `employee_profile` WRITE;
-/*!40000 ALTER TABLE `employee_profile` DISABLE KEYS */;
-INSERT INTO `employee_profile` VALUES (102,'vips-updated','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,NULL,'ab+','Non-Active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-12 23:19:21.425','vipul'),(103,'vipul','12',1,1,NULL,'112','01-1-2000','male',NULL,'indian',NULL,'single','b-','Non-Active','banglore',NULL,NULL,'335467575764','dtdfygf46y','786544',NULL,NULL,NULL,'vipul'),(104,'ashwin','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,'single','ab+','active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-11 15:40:21.804','vipul'),(105,'vips','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,NULL,'ab+','Non-Active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-12 23:10:32.816','vipul');
-/*!40000 ALTER TABLE `employee_profile` ENABLE KEYS */;
+LOCK TABLES `employee_master WRITE;
+/*!40000 ALTER TABLE `employee_master DISABLE KEYS */;
+INSERT INTO `employee_master VALUES (102,'vips-updated','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,NULL,'ab+','Non-Active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-12 23:19:21.425','vipul'),(103,'vipul','12',1,1,NULL,'112','01-1-2000','male',NULL,'indian',NULL,'single','b-','Non-Active','banglore',NULL,NULL,'335467575764','dtdfygf46y','786544',NULL,NULL,NULL,'vipul'),(104,'ashwin','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,'single','ab+','active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-11 15:40:21.804','vipul'),(105,'vips','12',3,2,'10','112','1-11-1997','male',NULL,'indian',NULL,NULL,'ab+','Non-Active','bgm',NULL,NULL,'303827182628','hb889','9887','01-11-1997','1-12-1998','2021-04-12 23:10:32.816','vipul');
+/*!40000 ALTER TABLE `employee_master ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

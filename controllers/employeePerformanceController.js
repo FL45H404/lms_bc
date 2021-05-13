@@ -30,7 +30,7 @@ Version: V.01
 ************************************************************************************************************/   
 exports.getEmployeePerformance =  (req, res) => {
     db.query('SELECT empPerform.employee_id,empProf.employee_name, empPerform.employee_performance_id, empPerform.assessment_year, empPerform.performance_rating, empPerform.increment_percentage, empPerform.bonus_percentage'
-	+' FROM employee_performance empPerform, employee_profile empProf '
+	+' FROM employee_performance empPerform, employee_master empProf '
 	+' WHERE empPerform.employee_id = empProf.employee_id ')
     .then(allConditions => {
         res.status(httpCodes.OK).json(allConditions.rows);
@@ -52,7 +52,7 @@ Version: V.01
 exports.getEmployeePerformanceById = (req, res) => {
     let employeePerformanceId = req.params.employee_performance_id;  
     let sql = 'SELECT empPerform.employee_id, empPerform.employee_performance_id, empPerform.assessment_year, empPerform.performance_rating, empPerform.increment_percentage, empPerform.bonus_percentage'
-    +' FROM employee_performance empPerform, employee_profile empProf '
+    +' FROM employee_performance empPerform, employee_master empProf '
     +' WHERE empPerform.employee_id = empProf.employee_id ' 	
     +' AND empPerform.employee_performance_id=$1';
     db.query(sql, [employeePerformanceId])

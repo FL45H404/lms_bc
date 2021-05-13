@@ -9,18 +9,75 @@ Created By and Date: Santoshkumar 11-NOV-2020
 Modified By and Date:
 Version: V.01
 **************************************************************************************************************************************************/ 
-exports.addEmployeePromotion = async (req,res) =>{
-    try{
-        var insertQuery = 'INSERT INTO employee_promotion(employee_id, designation_id, effective_promotion_date, compensation_percentage) VALUES (?,?,?,?)';
-        await db.query(insertQuery, [req.body.employee_id,req.body.designation_id, req.body.effective_promotion_date, req.body.compensation_percentage],(err,result)=>{
-            if (err) throw err;
-            res.status(httpCodes.Created).json({message:"Employee Promotion record added Successfully"})
+// exports.addEmployeePromotion = async (req,res) =>{
+//     try{
+//         var insertQuery = 'INSERT INTO employee_promotion(employee_id, designation_id, effective_promotion_date, compensation_percentage) VALUES (?,?,?,?)';
+//         await db.query(insertQuery, [req.body.employee_id,req.body.designation_id, req.body.effective_promotion_date, req.body.compensation_percentage],(err,result)=>{
+//             if (err) throw err;
+//             res.status(httpCodes.Created).json({message:"Employee Promotion record added Successfully"})
+//         })
+//     }catch(err){
+//         console.log(err.message)
+//         res.status(httpCodes.InternalServerError).json(err.message)
+//     }
+// }
+
+
+
+
+
+
+exports.addEmployeePromotion = async (req, res) => {
+    try {
+        var promotionid;
+        db.query("select * from employee_promotion ORDER BY promotion_id DESC", (err, result) => {
+            if (result.length > 0 && result[0].promotion_id != null) {
+                let lastId = (result[0].promotion_id);
+                let id = (lastId.match(/(\d+)/));
+                let intid = parseInt(id) + 1;
+                promotionid = 'EPN000000' + intid;
+
+            } else {
+                promotionid = 'EPN0000001';
+            }
+            var data = [promotionid,
+                req.body.employee_id,
+                req.body.designation_id, 
+                req.body.effective_promotion_date, 
+                req.body.compensation_percentage
+                ]
+                var insertQuery = 'INSERT INTO employee_promotion(promotion_id, employee_id, designation_id, effective_promotion_date, compensation_percentage) VALUES (?, ?,?,?,?)';
+            db.query(insertQuery, data, (err, result) => {
+                if (err) throw err;
+                console.log(data)
+                res.status(httpCodes.Created).json({ message: "Employee Promotion Details record added Successfully" })
+            })
+
         })
-    }catch(err){
+    } catch (err) {
         console.log(err.message)
         res.status(httpCodes.InternalServerError).json(err.message)
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /********************************************************************************************************************************************************* 
 Method Type: getEmployeePromotion
 Parameter list: NA
@@ -33,7 +90,7 @@ exports.getEmployeePromotion = async (req, res) => {
     try{
         await db.query('SELECT empPromotion.promotion_id, empPromotion.employee_id,empProf.employee_fname, empPromotion.designation_id, desig.designation_name, empPromotion.effective_promotion_date, empPromotion.compensation_percentage'
         +' FROM employee_promotion empPromotion, employee_master empProf, designation desig'
-        +' WHERE empPromotion.employee_id = empProf.employee_id AND empPromotion.designation_id = desig.designation_id ',(err,result)=>{
+        +' WHERE empPromotion.employee_id = empProf.employee_id AND empPromotion.designation_id = desig.designation_id ORDER BY empPromotion.promotion_id DESC',(err,result)=>{
             if (err) throw err;
             console.log(result);
             res.status(httpCodes.OK).json(result);
