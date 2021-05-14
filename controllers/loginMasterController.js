@@ -114,9 +114,9 @@ exports.updateloginDataByloginId = async (req, res) => {
 
 exports.auth = async (req, res) => {
   try {
-    var data = [req.body.user_id,
+    var data = [req.body.user_name,
     req.body.password];
-    var sql = "SELECT user_id,role,user_name from login WHERE user_id=? and password=md5(?)";
+    var sql = "SELECT user_id,role,user_name from login WHERE user_name=? and password=md5(?)";
     await db.query(sql, data, (err, result) => {
       if (result.length > 0) {
         console.log("login succesfully")
