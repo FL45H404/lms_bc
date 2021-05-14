@@ -121,7 +121,7 @@ exports.auth = async (req, res) => {
       if (result.length > 0) {
         console.log("login succesfully")
         return res.status(httpCodes.OK).json({
-          status: "success", result: result[0].user_id,
+          status: "success", user_id: result[0].user_id,
           message: 'login succesfully'
         });
       }
