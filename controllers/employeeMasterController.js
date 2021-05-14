@@ -41,11 +41,10 @@ exports.addemployeeMaster = async (req, res) => {
         data, (err, result) => {
           if (err) throw err;
           console.log(data)
-          var employee_id = result.insertId;
-          console.log(employee_id)
+          console.log(employeeid)
           if (req.body.qualification_id != "" || null) {
             var insertQuery = 'INSERT INTO employee_education(employee_id, qualification_id, year_of_pass, specialization, institute_name, university, grade) VALUES (?, ?, ?, ?, ?, ?, ?)';
-            db.query(insertQuery, [employee_id, req.body.qualification_id, req.body.year_of_pass,
+            db.query(insertQuery, [employeeid, req.body.qualification_id, req.body.year_of_pass,
               req.body.specialization, req.body.institute_name, req.body.university, req.body.grade], (err, result1) => {
                 if (err) throw err;
                 // res.status(httpCodes.Created).json(result1)
