@@ -81,40 +81,40 @@ Version: V.01
 
 
 
-exports.addcompanyBranch = async (req, res) => {
-  try {
-    var created_date = new Date();
-    const data = [
-      req.body.company_id,
-      req.body.branch_name,
-      req.body.branch_code,
-      req.body.branch_address1,
-      req.body.branch_address2,
-      req.body.branch_address3,
-      req.body.city,
-      req.body.state,
-      req.body.country,
-      req.body.pincode,
-      req.body.contact_no,
-      req.body.alternative_contact_no,
-      req.body.email,
-      req.body.alternative_email,
-      req.body.status,
-      req.body.created_by,
-      created_date]
-    var insertQuery = "INSERT INTO company_branch(company_id, branch_name, branch_code, branch_address1, branch_address2, branch_address3, city, state, country, pincode, contact_no, alternative_contact_no, email, alternative_email, status, created_by, created_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    await db.query(insertQuery, data, (err, result) => {
-      console.log("Department record added Successfully")
-      res.status(httpCodes.Created).json({ message: "Company_branch record added Successfully" })
+// exports.addcompanyBranch = async (req, res) => {
+//   try {
+//     var created_date = new Date();
+//     const data = [
+//       req.body.company_id,
+//       req.body.branch_name,
+//       req.body.branch_code,
+//       req.body.branch_address1,
+//       req.body.branch_address2,
+//       req.body.branch_address3,
+//       req.body.city,
+//       req.body.state,
+//       req.body.country,
+//       req.body.pincode,
+//       req.body.contact_no,
+//       req.body.alternative_contact_no,
+//       req.body.email,
+//       req.body.alternative_email,
+//       req.body.status,
+//       req.body.created_by,
+//       created_date]
+//     var insertQuery = "INSERT INTO company_branch(company_id, branch_name, branch_code, branch_address1, branch_address2, branch_address3, city, state, country, pincode, contact_no, alternative_contact_no, email, alternative_email, status, created_by, created_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+//     await db.query(insertQuery, data, (err, result) => {
+//       console.log("Department record added Successfully")
+//       res.status(httpCodes.Created).json({ message: "Company_branch record added Successfully" })
 
-    })
-  } catch (err) {
-    console.log(err.message)
-    res.status(httpCodes.InternalServerError).json(err.message)
+//     })
+//   } catch (err) {
+//     console.log(err.message)
+//     res.status(httpCodes.InternalServerError).json(err.message)
 
-  }
+//   }
 
-}
+// }
 
 
 
