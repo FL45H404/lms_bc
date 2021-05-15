@@ -39,7 +39,7 @@ const employeeleaveRoute=require('./routes/employeeLeave');
 const loginroute=require('./routes/loginMaster');
 
 var corsoption={
-origin:'https://hrisui.herokuapp.com','https://hrlms.herokuapp.com',
+origin:'https://hrlms.herokuapp.com',
 optionsSuccessStatus:200,
 methods:"GET,PUT,POST,DELETE"
 }
