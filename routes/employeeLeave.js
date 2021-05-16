@@ -13,7 +13,8 @@ const {
   addEmployeeLeave,
   updateEmployeeLeaveById,
   deleteEmployeeLeaveById,
-  getEmployeeLeaveByManagerId
+  getEmployeeLeaveByManagerId,
+  getEmployeeLeaveByEmployeeId
 
 } = require('../controllers/employeeLeaveController');
 
@@ -22,6 +23,6 @@ router.get('/EmployeeLeave/:employee_leave_id', getEmployeeLeaveById);
 router.post('/EmployeeLeave',  addEmployeeLeave);
 router.put('/EmployeeLeave/:employee_leave_id', updateEmployeeLeaveById);
 router.delete('/EmployeeLeave/:employee_leave_id', deleteEmployeeLeaveById);
-router.get('/EmployeeLeaveByManager/:manager_id', getEmployeeLeaveByManagerId)
-
+router.get('/EmployeeLeaveByManager/:manager_id', getEmployeeLeaveByManagerId);
+router.get('/EmployeeLeaveByEmployee/:employee_id', getEmployeeLeaveByEmployeeId);
  module.exports = router;
