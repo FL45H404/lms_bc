@@ -5,11 +5,13 @@ const mysql = require('mysql');
 //console.log(process.env.DATABASE_URL+"dburl");
 // const db = new Pool({
 //connectionString: 'postgres://isvfxhjtvulgxc:21c91a20eeab3d0f830a27a94393d2ba07d8d80d67304df45322e1b9266520ca@ec2-174-129-199-54.compute-1.amazonaws.com:5432/ddkmpapq4co4ko',
-var db = mysql.createConnection({
-user: 'mca',
+var db = mysql.createPool({
+  connectionLimit:10,
+  user: 'mca',
   host: 'mcadb.cm47ztrqmu4p.ap-south-1.rds.amazonaws.com',
   database: 'HRLMS',
   password: 'mcafinch',
+  debug:false,
 
 ssl: {
     rejectUnauthorized: false
@@ -30,7 +32,7 @@ ssl: {
 //var connection="postgres://isvfxhjtvulgxc:21c91a20eeab3d0f830a27a94393d2ba07d8d80d67304df45322e1b9266520ca@ec2-174-129-199-54.compute-1.amazonaws.com:5432/ddkmpapq4co4ko";
 //var db=new pg.Client(connection);
 //var db=pg.connect();
-db.connect((err) => {
+db.getConnection((err) => {
     if (err) {
         console.log(err)
     } else {
