@@ -88,7 +88,7 @@ Version: V.01
 ************************************************************************************************************/   
 exports.getEmployeePromotion = async (req, res) => {
     try{
-        await db.query('SELECT empPromotion.promotion_id, empPromotion.employee_id,empProf.employee_fname, empPromotion.designation_id, desig.designation_name, empPromotion.effective_promotion_date, empPromotion.compensation_percentage'
+        await db.query('SELECT empPromotion.promotion_id, empPromotion.employee_id,empProf.employee_fname, empPromotion.designation_id, desig.designation_name,desig.level, empPromotion.effective_promotion_date, empPromotion.compensation_percentage'
         +' FROM employee_promotion empPromotion, employee_master empProf, designation desig'
         +' WHERE empPromotion.employee_id = empProf.employee_id AND empPromotion.designation_id = desig.designation_id ORDER BY empPromotion.promotion_id DESC',(err,result)=>{
             if (err) throw err;
