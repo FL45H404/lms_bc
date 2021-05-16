@@ -38,18 +38,27 @@ const holidayMasterRoute = require('./routes/holidayMaster');
 const employeeleaveRoute=require('./routes/employeeLeave');
 const loginroute=require('./routes/loginMaster');
 
-var corsoption={
-origin:'https://hrlms.herokuapp.com',
-optionsSuccessStatus:200,
-methods:"GET,PUT,POST,DELETE"
-}
+// var corsoption={
+// origin:'https://hrlms.herokuapp.com',
+// optionsSuccessStatus:200,
+// methods:"GET,PUT,POST,DELETE"
+// }
 
-app.use(cors(corsoption));
+// app.use(cors(corsoption));
+// app.use((req, res, next) => {
+//     res.setHeader("Access-Control-Allow-Origin", "*");
+//     res.setHeader('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
+//     res.setHeader('Access-Control-Allow-Headers','Content-Type');
+//     next();
+// });
+
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
-    res.setHeader('Access-Control-Allow-Headers','Content-Type');
-    next();
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
 });
 app.use("/",employeeleaveRoute);
 //app.use("/", LeaveRoute);
