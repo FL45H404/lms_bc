@@ -28,30 +28,6 @@ exports.getEmployeeLeave = async (req, res) => {
         })
     }
 
-    // db.query('SELECT distinct dept.department_id,dept.department_name, dept.department_code,dept.department_head,emp.employee_name, '
-    //         +' dept.department_type,dept.department_location '
-    //         +' FROM department_master dept, employee_master emp,company_master cmp '
-    //         +' WHERE dept.department_head = emp.employee_id')
-    // var sql="SELECT * FROM department_master";
-    // db.query(sql ,(err,result)=>{
-    //     if(err){
-    //         console.log(err);
-    //         result(null,err);
-    //         return;
-    //     }
-    //     console.log(result);
-    //     res.status(httpCodes.OK).json(result);
-    // })
-
-    //         .then((result) => {
-    //             console.log(result.rows)  
-    //             res.status(httpCodes.OK).json(result.rows);
-    //           }).catch(err => {
-    //     res.status(httpCodes.InternalServerError).json({
-    //         error_message: "could not get all departments",
-    //         error: err
-    //     })
-    // })
 }
 /************************************************************************************************************ 
 Method Type: getDepartmentMasterById
@@ -164,13 +140,7 @@ exports.updateEmployeeLeaveById = async (req, res) => {
         console.log(err.message)
         res.status(httpCodes.InternalServerError).json(err.message)
     }
-    // .then(result =>{
-    //     res.status(httpCodes.Created).json({message:"Department record updated Successfully"})
-    // })
-    // .catch(err =>{
-    //     console.log(err.message)
-    //     res.status(httpCodes.InternalServerError).json(err.message)
-    // })
+   
 }
 
 
@@ -245,7 +215,7 @@ exports.deleteEmployeeLeaveById = async (req, res) => {
 exports.getEmployeeLeaveByManagerId = async (req, res) => {
     try {
         let data = [req.params.manager_id];
-        let sql = "SELECT employee_id, date_of_applied, number_of_leaves, from_date, to_date, comments, status, created_date, updated_date FROM employeeleave where manager_id=?";
+        let sql = "SELECT employee_leave_id,employee_id, date_of_applied, number_of_leaves, from_date, to_date, comments, status, created_date, updated_date FROM employeeleave where manager_id=?";
         await db.query(sql, data, (err, result) => {
             console.log(result)
             return res.status(httpCodes.OK).json(result)
@@ -257,22 +227,24 @@ exports.getEmployeeLeaveByManagerId = async (req, res) => {
             message: err.message
         })
     }
-
-    // .then((result) => {            
-    //     if (result == null) {
-    //         res
-    //             .status(httpCodes.BadRequest)
-    //             .json({ message: "Department does not exists" });
-    //     } else {
-    //         res.status(httpCodes.OK).json(result.rows);
-    //     }
-    // })
-    // .catch((err) => {
-    //     console.log(err.message);
-    //     res.status(httpCodes.InternalServerError).json(err.message);
-    // });
 };
 
+exports.getEmployeeLeaveByEmployeeId = async (req, res) => {
+    try {
+        let data = [req.params.employee_id];
+        let sql = "SELECT employee_leave_id, employee_id, manager_id, date_of_applied, number_of_leaves, from_date, to_date, comments, status, created_date, updated_date FROM employeeleave where employee_id=?";
+        await db.query(sql, data, (err, result) => {
+            console.log(result)
+            return res.status(httpCodes.OK).json(result)
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(httpCodes.InternalServerError).json({
+            success: false,
+            message: err.message
+        })
+    }
+};
 
 
 
