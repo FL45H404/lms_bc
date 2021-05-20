@@ -5,7 +5,7 @@ const db = require('../db');
 exports.addcompanyBranch = async (req, res) => {
   try {
     var branchid;
-    db.query("select * from company_branch ORDER BY branch_id DESC", (err, result) => {
+    db.query("select * from company_branch ORDER BY created_date DESC LIMIT 1", (err, result) => {
       if (result.length > 0 && result[0].branch_id != null) {
         let lastId = (result[0].branch_id);
         let id = (lastId.match(/(\d+)/));
@@ -179,7 +179,7 @@ exports.updatecompanyBranchById = async (req, res) => {
       req.body.email,
       req.body.alternative_email,
       req.body.status,
-      req.body.created_by,
+      "neel",
       updated_date,
       branchId];
     var updateQuery = 'UPDATE company_branch SET company_id=?, branch_name=?, branch_code=?, branch_address1=?, branch_address2=?, branch_address3=?, city=?, state=?, '

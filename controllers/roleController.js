@@ -49,7 +49,7 @@ Version: V.01
 exports.addRole = async (req, res) => {
 try{
     var roleid;
-    db.query("select * from role_master ORDER BY role_id DESC",(err,result)=>{
+    db.query("select * from role_master ORDER BY created_date DESC LIMIT 1",(err,result)=>{
         if(result.length>0 && result[0].role_id!=null){
             let lastId=(result[0].role_id);
             let id=(lastId.match(/(\d+)/));

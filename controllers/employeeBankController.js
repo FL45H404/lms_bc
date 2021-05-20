@@ -35,7 +35,7 @@ Version: V.01
 exports.addemployeeBank = async (req, res) => {
     try {
         var bank_detailsid;
-        db.query("select * from employee_bank_details ORDER BY bank_details_id DESC", (err, result) => {
+        db.query("select * from employee_bank_details ORDER BY created_date DESC LIMIT 1", (err, result) => {
             if (result.length > 0 && result[0].bank_details_id != null) {
                 let lastId = (result[0].bank_details_id);
                 let id = (lastId.match(/(\d+)/));
@@ -53,9 +53,10 @@ exports.addemployeeBank = async (req, res) => {
                 req.body.bank_name,
                 req.body.bank_address, 
                 req.body.bank_account_status, 
-                req.body.bank_micr_code
+                req.body.bank_micr_code,
+                new Date()
                 ]
-                var insertQuery = 'INSERT INTO employee_bank_details(bank_details_id, employee_id, bank_account_number, bank_ifsc, bank_upi, bank_name,bank_address, bank_account_status, bank_micr_code) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)';
+                var insertQuery = 'INSERT INTO employee_bank_details(bank_details_id, employee_id, bank_account_number, bank_ifsc, bank_upi, bank_name,bank_address, bank_account_status, bank_micr_code,created_date) VALUES (?,?,?, ?, ?, ?, ?, ?, ?, ?)';
             db.query(insertQuery, data, (err, result) => {
                 if (err) return res.send(err);
                 console.log(data)
@@ -100,9 +101,7 @@ Version: V.01
 ************************************************************************************************************/   
 exports.getemployeeBank =  async (req, res) => {
     try{
-       await db.query('SELECT empBank.employee_id, empBank.bank_details_id, empBank.bank_account_number, empBank.bank_ifsc, empBank.bank_upi, empBank.bank_name, '
-        + ' empBank.bank_address, empBank.bank_account_status, empBank.bank_micr_code '
-        + ' FROM employee_bank_details empBank, employee_master empProf WHERE empBank.employee_id = empProf.employee_id ORDER empBank.bank_details_id DESC ',(err,result)=>{
+       await db.query('SELECT empBank.employee_id, empBank.bank_details_id, empBank.bank_account_number, empBank.bank_ifsc, empBank.bank_upi, empBank.bank_name,  empBank.bank_address, empBank.bank_account_status, empBank.bank_micr_code  FROM employee_bank_details empBank, employee_master empProf WHERE empBank.employee_id = empProf.employee_id ORDER BY empBank.bank_details_id DESC ',(err,result)=>{
             if (err) return res.send(err);
                     console.log(result)
                     res.status(httpCodes.Created).json(result)

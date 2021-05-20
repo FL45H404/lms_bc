@@ -9,36 +9,15 @@ Created By and Date: Santoshkumar 12-NOV-2020
 Modified By and Date:
 Version: V.01
 ************************************************************************************************************/
-exports.addemployeeAddress = async (req, res) => {
-    try {
-        const data = [req.body.employee_id, req.body.address_type, req.body.address_status, req.body.address_line1, req.body.address_line2,
-        req.body.address_line3, req.body.city, req.body.state, req.body.country, req.body.pincode];
-        var insertQuery = 'INSERT INTO employee_address(employee_id, address_type, address_status, address_line1, address_line2, address_line3, city, state, country, pincode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        await db.query(insertQuery, data, (err, result) => {
-            if (err) return res.send(err);
-            res.status(httpCodes.Created).json({ message: "Employee Address record added Successfully" })
-        })
-    } catch (err) {
-        console.log(err.message)
-        res.status(httpCodes.InternalServerError).json(err.message)
-    }
-
-    // .then(result =>{
-    //     res.status(httpCodes.Created).json({message:"Employee Address record added Successfully"})
-    // })
-    // .catch(err =>{
-    //     console.log(err.message)
-    //     res.status(httpCodes.InternalServerError).json(err.message)
-    // })
-}
 
 
 exports.addemployeeAddress = async (req, res) => {
     try {
         var employee_addressid;
-        db.query("select * from employee_address ORDER BY employee_address_id DESC", (err, result) => {
+        db.query("select * from employee_address ORDER BY created_date DESC LIMIT 1", (err, result) => {
             if (result.length > 0 && result[0].employee_address_id != null) {
                 let lastId = (result[0].employee_address_id);
+                console.log(lastId)
                 let id = (lastId.match(/(\d+)/));
                 let intid = parseInt(id) + 1;
                 employee_addressid = 'EAD000000' + intid;
@@ -56,9 +35,10 @@ exports.addemployeeAddress = async (req, res) => {
                 req.body.city, 
                 req.body.state, 
                 req.body.country, 
-                req.body.pincode
+                req.body.pincode,
+                new Date()
                 ]
-                var insertQuery = 'INSERT INTO employee_address(employee_address_id, employee_id, address_type, address_status, address_line1, address_line2, address_line3, city, state, country, pincode) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                var insertQuery = 'INSERT INTO employee_address(employee_address_id, employee_id, address_type, address_status, address_line1, address_line2, address_line3, city, state, country, pincode,created_date) VALUES (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             db.query(insertQuery, data, (err, result) => {
                 if (err) return res.send(err);
                 console.log(data)

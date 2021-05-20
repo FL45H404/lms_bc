@@ -12,7 +12,7 @@ const router = express.Router();
 exports.addloginMaster = async (req, res) => {
   try {
     var loginId;
-    db.query("select * from login ORDER BY login_id DESC", (err, result) => {
+    db.query("select * from login ORDER BY created_date DESC LIMIT 1", (err, result) => {
       if (result.length > 0 && result[0].role_id != null) {
         let lastId = (result[0].role_id);
         let id = (lastId.match(/(\d+)/));

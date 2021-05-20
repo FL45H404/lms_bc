@@ -38,7 +38,7 @@ const router = express.Router();
 exports.addHolidayMaster = async (req, res) => {
   try {
     var holidayid;
-    db.query("select * from holidaymaster ORDER BY holiday_id DESC", (err, result) => {
+    db.query("select * from holidaymaster ORDER BY created_date DESC LIMIT 1", (err, result) => {
       if (result.length > 0 && result[0].holiday_id != null) {
         let lastId = (result[0].holiday_id);
         let id = (lastId.match(/(\d+)/));

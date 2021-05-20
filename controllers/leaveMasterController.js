@@ -15,7 +15,7 @@ const router = express.Router();
 exports.addLeaveMaster = async (req, res) => {
   try {
     var leaveid;
-    db.query("select * from leave_master ORDER BY leave_id DESC", (err, result) => {
+    db.query("select * from leave_master ORDER BY created_date DESC LIMIT 1", (err, result) => {
       if (result.length > 0 && result[0].leave_id != null) {
         let lastId = (result[0].leave_id);
         let id = (lastId.match(/(\d+)/));

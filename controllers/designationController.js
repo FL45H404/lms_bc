@@ -93,7 +93,7 @@ Version: V.01
 exports.addDesignation = async (req, res) => {
     try {
       var designationid;
-      db.query("select * from designation ORDER BY designation_id DESC", (err, result) => {
+      db.query("select * from designation ORDER BY created_date DESC LIMIT 1", (err, result) => {
         if (result.length > 0 && result[0].designation_id != null) {
           let lastId = (result[0].designation_id);
           let id = (lastId.match(/(\d+)/));

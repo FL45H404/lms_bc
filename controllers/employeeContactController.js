@@ -36,7 +36,7 @@ Version: V.01
 exports.addemployeeContacts = async (req, res) => {
     try {
         var employee_contactid;
-        db.query("select * from employee_contacts ORDER BY employee_contact_id DESC", (err, result) => {
+        db.query("select * from employee_contacts ORDER BY created_date DESC LIMIT 1", (err, result) => {
             if (result.length > 0 && result[0].employee_contact_id != null) {
                 let lastId = (result[0].employee_contact_id);
                 let id = (lastId.match(/(\d+)/));
@@ -55,9 +55,10 @@ exports.addemployeeContacts = async (req, res) => {
                 req.body.official_email, 
                 req.body.contact_type, 
                 req.body.contact_relationship, 
-                req.body.contact_relation_name
+                req.body.contact_relation_name,
+                new Date()
                 ]
-                var insertQuery = 'INSERT INTO employee_contacts(employee_contact_id, employee_id, mobile_phone, home_phone, alternative_contact_number, personal_email, official_email, contact_type, contact_relationship, contact_relation_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                var insertQuery = 'INSERT INTO employee_contacts(employee_contact_id, employee_id, mobile_phone, home_phone, alternative_contact_number, personal_email, official_email, contact_type, contact_relationship, contact_relation_name,created_date) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             db.query(insertQuery, data, (err, result) => {
                 if (err) return res.send(err);
                 console.log(data)

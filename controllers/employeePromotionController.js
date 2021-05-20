@@ -30,7 +30,7 @@ Version: V.01
 exports.addEmployeePromotion = async (req, res) => {
     try {
         var promotionid;
-        db.query("select * from employee_promotion ORDER BY promotion_id DESC", (err, result) => {
+        db.query("select * from employee_promotion ORDER BY created_date DESC LIMIT 1", (err, result) => {
             if (result.length > 0 && result[0].promotion_id != null) {
                 let lastId = (result[0].promotion_id);
                 let id = (lastId.match(/(\d+)/));
@@ -44,9 +44,10 @@ exports.addEmployeePromotion = async (req, res) => {
                 req.body.employee_id,
                 req.body.designation_id, 
                 req.body.effective_promotion_date, 
-                req.body.compensation_percentage
+                req.body.compensation_percentage,
+                new Date()
                 ]
-                var insertQuery = 'INSERT INTO employee_promotion(promotion_id, employee_id, designation_id, effective_promotion_date, compensation_percentage) VALUES (?, ?,?,?,?)';
+                var insertQuery = 'INSERT INTO employee_promotion(promotion_id, employee_id, designation_id, effective_promotion_date, compensation_percentage,created_date) VALUES (?,?, ?,?,?,?)';
             db.query(insertQuery, data, (err, result) => {
                 if (err) return res.send(err);
                 console.log(data)

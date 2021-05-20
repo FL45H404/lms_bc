@@ -129,8 +129,8 @@ Version: V.01
 
 exports.addDepartmentMaster = async (req, res) => {
     try {
-      var holidayid;
-      db.query("select * from department_master ORDER BY department_id DESC", (err, result) => {
+      var departmentid;
+      db.query("select * from department_master ORDER BY created_date DESC LIMIT 1", (err, result) => {
         if (result.length > 0 && result[0].department_id != null) {
           let lastId = (result[0].department_id);
           let id = (lastId.match(/(\d+)/));

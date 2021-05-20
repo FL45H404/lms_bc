@@ -19,7 +19,7 @@ Version: V.01
 exports.addemployeeMaster = async (req, res) => {
   try {
     var employeeid;
-    db.query("select * from employee_master ORDER BY employee_id DESC", (err, result) => {
+    db.query("select * from employee_master ORDER BY created_date DESC LIMIT 1", (err, result) => {
       if (result.length > 0 && result[0].employee_id != null) {
         let lastId = (result[0].employee_id);
         let id = (lastId.match(/(\d+)/));

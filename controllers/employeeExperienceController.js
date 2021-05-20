@@ -26,7 +26,7 @@ Version: V.01
 exports.addemployeeExperience = async (req, res) => {
     try {
         var employee_experienceid;
-        db.query("select * from employee_experience ORDER BY employee_experience_id DESC", (err, result) => {
+        db.query("select * from employee_experience ORDER BY created_date DESC LIMIT 1", (err, result) => {
             if (result.length > 0 && result[0].employee_experience_id != null) {
                 let lastId = (result[0].employee_experience_id);
                 let id = (lastId.match(/(\d+)/));
@@ -42,9 +42,10 @@ exports.addemployeeExperience = async (req, res) => {
                 req.body.previous_company_designation, 
                 req.body.previous_experience_start_date, 
                 req.body.previous_experience_end_date,
-                req.body.remarks
+                req.body.remarks,
+                new Date()
                 ]
-                var insertQuery = 'INSERT INTO employee_experience(employee_experience_id, employee_id, previous_company_name, previous_company_designation, previous_experience_start_date, previous_experience_end_date,remarks) VALUES (?, ?, ?, ?, ?, ?,?)';
+                var insertQuery = 'INSERT INTO employee_experience(employee_experience_id, employee_id, previous_company_name, previous_company_designation, previous_experience_start_date, previous_experience_end_date,remarks,created_date) VALUES (?,?, ?, ?, ?, ?, ?,?)';
             db.query(insertQuery, data, (err, result) => {
                 if (err) return res.send(err);
                 console.log(data)
