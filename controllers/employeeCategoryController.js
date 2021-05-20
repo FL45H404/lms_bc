@@ -41,7 +41,7 @@ Version: V.01
 ************************************************************************************************************/   
 exports.getemployeeCategory = async (req, res) => {
     try{
-    await db.query('SELECT * FROM employee_category',(err,result)=>{
+    await db.query('SELECT * FROM employee_category ORDER BY created_date DESC',(err,result)=>{
 if (err) return res.send(err);
             res.status(httpCodes.OK).json(result);
         })

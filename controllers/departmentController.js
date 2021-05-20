@@ -15,7 +15,7 @@ exports.getDepartments = async (req, res) => {
    //let query = deptDao.getgetDepartmentDao;
    //console.log(query);
    try{
-    var sql="SELECT * FROM department";
+    var sql="SELECT * FROM department ORDER BY created_date DESC";
 await db.query(sql,(err,result)=>{
 
     console.log(result)

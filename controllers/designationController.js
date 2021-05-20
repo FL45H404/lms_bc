@@ -11,7 +11,7 @@ Version: V.01
 ************************************************************************************************************/ 
 exports.getDesignation = async (req, res) => {
     try{
-        await db.query('SELECT * FROM designation ORDER BY designation_id DESC',(err,result)=>{
+        await db.query('SELECT * FROM designation ORDER BY created_date DESC',(err,result)=>{
             if (err) return res.send(err);
             console.log(result)
             return res.status(httpCodes.OK).json(result);

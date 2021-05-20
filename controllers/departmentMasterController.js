@@ -13,7 +13,7 @@ Version: V.01
 ************************************************************************************************************/ 
 exports.getDepartmentMaster =  async (req, res) => {
     try{
-        var sql="SELECT * FROM department_master ORDER BY department_id DESC";
+        var sql="SELECT * FROM department_master ORDER BY created_date DESC";
     await db.query(sql,(err,result)=>{
 
         console.log(result)

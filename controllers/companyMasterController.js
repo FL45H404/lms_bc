@@ -135,7 +135,7 @@ Version: V.01
 
 exports.getcompanyMaster = async (req, res) => {
     try {
-      var sql = "SELECT * FROM company_master";
+      var sql = "SELECT * FROM company_master ORDER BY created_date DESC";
       await db.query(sql, (err, result) => {
         console.log(result)
         return res.status(200).json(result)

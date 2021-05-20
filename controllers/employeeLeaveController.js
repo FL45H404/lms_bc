@@ -13,7 +13,7 @@ Version: V.01
 ************************************************************************************************************/
 exports.getEmployeeLeave = async (req, res) => {
     try {
-        var sql = "SELECT * FROM employeeleave ORDER BY employee_leave_id DESC";
+        var sql = "SELECT * FROM employeeleave ORDER BY created_date DESC";
         await db.query(sql, (err, result) => {
             if (err) return res.send(err);
             console.log(result)
