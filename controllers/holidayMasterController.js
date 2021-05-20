@@ -51,7 +51,7 @@ exports.addHolidayMaster = async (req, res) => {
       var data = [holidayid, req.body.holiday_name, req.body.date, req.body.comments, new Date()]
       var insertQuery = 'INSERT INTO holidaymaster(holiday_id,holiday_name,date, comments, created_date) VALUES (?,?,?,?,?)';
       db.query(insertQuery, data, (err, result) => {
-        if (err) throw err;
+        if (err) return res.send(err);
         console.log(data)
         res.status(httpCodes.Created).json({ message: "Holiday record added Successfully" })
       })
@@ -142,7 +142,7 @@ exports.updateHolidayDataByHolidayId = async (req, res) => {
 
     var updateQuery = "UPDATE holidaymaster SET holiday_name=?, date=?, comments=?, updated_date=? WHERE holiday_id=?";
     await db.query(updateQuery, data, (err, result) => {
-      if (err) throw err;
+      if (err) return res.send(err);
       res.status(httpCodes.Created).json({ message: "holiday record updated Successfully" })
     })
   } catch (err) {

@@ -12,13 +12,10 @@ Version: V.01
 exports.getDesignation = async (req, res) => {
     try{
         await db.query('SELECT * FROM designation ORDER BY designation_id DESC',(err,result)=>{
-console.log(result)
-            res.status(httpCodes.OK).json(result);
+            if (err) return res.send(err);
+            console.log(result)
+            return res.status(httpCodes.OK).json(result);
         })
-        
-        
-        // .then(allConditions => {
-        //     res.status(httpCodes.OK).json(allConditions.rows);
             
         }catch(err){
             res.status(httpCodes.InternalServerError).json({
@@ -113,7 +110,7 @@ exports.addDesignation = async (req, res) => {
          new Date()]
          var insertQuery = 'INSERT INTO designation(designation_id, designation_name,level ,created_by, created_date) VALUES (?,?,?,?,?)';
         db.query(insertQuery, data, (err, result) => {
-          if (err) throw err;
+            if (err) return res.send(err);
           console.log(data)
           res.status(httpCodes.Created).json({ message: "Designation record added Successfully" })
         })
@@ -150,6 +147,7 @@ exports.updateDesignationById = async (req,res) =>{
         designationId]
         var updateQuery = 'UPDATE designation SET designation_name=?,level=?, updated_by=?, created_date=? WHERE designation_id=?';
         await db.query(updateQuery, data,(err,result)=>{
+            if (err) return res.send(err);
             console.log("Designation record updated Successfully for id "+designationId)
             res.status(httpCodes.Created).json({message:"Designation record updated Successfully for id "+designationId})  
         })

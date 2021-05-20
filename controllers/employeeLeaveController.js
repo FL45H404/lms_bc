@@ -15,7 +15,7 @@ exports.getEmployeeLeave = async (req, res) => {
     try {
         var sql = "SELECT * FROM employeeleave ORDER BY employee_leave_id DESC";
         await db.query(sql, (err, result) => {
-
+            if (err) return res.send(err);
             console.log(result)
             return res.status(httpCodes.OK).json(result)
         });
@@ -42,6 +42,7 @@ exports.getEmployeeLeaveById = async (req, res) => {
         let data = [req.params.employee_leave_id];
         let sql = "SELECT * FROM employeeleave where employee_leave_id=?";
         await db.query(sql, data, (err, result) => {
+            if (err) return res.send(err);
             console.log(result)
             return res.status(httpCodes.OK).json(result)
         })
@@ -93,7 +94,7 @@ exports.addEmployeeLeave = async (req, res) => {
         ]
         var insertQuery = "INSERT INTO employeeleave (employee_id, manager_id, date_of_applied, number_of_leaves, from_date, to_date, comments, status, created_date) VALUES (?,?,?,?,?,?,?,?,?)";
         await db.query(insertQuery, data, (err, result) => {
-            console.log(err)
+            if (err) return res.send(err);
             console.log("Employee leave record added Successfully")
             res.status(httpCodes.Created).json({ message: "Employee leave record added Successfully" })
       
@@ -133,6 +134,7 @@ exports.updateEmployeeLeaveById = async (req, res) => {
         console.log(data)
         var updateQuery = "UPDATE employeeleave SET employee_id=? , manager_id=?, date_of_applied=?, number_of_leaves=?, from_date=?, to_date=?, comments=?, status=?, updated_date=? WHERE employee_leave_id=?";
         await db.query(updateQuery, data, (err, result) => {
+            if (err) return res.send(err);
             console.log(result)
             return res.status(httpCodes.OK).json('Rows affected: ' + result.affectedRows);
         })
@@ -148,7 +150,7 @@ exports.updateEmployeeLeaveById = async (req, res) => {
 //     try {
 //         var department_code;
 //         await db.query('SELECT department_code FROM department_master ORDER BY department_id  DESC', (err, result) => {
-//             if (err) throw err;
+//             if (err) return res.send(err);
 //             if (result.length > 0 && result[0].department_code != null) {
 //                 let lastId = parseInt(result[0].department_code);
 //                 department_code = lastId + 1;

@@ -13,7 +13,7 @@ Version: V.01
 //     try{
 //         var insertQuery = 'INSERT INTO employee_experience(employee_id, previous_company_name, previous_company_designation, previous_experience_start_date, previous_experience_end_date,remarks) VALUES (?, ?, ?, ?, ?,?)';
 //         await db.query(insertQuery, [req.body.employee_id, req.body.previous_company_name, req.body.previous_company_designation, req.body.previous_experience_start_date, req.body.previous_experience_end_date,req.body.remarks],(err,result)=>{
-//             if (err) throw err;
+//             if (err) return res.send(err);
 //             res.status(httpCodes.Created).json({message:"Employee Experience record added Successfully"})    
 //         })
 //     }catch(err){
@@ -46,7 +46,7 @@ exports.addemployeeExperience = async (req, res) => {
                 ]
                 var insertQuery = 'INSERT INTO employee_experience(employee_experience_id, employee_id, previous_company_name, previous_company_designation, previous_experience_start_date, previous_experience_end_date,remarks) VALUES (?, ?, ?, ?, ?, ?,?)';
             db.query(insertQuery, data, (err, result) => {
-                if (err) throw err;
+                if (err) return res.send(err);
                 console.log(data)
                 res.status(httpCodes.Created).json({ message: "Employee Bank Details record added Successfully" })
             })
@@ -74,7 +74,7 @@ exports.getemployeeExperience = async (req, res) => {
     try{
         var sql='SELECT empExper.employee_experience_id,empProf.employee_fname, empExper.employee_id, empExper.previous_company_name, empExper.previous_company_designation, empExper.previous_experience_start_date, empExper.previous_experience_end_date,empExper.remarks FROM employee_experience empExper, employee_master empProf WHERE empExper.employee_id = empProf.employee_id';
         await db.query(sql,(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             console.log(result)
             res.status(httpCodes.OK).json(result);
         })
@@ -102,7 +102,7 @@ exports.getemployeeExperienceById = async (req, res) => {
         +' FROM employee_experience empExper, employee_master empProf WHERE empExper.employee_id = empProf.employee_id' 	
         +' AND empExper.employee_experience_id = ?';
         await db.query(sql, [employee_experienceId],(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             if (result == null) {
                 res
                     .status(httpCodes.BadRequest)
@@ -140,7 +140,7 @@ exports.updateemployeeExperienceById =async(req,res) =>{
     
         var updateQuery = 'UPDATE employee_experience SET employee_id=?, previous_company_name=?, previous_company_designation=?, previous_experience_start_date=?, previous_experience_end_date=? ,remarks=? WHERE employee_experience_id=?';
         await db.query(updateQuery, data,(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             res.status(httpCodes.Created).json({message:"Employee Experience record updated Successfully"})
         })
     }catch(err){
@@ -155,7 +155,7 @@ exports.deleteemployeeExperienceById =async (req,res) =>{
         empId]
         var deleteQuery = 'DELETE FROM employee_experience WHERE employee_experience_id=?';
         await db.query(deleteQuery, data,(err,result)=>{
-          if (err) throw err;
+          if (err) return res.send(err);
             console.log("employee experience deleted succesfully");
             res.status(httpCodes.Created).json({message:"Employee experience record deleted Successfully"})
         })

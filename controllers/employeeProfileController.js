@@ -48,7 +48,7 @@ Version: V.01
 
       var data = [req.params.employee_id];
           await db.query('SELECT * FROM employee_master where employee_id=?',data,(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             console.log(result)
             res.status(httpCodes.OK).json(result)        
          })
@@ -126,7 +126,7 @@ exports.addEmployeeProfile =  async (req, res) =>{
           ]
           var sql='INSERT INTO employee_master (employee_id,employee_name, role_id, department_id, designation_id, reporting_manager_id, company_id, date_of_birth, gender, joining_date, nationality, emp_photo, marital_status, blood_group, employee_status, base_location, hr_point_of_contact_id, employee_category_id, aadhar_card_number, pan_card_number, passport_number, passport_issued_date, passport_expiry_date, created_date, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)';
                       await db.query(sql,data,(err,result)=>{
-                        if (err) throw err;
+                        if (err) return res.send(err);
                         console.log("added succesfully")
                         res.status(httpCodes.OK).json({message: 'Added Successfully'})
                     })
@@ -185,7 +185,7 @@ Version: V.01
     ]
     var sql='UPDATE employee_master SET employee_name=? ,role_id=? ,department_id=?, designation_id=?, reporting_manager_id=?, company_id=?, date_of_birth=?, gender=?, joining_date=?, nationality=?, emp_photo=?, marital_status=?, blood_group=?, employee_status=?, base_location=?, hr_point_of_contact_id=?, employee_category_id=?, aadhar_card_number=?, pan_card_number=?, passport_number=?, passport_issued_date=?, passport_expiry_date=?, created_date=?, created_by=? where employee_id=?';
                  await db.query(sql,data,(err,result)=>{
-                   if (err) throw err;
+                   if (err) return res.send(err);
                    res.status(httpCodes.OK).json({
                     message: 'updated Successfully'
                   })
@@ -224,7 +224,7 @@ Version: V.01
           EmployeeId
       ]
       await db.query('UPDATE employee_master SET employee_status=? where employee_id = ?',data,(err,result)=>{
-        if (err) throw err;
+        if (err) return res.send(err);
         console.log(result)
         res.status(httpCodes.OK).json(result)
       })
@@ -264,7 +264,7 @@ exports.getemployeeProfile = async (req, res) => {
     +' AND empProf.employee_category_id = empCateg.employee_category_id ';
     //+' AND empProf.employee_status="Active" ';
     db.query(sql,(err,result)=>{
-      if (err) throw err;
+      if (err) return res.send(err);
       console.log(result);
       res.status(httpCodes.OK).json(result);
     })

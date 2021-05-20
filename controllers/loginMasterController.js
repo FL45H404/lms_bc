@@ -103,7 +103,7 @@ exports.updateloginDataByloginId = async (req, res) => {
 
     var updateQuery = "UPDATE login SET user_id=?, user_name=?, password=md5(?), role=?, updated_date=? WHERE login_id=?";
     await db.query(updateQuery, data, (err, result) => {
-      if (err) throw err;
+      if (err) return res.send(err);
       return res.status(httpCodes.Created).json({ message: "Login record updated Successfully" })
     })
   } catch (err) {

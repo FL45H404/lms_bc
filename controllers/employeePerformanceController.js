@@ -105,7 +105,7 @@ exports.deleteEmployeePerformanceById =async (req,res) =>{
         empId]
         var deleteQuery = 'DELETE FROM employee_experience WHERE employee_performance_id=?';
         await db.query(deleteQuery, data,(err,result)=>{
-          if (err) throw err;
+          if (err) return res.send(err);
             console.log("employee performance record deleted succesfully");
             res.status(httpCodes.Created).json({message:"Employee performance record record deleted Successfully"})
         })

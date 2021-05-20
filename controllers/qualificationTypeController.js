@@ -13,7 +13,7 @@ exports.addQualificationType =async (req,res) =>{
     try{
         var insertQuery = 'INSERT INTO qualification_type(qualification_type, created_by, created_date) VALUES (?,?,?)';
         await db.query(insertQuery, [req.body.qualification_type, req.body.created_by, new Date()],(err,data)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             res.status(httpCodes.Created).json({message:"Qualification Type record added Successfully"})
         })
     }catch(err){
@@ -32,7 +32,7 @@ Version: V.01
 exports.getQualificationType = async (req, res) => {
     try{
         await db.query('SELECT * FROM qualification_type',(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             res.status(httpCodes.OK).json(result);
         })
     }catch(err){
@@ -55,7 +55,7 @@ exports.getQualificationTypeById =async (req, res) => {
         let qualificationTypeId = req.params.qualification_type_id;  
         let sql = "SELECT * FROM qualification_type where qualification_type_id=?";
         await db.query(sql, [qualificationTypeId],(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             if (result == null) {
                 res
                     .status(httpCodes.BadRequest)
@@ -89,7 +89,7 @@ exports.updateQualificationTypeById =async (req,res) =>{
     
         var updateQuery = 'UPDATE qualification_type SET qualification_type=?, created_by=?, updated_date=? WHERE qualification_type_id=?';
         await db.query(updateQuery, data,(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             res.status(httpCodes.Created).json({message:"Qualification Type record updated Successfully"})
         })
     }catch(err){
@@ -108,7 +108,7 @@ Version: V.01
 exports.getAllQualifications = async (req, res) => {
     try{
         await db.query('SELECT * FROM qualification_master',(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             console.log(result)
             res.status(httpCodes.OK).json(result);
         })

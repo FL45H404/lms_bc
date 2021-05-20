@@ -15,7 +15,7 @@ Version: V.01
 //             req.body.bank_address, req.body.bank_account_status, req.body.bank_micr_code]
 //         var insertQuery = 'INSERT INTO employee_bank_details(employee_id, bank_account_number, bank_ifsc, bank_upi, bank_name,bank_address, bank_account_status, bank_micr_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
 //         await db.query(insertQuery, data,(err,result)=>{
-//                     if (err) throw err;
+//                     if (err) return res.send(err);
 //                     console.log(result)
 //                     res.status(httpCodes.Created).json({message:"Employee Bank record added Successfully"})
 //                 })
@@ -57,7 +57,7 @@ exports.addemployeeBank = async (req, res) => {
                 ]
                 var insertQuery = 'INSERT INTO employee_bank_details(bank_details_id, employee_id, bank_account_number, bank_ifsc, bank_upi, bank_name,bank_address, bank_account_status, bank_micr_code) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)';
             db.query(insertQuery, data, (err, result) => {
-                if (err) throw err;
+                if (err) return res.send(err);
                 console.log(data)
                 res.status(httpCodes.Created).json({ message: "Employee Bank Details record added Successfully" })
             })
@@ -103,7 +103,7 @@ exports.getemployeeBank =  async (req, res) => {
        await db.query('SELECT empBank.employee_id, empBank.bank_details_id, empBank.bank_account_number, empBank.bank_ifsc, empBank.bank_upi, empBank.bank_name, '
         + ' empBank.bank_address, empBank.bank_account_status, empBank.bank_micr_code '
         + ' FROM employee_bank_details empBank, employee_master empProf WHERE empBank.employee_id = empProf.employee_id ORDER empBank.bank_details_id DESC ',(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
                     console.log(result)
                     res.status(httpCodes.Created).json(result)
         })
@@ -141,7 +141,7 @@ exports.getemployeeBankById = async(req, res) => {
         + ' FROM employee_bank_details empBank, employee_master empProf WHERE empBank.employee_id = empProf.employee_id ' 	
         + ' AND empBank.bank_details_id = ?';
         await db.query(sql, [bank_detailsId],(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             console.log(result)
             res.status(httpCodes.Created).json(result)
         })
@@ -194,7 +194,7 @@ exports.updateemployeeBankById = async (req,res) =>{
             bank_detailsId]
         var updateQuery = 'UPDATE employee_bank_details SET employee_id=?, bank_account_number=?, bank_ifsc=?, bank_upi=?, bank_name=?, bank_address=?, bank_account_status=?, bank_micr_code=? WHERE bank_details_id=?';
         db.query(updateQuery, data,(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             console.log("Employee bank details succesfully updated");
             res.status(httpCodes.Created).json({message:"Employee Bank record updated Successfully"})
         })
@@ -231,6 +231,7 @@ exports.deleteemployeeBankById =async (req,res) =>{
         Id]
         var deleteQuery = 'DELETE FROM employee_bank_details WHERE bank_details_id=?';
         await db.query(deleteQuery, data,(err,result)=>{
+            if (err) return res.send(err);
             console.log("Employee bank details deleted succesfully");
             res.status(httpCodes.Created).json({message:"Employee bank details record deleted Successfully"})
         })

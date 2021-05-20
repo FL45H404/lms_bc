@@ -98,7 +98,7 @@ router.delete('/companyMaster/:company_id', deletecompanyById);
       
 //     var insertQuery = "INSERT INTO company_master(company_id,company_name, company_registration_number, company_logo, company_registered_address1, company_registered_address2, company_registered_address3, city, state, pincode, country, gst_no, website, contact_no, alternative_contact_no, contact_person, tan, pan, email, alternative_email, company_type, industry, status, remarks, created_by,created_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 //     db.query(insertQuery,data,(err,result)=>{
-//       if (err) throw err;
+//       if (err) return res.send(err);
 //         console.log("Department record added Successfully")
 //         res.status(httpCodes.Created).json({message:"Company_master record added Successfully"})
         

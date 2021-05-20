@@ -13,7 +13,7 @@ Version: V.01
 //     try{
 //         var insertQuery = 'INSERT INTO employee_promotion(employee_id, designation_id, effective_promotion_date, compensation_percentage) VALUES (?,?,?,?)';
 //         await db.query(insertQuery, [req.body.employee_id,req.body.designation_id, req.body.effective_promotion_date, req.body.compensation_percentage],(err,result)=>{
-//             if (err) throw err;
+//             if (err) return res.send(err);
 //             res.status(httpCodes.Created).json({message:"Employee Promotion record added Successfully"})
 //         })
 //     }catch(err){
@@ -48,7 +48,7 @@ exports.addEmployeePromotion = async (req, res) => {
                 ]
                 var insertQuery = 'INSERT INTO employee_promotion(promotion_id, employee_id, designation_id, effective_promotion_date, compensation_percentage) VALUES (?, ?,?,?,?)';
             db.query(insertQuery, data, (err, result) => {
-                if (err) throw err;
+                if (err) return res.send(err);
                 console.log(data)
                 res.status(httpCodes.Created).json({ message: "Employee Promotion Details record added Successfully" })
             })
@@ -91,7 +91,8 @@ exports.getEmployeePromotion = async (req, res) => {
         await db.query('SELECT empPromotion.promotion_id, empPromotion.employee_id,empProf.employee_fname, empPromotion.designation_id, desig.designation_name,desig.level, empPromotion.effective_promotion_date, empPromotion.compensation_percentage'
         +' FROM employee_promotion empPromotion, employee_master empProf, designation desig'
         +' WHERE empPromotion.employee_id = empProf.employee_id AND empPromotion.designation_id = desig.designation_id ORDER BY empPromotion.promotion_id DESC',(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
+            
             console.log(result);
             res.status(httpCodes.OK).json(result);
         })
@@ -120,7 +121,7 @@ exports.getEmployeePromotionById = async (req, res) => {
         +' WHERE empPromotion.employee_id = empProf.employee_id AND empPromotion.designation_id = desig.designation_id ' 	
         +' AND empPromotion.promotion_id = ?';
         await db.query(sql, [employeePromotionId],(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             if (result == null) {
                 res
                     .status(httpCodes.BadRequest)
@@ -161,6 +162,7 @@ exports.updateEmployeePromotionById = async (req,res) =>{
     
         var updateQuery = 'UPDATE employee_promotion SET employee_id=?, designation_id=?, effective_promotion_date=?, compensation_percentage=? WHERE promotion_id=?';
         await db.query(updateQuery, data,(err,result)=>{
+            if (err) return res.send(err);
             res.status(httpCodes.Created).json({message:"Employee Promotion record updated Successfully"})
         })
     }catch(err){
@@ -176,7 +178,7 @@ exports.deleteEmployeePromotionById =async (req,res) =>{
         empId]
         var deleteQuery = 'DELETE FROM employee_promotion WHERE promotion_id=?';
         await db.query(deleteQuery, data,(err,result)=>{
-          if (err) throw err;
+          if (err) return res.send(err);
             console.log("employee promotion deleted succesfully");
             res.status(httpCodes.Created).json({message:"Employee promotion record deleted Successfully"})
         })

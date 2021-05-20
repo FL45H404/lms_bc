@@ -16,7 +16,7 @@ Version: V.01
 //         req.body.specialization, req.body.institute_name, req.body.university, req.body.grade]
 //         var insertQuery = 'INSERT INTO employee_qualification(employee_id, qualification_type_id, qualification_specialization_id, year_of_pass, specialization, institute_name, university, grade) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
 //         await db.query(insertQuery, data, (err, result) => {
-//             if (err) throw err;
+//             if (err) return res.send(err);
 //             console.log("Employee Qualification record added succesfully");
 //             res.status(httpCodes.Created).json({ message: "Employee Qualification record added Successfully" })
 //         })
@@ -56,7 +56,7 @@ exports.addQualification = async (req, res) => {
             ]
             var insertQuery = 'INSERT INTO employee_qualification(employee_qualification_id, employee_id, qualification_type_id, qualification_specialization_id, year_of_pass, specialization, institute_name, university, grade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
             db.query(insertQuery, data, (err, result) => {
-                if (err) throw err;
+                if (err) return res.send(err);
                 console.log(data)
                 res.status(httpCodes.Created).json({ message: "Employee Qualification Details record added Successfully" })
             })
@@ -88,7 +88,7 @@ exports.getQualification = async (req, res) => {
             + ' WHERE empQual.employee_id = empProf.employee_id '
             + ' AND empQual.qualification_type_id = qualType.qualification_type_id'
             + ' AND empQual.qualification_specialization_id = qualSpec.qualification_specialization_id', (err, result) => {
-                if (err) throw err;
+                if (err) return res.send(err);
                 console.log(result)
                 res.status(httpCodes.OK).json(result);
             })
@@ -132,7 +132,7 @@ exports.getQualificationById = async (req, res) => {
             + ' AND empQual.qualification_specialization_id = qualSpec.qualification_specialization_id '
             + ' AND empQual.employee_qualification_id = ?';
         await db.query(sql, [qualificationId], (err, result) => {
-            if (err) throw err;
+            if (err) return res.send(err);
             if (result == null) {
                 res
                     .status(httpCodes.BadRequest)
@@ -184,7 +184,7 @@ exports.updateQualificationById = async (req, res) => {
             employee_qualificationId]
         var updateQuery = 'UPDATE employee_qualification SET employee_id=?, qualification_type_id=?, qualification_specialization_id=?, year_of_pass=?, specialization=?, institute_name=?, university=?, grade=? WHERE employee_qualification_id=?';
         await db.query(updateQuery, data, (err, result) => {
-            if (err) throw err;
+            if (err) return res.send(err);
             console.log("Employee Qualification record updated Successfully")
             res.status(httpCodes.Created).json({ message: "Employee Qualification record updated Successfully" })
         })

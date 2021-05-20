@@ -93,6 +93,7 @@ exports.addDepartment =async (req,res) =>{
         const data= [req.body.department_name, 'vipul', new Date()]
         var insertQuery = 'INSERT INTO department(department_name, created_by, created_date) VALUES (?,?,?)'; 
         await db.query(insertQuery,data,(err,result)=>{
+            if (err) return res.send(err);
             console.log('Data created for id '+result.insertId)
             return res.status(httpCodes.OK).json('Data succesfully created for id '+result.insertId)
         })

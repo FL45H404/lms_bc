@@ -14,7 +14,7 @@ exports.addemployeeCategory = async (req,res) =>{
         const data=[req.body.employee_category_name, 'vipul', new Date()]
         var insertQuery = 'INSERT INTO employee_category(employee_category_name, created_by, created_date) VALUES (?,?,?)';
         await db.query(insertQuery, data,(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             res.status(httpCodes.Created).json({message:"Employee Category record added Successfully"})
         })
     }catch(err){
@@ -42,7 +42,7 @@ Version: V.01
 exports.getemployeeCategory = async (req, res) => {
     try{
     await db.query('SELECT * FROM employee_category',(err,result)=>{
-if (err) throw err;
+if (err) return res.send(err);
             res.status(httpCodes.OK).json(result);
         })
     }catch(err){
@@ -74,7 +74,7 @@ exports.getemployeeCategoryById = async (req, res) => {
         let employee_categoryId = req.params.employee_category_id;  
         let sql = "SELECT * FROM employee_category where employee_category_id=?";
         await db.query(sql, [employee_categoryId],(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             res.status(httpCodes.OK).json(result);
         })
     }catch(err){
@@ -115,7 +115,7 @@ exports.updateemployeeCategoryById =async (req,res) =>{
     
         var updateQuery = 'UPDATE employee_category SET employee_category_name=?, created_by=?, updated_date=? WHERE employee_category_id=?';
         await db.query(updateQuery, data,(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             res.status(httpCodes.Created).json({message:"Employee Category record updated Successfully"})
         })
     }catch(err){

@@ -13,7 +13,7 @@ exports.addQualificationSpec = async (req,res) =>{
     try{
         var insertQuery = 'INSERT INTO qualification_specialization(qualification_specialization_type, qualification_type_id) VALUES (?,?)';
     await db.query(insertQuery, [req.body.qualification_specialization_type, req.body.qualification_type_id],(err,result)=>{
-        if (err) throw err;
+        if (err) return res.send(err);
         res.status(httpCodes.Created).json({message:"Qualification Specialization record added Successfully"})
         console.log("Qualification Specialization record added Successfully")
     })
@@ -33,7 +33,7 @@ Version: V.01
 exports.getQualificationSpec =async  (req, res) => {
     try{
         await db.query('SELECT qualSpec.qualification_Specialization_id,qualSpec.qualification_specialization_type,qualSpec.qualification_type_id,qualType.qualification_type FROM qualification_specialization qualSpec,qualification_type qualType WHERE qualSpec.qualification_type_id = qualType.qualification_type_id',(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             console.log(result);
             res.status(httpCodes.OK).json(result);
         })
@@ -57,7 +57,7 @@ exports.getQualificationSpecById =async (req, res) => {
         let qualificationSpecId = req.params.qualification_specialization_id;  
     let sql = "SELECT qualSpec.qualification_Specialization_id,qualSpec.qualification_specialization_type,qualSpec.qualification_type_id,qualType.qualification_type FROM qualification_specialization qualSpec,qualification_type qualType WHERE qualSpec.qualification_type_id=qualType.qualification_type_id AND qualification_specialization_id=?";
     await db.query(sql, [qualificationSpecId],(err,result)=>{
-        if (err) throw err;
+        if (err) return res.send(err);
         if (result == null) {
             res
                 .status(httpCodes.BadRequest)
@@ -91,7 +91,7 @@ exports.updateQualificationSpecById = async (req,res) =>{
     
         var updateQuery = 'UPDATE qualification_specialization SET qualification_specialization_type=?,qualification_type_id=? WHERE qualification_specialization_id=? ';
         db.query(updateQuery, data,(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             console.log("Qualification Specialization record updated Successfully")
             res.status(httpCodes.Created).json({message:"Qualification Specialization record updated Successfully"})     
         })

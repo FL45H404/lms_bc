@@ -28,7 +28,7 @@ exports.addLeaveMaster = async (req, res) => {
       var data = [leaveid, req.body.leave_type, req.body.number_of_leaves, req.body.year, req.body.comments, new Date()]
       var insertQuery = 'INSERT INTO leave_master(leave_id,leave_type,number_of_leaves,year, comments, created_date) VALUES (?,?,?,?,?,?)';
       db.query(insertQuery, data, (err, result) => {
-        if (err) throw err;
+        if (err) return res.send(err);
         console.log(data)
         res.status(httpCodes.Created).json({ message: "Leave record added Successfully" })
       })
@@ -126,7 +126,7 @@ exports.updateLeaveDataByLeaveId =async (req,res) =>{
   
       var updateQuery = "UPDATE leave_master SET leave_type=?, number_of_leaves=?, year=?, comments=?, updated_date=? WHERE leave_id=?";
       await db.query(updateQuery, data,(err,result)=>{
-          if (err) throw err;
+          if (err) return res.send(err);
           res.status(httpCodes.Created).json({message:"Leave record updated Successfully"})
       })
   }catch(err){

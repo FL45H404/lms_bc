@@ -39,14 +39,14 @@ exports.addemployeeMaster = async (req, res) => {
         + ' blood_group, employee_status, payroll_status, base_location, background_verification_check, id_proof, address_proof, employee_category_id, aadhar_card_number, pan_card_number, passport_number,  '
         + ' created_date, created_by, background_verification_date,background_verification_done_by) VALUES (?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)',
         data, (err, result) => {
-          if (err) throw err;
+          if (err) return res.send(err);
           console.log(data)
           console.log(employeeid)
           if (req.body.qualification_id != "" || null) {
             var insertQuery = 'INSERT INTO employee_education(employee_id, qualification_id, year_of_pass, specialization, institute_name, university, grade) VALUES (?, ?, ?, ?, ?, ?, ?)';
             db.query(insertQuery, [employeeid, req.body.qualification_id, req.body.year_of_pass,
               req.body.specialization, req.body.institute_name, req.body.university, req.body.grade], (err, result1) => {
-                if (err) throw err;
+                if (err) return res.send(err);
                 // res.status(httpCodes.Created).json(result1)
               })
           }
@@ -89,7 +89,7 @@ exports.getemployeeMaster = async (req, res) => {
       + ' LEFT OUTER JOIN employee_category empCateg on empProf.employee_category_id = empCateg.employee_category_id '
       + ' LEFT OUTER JOIN employee_education empEdu on empProf.employee_id = empEdu.employee_id '
       + ' LEFT OUTER JOIN qualification_master qualMast on empEdu.qualification_id = qualMast.qualification_id order by empProf.employee_id', (err, result) => {
-        if (err) throw err;
+        if (err) return res.send(err);
         console.log(result)
         res.status(httpCodes.OK).json(result);
       })
@@ -146,7 +146,7 @@ exports.getemployeeMasterById = async (req, res) => {
       + ' LEFT OUTER JOIN qualification_master qualMast on empEdu.qualification_id = qualMast.qualification_id  '
       + ' WHERE empProf.employee_id = ?';
     db.query(sql, [employee_Id], (err, result) => {
-      if (err) throw err;
+      if (err) return res.send(err);
       if (result == 0) {
         res
           .status(httpCodes.BadRequest)
@@ -213,14 +213,14 @@ exports.updateemployeeMasterById = async (req, res) => {
     var selectEmpIdQuery = 'SELECT employee_id FROM employee_education WHERE employee_id = ?';
     var empData = req.params.employee_id;
     await db.query(selectEmpIdQuery, [empData], (err, result) => {
-      if (err) throw err;
+      if (err) return res.send(err);
       console.log(result)
       if (result == 0) {
         var employee_Id = req.params.employee_id;
         var insertQuery = 'INSERT INTO employee_education(employee_id, qualification_id, year_of_pass, specialization, institute_name, university, grade) VALUES (?, ?, ?, ?, ?, ?, ?)';
         db.query(insertQuery, [employee_Id, req.body.qualification_id, req.body.year_of_pass,
           req.body.specialization, req.body.institute_name, req.body.university, req.body.grade], (err, r1) => {
-            if (err) throw err;
+            if (err) return res.send(err);
             console.log('insert')
           })
       }
@@ -236,12 +236,12 @@ exports.updateemployeeMasterById = async (req, res) => {
           employee_Id]
         var updateQuery1 = 'UPDATE employee_education SET  qualification_id= ?, year_of_pass= ?, specialization= ?, institute_name= ?, university=?, grade= ? WHERE employee_id=?';
         db.query(updateQuery1, updatedata, (err, r2) => {
-          if (err) throw err;
+          if (err) return res.send(err);
           console.log('update')
         })
       }//else end       
       db.query(updateQuery, data, (err, r3) => {
-        if (err) throw err;
+        if (err) return res.send(err);
         console.log('Employee Data updated Successfully')
         res.status(httpCodes.OK).json({
           message: 'Employee Data updated Successfully'
@@ -267,7 +267,7 @@ exports.getEmployeeCode = async (req, res) => {
   try {
     var employee_code;
     await db.query('SELECT employee_code FROM employee_master ORDER BY employee_id  DESC', (err, result) => {
-      if (err) throw err;
+      if (err) return res.send(err);
       if (result.length > 0 && result[0].employee_code != null) {
         let lastId = parseInt(result[0].employee_code);
         employee_code = lastId + 1;
@@ -317,7 +317,7 @@ exports.deletemployeeMasterById = async (req, res) => {
       empId]
     var deleteQuery = 'DELETE FROM employee_master WHERE employee_id=?';
     await db.query(deleteQuery, data, (err, result) => {
-      if (err) throw err;
+      if (err) return res.send(err);
       console.log("employee deleted succesfully");
       res.status(httpCodes.Created).json({ message: "Employee record deleted Successfully" })
     })

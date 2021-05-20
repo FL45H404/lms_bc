@@ -62,7 +62,7 @@ try{
         var data=[roleid,req.body.role_name,req.body.role_description, 'vipul', new Date()]
                 var insertQuery = 'INSERT INTO role_master(role_id,role_name,role_description, created_by, created_date) VALUES (?,?,?,?,?)';
                 db.query(insertQuery, data,(err,result)=>{
-                    if (err) throw err;
+                    if (err) return res.send(err);
                     console.log(data)
                     res.status(httpCodes.Created).json({message:"Role record added Successfully"})
                 })
@@ -95,7 +95,7 @@ try{
 //         var data = [roleid, req.body.role_name, req.body.role_description, 'vipul', new Date()]
 //         var insertQuery = 'INSERT INTO role_master(role_id, role_name, role_description, created_by, created_date) VALUES (?,?,?,?,?)';
 //         await db.query(insertQuery, data, (err, result) => {
-//             if (err) throw err;
+//             if (err) return res.send(err);
 //             console.log(result)
 //             res.status(httpCodes.Created).json({ message: "Role record added Successfully" })
 //         })
@@ -116,7 +116,7 @@ Version: V.01
 exports.getRole = async (req, res) => {
     try {
         await db.query('SELECT * FROM role_master ORDER BY role_id DESC', (err, result) => {
-            if (err) throw err;
+            if (err) return res.send(err);
             console.log(result)
             res.status(httpCodes.OK).json(result);
         })
@@ -148,7 +148,7 @@ exports.getRoleById = async (req, res) => {
         roleId = [req.params.role_id];
         let sql = "SELECT * FROM role_master where role_id=?";
         db.query(sql, roleId, (err, result) => {
-            if (err) throw err;
+            if (err) return res.send(err);
             if (result == 0) {
                 res
                     .status(httpCodes.BadRequest)

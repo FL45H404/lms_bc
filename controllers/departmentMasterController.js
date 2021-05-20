@@ -150,9 +150,9 @@ exports.addDepartmentMaster = async (req, res) => {
          new Date()]
          var insertQuery = "INSERT INTO department_master (department_id, department_name,department_code, department_head, department_type, department_location, created_by, created_date) VALUES (?,?,?,?,?,?,?,?)";
         db.query(insertQuery, data, (err, result) => {
-          if (err) throw err;
+          if (err) return res.send(err);
           console.log(data)
-          res.status(httpCodes.Created).json({ message: "Department record added Successfully" })
+           return res.status(httpCodes.Created).json({ message: "Department record added Successfully" })
         })
   
       })
@@ -207,6 +207,7 @@ exports.updateDepartmentMasterById = async (req,res) =>{
         console.log(data)
         var updateQuery = "UPDATE department_master SET department_name=? ,department_code=?, department_head=?, department_type=?, department_location=?, created_by=?, updated_date=? WHERE department_id=?";
         await db.query(updateQuery, data ,(err,result)=>{
+            if (err) return res.send(err);
             console.log(result)
             return res.status(httpCodes.OK).json('Rows affected: '+result.affectedRows);
         })
@@ -228,7 +229,7 @@ exports.getDepartmentCode= async(req,res)=>{
     try{
         var department_code;
         await db.query('SELECT department_code FROM department_master ORDER BY department_id  DESC',(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             if (result.length > 0 && result[0].department_code!=null ) {
                         let lastId = parseInt(result[0].department_code);
                         department_code=lastId+1;
@@ -264,6 +265,7 @@ exports.getDepartmentCode= async(req,res)=>{
         id]
         var deleteQuery = 'DELETE FROM department_master WHERE department_id=?';
         await db.query(deleteQuery, data,(err,result)=>{
+            if (err) return res.send(err);
             console.log("Department deleted succesfully");
             res.status(httpCodes.Created).json({message:"Department record deleted Successfully"})
         })

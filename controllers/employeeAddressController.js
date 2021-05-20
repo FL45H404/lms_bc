@@ -15,7 +15,7 @@ exports.addemployeeAddress = async (req, res) => {
         req.body.address_line3, req.body.city, req.body.state, req.body.country, req.body.pincode];
         var insertQuery = 'INSERT INTO employee_address(employee_id, address_type, address_status, address_line1, address_line2, address_line3, city, state, country, pincode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         await db.query(insertQuery, data, (err, result) => {
-            if (err) throw err;
+            if (err) return res.send(err);
             res.status(httpCodes.Created).json({ message: "Employee Address record added Successfully" })
         })
     } catch (err) {
@@ -60,7 +60,7 @@ exports.addemployeeAddress = async (req, res) => {
                 ]
                 var insertQuery = 'INSERT INTO employee_address(employee_address_id, employee_id, address_type, address_status, address_line1, address_line2, address_line3, city, state, country, pincode) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             db.query(insertQuery, data, (err, result) => {
-                if (err) throw err;
+                if (err) return res.send(err);
                 console.log(data)
                 res.status(httpCodes.Created).json({ message: "Employee Addess record added Successfully" })
             })
@@ -106,7 +106,7 @@ exports.getemployeeAddress = async (req, res) => {
             + ' empAddr.address_line3, empAddr.city, empAddr.state, empAddr.country, empAddr.pincode'
             + ' FROM employee_address empAddr, employee_master empProf'
             + ' WHERE empAddr.employee_id = empProf.employee_id ORDER BY empAddr.employee_address_id DESC', (err, result) => {
-                if (err) throw err;
+                if (err) return res.send(err);
                 console.log(result)
                 res.status(httpCodes.OK).json(result);
             })
@@ -145,7 +145,7 @@ exports.getemployeeAddressById = async (req, res) => {
             + ' WHERE empAddr.employee_id = empProf.employee_id '
             + ' AND empAddr.employee_address_id = ?';
         await db.query(sql, [employee_AddressId], (err, result) => {
-            if (err) throw err;
+            if (err) return res.send(err);
             res.status(httpCodes.OK).json(result);
         })
     } catch (err) {
@@ -199,7 +199,7 @@ exports.updateemployeeAddressById = async (req, res) => {
 
         var updateQuery = 'UPDATE employee_address SET employee_id=?, address_type=?, address_status=?, address_line1=?, address_line2=?, address_line3=?, city=?, state=?, country=?, pincode=? WHERE employee_address_id=?';
         await db.query(updateQuery, data, (err, result) => {
-            if (err) throw err;
+            if (err) return res.send(err);
             res.status(httpCodes.Created).json({ message: "Employee Address record updated Successfully" })
         })
     } catch (err) {

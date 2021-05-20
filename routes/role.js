@@ -63,7 +63,7 @@ router.delete('/role/:role_id',deleteRoleById);
 //      var insertQuery = 'INSERT INTO role_master(role_description, created_by, created_date, avatar) VALUES (?,?,?,?)';
 //   db.query(insertQuery, [req.body.role_description,'vipul',  new Date(), avatarFile],(err,result)=>{
 //   //.then(result =>{
-// if (err) throw err;
+// if (err) return res.send(err);
 //       res.status(httpCodes.Created).json({message:"Role record added Successfully"})
 //   });
  

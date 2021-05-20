@@ -14,7 +14,7 @@ Version: V.01
 //         var data=[req.body.employee_id,req.body.mobile_phone, req.body.home_phone,req.body.alternative_contact_number,req.body.personal_email, req.body.official_email, req.body.contact_type, req.body.contact_relationship, req.body.contact_relation_name];
 //         var insertQuery = 'INSERT INTO employee_contacts(employee_id, mobile_phone, home_phone, alternative_contact_number, personal_email, official_email, contact_type, contact_relationship, contact_relation_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
 //         await db.query(insertQuery, data,(err,result)=>{
-// if (err) throw err;
+// if (err) return res.send(err);
 // console.log("employee contact record added succesfully");
 //             res.status(httpCodes.Created).json({message:"Employee Contact record added Successfully"})
 //         })
@@ -59,7 +59,7 @@ exports.addemployeeContacts = async (req, res) => {
                 ]
                 var insertQuery = 'INSERT INTO employee_contacts(employee_contact_id, employee_id, mobile_phone, home_phone, alternative_contact_number, personal_email, official_email, contact_type, contact_relationship, contact_relation_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             db.query(insertQuery, data, (err, result) => {
-                if (err) throw err;
+                if (err) return res.send(err);
                 console.log(data)
                 res.status(httpCodes.Created).json({ message: "Employee Bank Details record added Successfully" })
             })
@@ -110,7 +110,7 @@ exports.getemployeeContacts =async(req, res) => {
         db.query('SELECT empContact.employee_id, empContact.employee_contact_id, empContact.mobile_phone, empContact.home_phone, empContact.alternative_contact_number, '
         + 'empContact.personal_email, empContact.official_email, empContact.contact_type, empContact.contact_relationship, empContact.contact_relation_name '
         + 'FROM employee_contacts empContact, employee_master empProf WHERE empContact.employee_id = empProf.employee_id',(err,result)=>{
-if (err) throw err;
+if (err) return res.send(err);
 console.log(result);
             res.status(httpCodes.OK).json(result);
         })
@@ -144,7 +144,7 @@ exports.getemployeeContactsById = async (req, res) => {
         + 'FROM employee_contacts empContact, employee_master empProf WHERE empContact.employee_id = empProf.employee_id ' 	
         +' AND empContact.employee_contact_id = ?';
         db.query(sql, [employee_contactId],(err,result)=>{
-            if (err) throw err;
+            if (err) return res.send(err);
             console.log(result)
             res.status(httpCodes.OK).json(result);
         })
@@ -191,7 +191,7 @@ exports.updateemployeeContactsById = async (req,res) =>{
            employee_contactId]
        var updateQuery = 'UPDATE employee_contacts SET employee_id=?, mobile_phone=?, home_phone=?, alternative_contact_number=?, personal_email=?, official_email=?, contact_type=?,contact_relationship=?,contact_relation_name=? WHERE employee_contact_id=?';
        db.query(updateQuery, data,(err,result)=>{
-           if (err) throw err;
+           if (err) return res.send(err);
         res.status(httpCodes.Created).json({message:"Employee Contact record updated Successfully"})
        })
     }catch(err){
