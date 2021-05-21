@@ -115,7 +115,7 @@ Version: V.01
 ************************************************************************************************************/
 exports.getRole = async (req, res) => {
     try {
-        await db.query('SELECT * FROM role_master ORDER BY role_id DESC', (err, result) => {
+        await db.query('SELECT * FROM role_master ORDER BY created_date DESC', (err, result) => {
             if (err) return res.send(err);
             console.log(result)
             res.status(httpCodes.OK).json(result);
@@ -162,20 +162,6 @@ exports.getRoleById = async (req, res) => {
         console.log(err.message);
         res.status(httpCodes.InternalServerError).json(err.message);
     }
-
-    // .then((result) => {            
-    //     if (result == null) {
-    //         res
-    //             .status(httpCodes.BadRequest)
-    //             .json({ message: "Role Id does not exists" });
-    //     } else {
-    //         res.status(httpCodes.OK).json(result.rows);
-    //     }
-    // })
-    // .catch((err) => {
-    //     console.log(err.message);
-    //     res.status(httpCodes.InternalServerError).json(err.message);
-    // });
 }
 /************************************************************************************************************ 
 Method Type: updateRoleById
@@ -202,14 +188,6 @@ exports.updateRoleById = async (req, res) => {
         console.log(err.message)
         res.status(httpCodes.InternalServerError).json(err.message)
     }
-
-    // .then(result =>{
-    //     res.status(httpCodes.Created).json({message:"Role record updated Successfully"})
-    // })
-    // .catch(err =>{
-    //     console.log(err.message)
-    //     res.status(httpCodes.InternalServerError).json(err.message)
-    // })
 }
 
 exports.deleteRoleById = async (req, res) => {

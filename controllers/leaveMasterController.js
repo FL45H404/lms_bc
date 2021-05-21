@@ -91,7 +91,7 @@ exports.getLeaveDataByLeaveId = async(req, res) => {
 //get_all
 exports.getLeaveMaster = async (req, res) => {
   try {
-    var sql = "SELECT * FROM leave_master";
+    var sql = "SELECT * FROM leave_master ORDER BY created_date DESC";
     await db.query(sql, (err, result) => {
       console.log(result)
       return res.status(200).json(result)

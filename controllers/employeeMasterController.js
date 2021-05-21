@@ -273,41 +273,16 @@ exports.getEmployeeCode = async (req, res) => {
         employee_code = lastId + 1;
         res.status(httpCodes.OK).json(employee_code)
       } else {
-        employee_code = 1;
+        employee_code = 1000001;
         res.status(httpCodes.OK).json(employee_code)
       }
 
     })
-    // .then((result1) => {
-    //   if (result1.rows.length > 0 && result1.rows[0].employee_code != null) {
-    //     let lastId = parseInt(result1.rows[0].employee_code);
-    //     employee_code = lastId + 1;
-    //     res.status(httpCodes.OK).json(employee_code)
-    //   } else {
-    //     employee_code = 1000001;
-    //     res.status(httpCodes.OK).json(employee_code)
-    //   }
-    // })
   } catch (err) {
     console.log(err)
     res.status(httpCodes.NotFound).json(err)
   }
-  // var employee_code;
-  // db.query('SELECT employee_code FROM employee_master ORDER BY employee_id  DESC')
-  //   .then((result1) => {
-  //     if (result1.rows.length > 0 && result1.rows[0].employee_code != null) {
-  //       let lastId = parseInt(result1.rows[0].employee_code);
-  //       employee_code = lastId + 1;
-  //       res.status(httpCodes.OK).json(employee_code)
-  //     } else {
-  //       employee_code = 1000001;
-  //       res.status(httpCodes.OK).json(employee_code)
-  //     }
-  //   })
-  //   .catch(err => {
-  //     console.log(err)
-  //     res.status(httpCodes.NotFound).json(err)
-  //   })
+ 
 }
 
 exports.deletemployeeMasterById = async (req, res) => {

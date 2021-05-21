@@ -75,7 +75,7 @@ Version: V.01
 
 exports.getcompanyBranch = async (req, res) => {
   try {
-    var sql = "SELECT branch.branch_id,master.company_name,branch.branch_name,branch.status,branch.city FROM company_branch branch INNER JOIN company_master master ON branch.company_id =master.company_id ORDER BY created_date DESC";
+    var sql = "SELECT branch.branch_id,master.company_name,branch.branch_name,branch.status,branch.city FROM company_branch branch INNER JOIN company_master master ON branch.company_id =master.company_id ORDER BY branch.company_id DESC";
     await db.query(sql, (err, result) => {
       console.log(result)
       return res.status(200).json(result)

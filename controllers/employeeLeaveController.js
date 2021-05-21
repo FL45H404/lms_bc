@@ -217,7 +217,7 @@ exports.deleteEmployeeLeaveById = async (req, res) => {
 exports.getEmployeeLeaveByManagerId = async (req, res) => {
     try {
         let data = [req.params.manager_id];
-        let sql = "SELECT employee_leave_id,employee_id, date_of_applied, manager_id, number_of_leaves, from_date, to_date, comments, status, created_date, updated_date FROM employeeleave where manager_id=?";
+        let sql = "SELECT employee_leave_id,employee_id, date_of_applied, manager_id, number_of_leaves, from_date, to_date, comments, status, created_date, updated_date FROM employeeleave where manager_id=? ORDER BY created_date DESC";
         await db.query(sql, data, (err, result) => {
             console.log(result)
             return res.status(httpCodes.OK).json(result)
@@ -234,7 +234,7 @@ exports.getEmployeeLeaveByManagerId = async (req, res) => {
 exports.getEmployeeLeaveByEmployeeId = async (req, res) => {
     try {
         let data = [req.params.employee_id];
-        let sql = "SELECT employee_leave_id, employee_id, manager_id, date_of_applied, number_of_leaves, from_date, to_date, comments, status, created_date, updated_date FROM employeeleave where employee_id=?";
+        let sql = "SELECT employee_leave_id, employee_id, manager_id, date_of_applied, number_of_leaves, from_date, to_date, comments, status, created_date, updated_date FROM employeeleave where employee_id=? ORDER BY created_date DESC";
         await db.query(sql, data, (err, result) => {
             console.log(result)
             return res.status(httpCodes.OK).json(result)

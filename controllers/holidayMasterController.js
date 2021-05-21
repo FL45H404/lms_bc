@@ -6,35 +6,6 @@ const router = express.Router();
 
 
 
-
-//add Leave_master record 
-//post method
-
-// exports.addHolidayMaster = async (req, res) => {
-//   try {
-//     var created_date = new Date();
-//     const data = [
-//       req.body.holiday_name,
-//       req.body.date,
-//       req.body.comments,
-//       created_date]
-//     var insertQuery = 'INSERT INTO holidaymaster (holiday_name, date, comments, created_date) VALUES (?,?,?,?)';
-//     console.log(data)
-//     await db.query(insertQuery, data, (err, result) => {
-//       console.log("Holiday record added Successfully")
-//       res.status(httpCodes.Created).json({ message: "Holiday record added Successfully" })
-//     })
-//   } catch (err) {
-//     console.log(err.message)
-//     res.status(httpCodes.InternalServerError).json(err.message)
-
-//   }
-
-// }
-
-
-
-
 exports.addHolidayMaster = async (req, res) => {
   try {
     var holidayid;
@@ -113,7 +84,7 @@ exports.getHolidayDataByHolidayId = async (req, res) => {
 //get_all
 exports.getHolidayMaster = async (req, res) => {
   try {
-    var sql = "SELECT * FROM holidaymaster";
+    var sql = "SELECT * FROM holidaymaster ORDER BY created_date DESC";
     await db.query(sql, (err, result) => {
       console.log(result)
       return res.status(200).json(result)
