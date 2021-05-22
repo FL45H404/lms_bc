@@ -88,7 +88,7 @@ exports.getemployeeMaster = async (req, res) => {
       + ' LEFT OUTER JOIN designation desg on empProf.designation_id = desg.designation_id '
       + ' LEFT OUTER JOIN employee_category empCateg on empProf.employee_category_id = empCateg.employee_category_id '
       + ' LEFT OUTER JOIN employee_education empEdu on empProf.employee_id = empEdu.employee_id '
-      + ' LEFT OUTER JOIN qualification_master qualMast on empEdu.qualification_id = qualMast.qualification_id order by empProf.employee_id', (err, result) => {
+      + ' LEFT OUTER JOIN qualification_master qualMast on empEdu.qualification_id = qualMast.qualification_id order by empProf.created_date', (err, result) => {
         if (err) return res.send(err);
         console.log(result)
         res.status(httpCodes.OK).json(result);
