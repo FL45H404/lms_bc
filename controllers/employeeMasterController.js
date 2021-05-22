@@ -80,7 +80,7 @@ exports.getemployeeMaster = async (req, res) => {
   try {
     await db.query('SELECT empProf.employee_id, empProf.employee_fname, empProf.employee_mname,empProf.employee_lname,empProf.employee_code, empProf.role_id,roleMast.role_description, empProf.department_id, dept.department_name, empProf.designation_id,desg.designation_name, empProf.reporting_manager_id, '
       + ' empProf.date_of_birth, empProf.gender, empProf.joining_date, empProf.nationality, empProf.emp_photo, empProf.marital_status, empProf.blood_group, empProf.employee_status,empProf.payroll_status, empProf.base_location, '
-      + ' empProf.background_verification_check, empProf.id_proof, empProf.address_proof, empProf.employee_category_id, empCateg.employee_category_name, empProf.aadhar_card_number, empProf.pan_card_number, empProf.passport_number, empProf.email_id'
+      + ' empProf.background_verification_check, empProf.id_proof, empProf.address_proof, empProf.employee_category_id, empCateg.employee_category_name, empProf.aadhar_card_number, empProf.pan_card_number, empProf.passport_number, empProf.email_id,'
       + ' empProf.created_date, empProf.created_by,empProf.updated_date,empProf.background_verification_date, empProf.background_verification_done_by,empEdu.employee_education_id,empEdu.qualification_id, qualMast.qualification,empEdu.year_of_pass,empEdu.specialization, '
       + ' empEdu.institute_name, empEdu.university, empEdu.grade '
       + ' FROM employee_master empProf LEFT OUTER JOIN role_master roleMast on empProf.role_id = roleMast.role_id '
