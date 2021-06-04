@@ -28,15 +28,23 @@ exports.addemployeeExperience = async (req, res) => {
         var employee_experienceid;
         db.query("select * from employee_experience ORDER BY created_date DESC LIMIT 1", (err, result) => {
             if (result.length > 0 && result[0].employee_experience_id != null) {
-                let lastId = (result[0].employee_experience_id);
-                let id = (lastId.match(/(\d+)/));
-                let intid = parseInt(id) + 1;
-                employee_experienceid = 'EXP000000' + intid;
-
+                var keyid = (result[0].employee_experience_id);
+                var keyLength = keyid.length;
+                var previousKey = keyid.substring(0, 3)
+                var lastKey = parseInt(keyid.substring(3, keyLength))
+                var nextKey = String(lastKey + 1);
+                var id = previousKey;
+                var lengthofnextkey = nextKey.length;
+                while (lengthofnextkey < keyLength - 3) {
+                    nextKey = "0" + nextKey;
+                    lengthofnextkey += 1;
+            
+                }
+                id += nextKey
             } else {
-                employee_experienceid = 'EXP0000001';
+                id = 'EXP0000001';
             }
-            var data = [employee_experienceid,
+            var data = [id,
                 req.body.employee_id, 
                 req.body.previous_company_name, 
                 req.body.previous_company_designation, 

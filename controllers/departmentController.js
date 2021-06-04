@@ -29,14 +29,7 @@ await db.query(sql,(err,result)=>{
         error:err
     })
 }
-    // db.query('SELECT * FROM department').then(allConditions => {
-    //     res.status(httpCodes.OK).json(allConditions.rows);
-    // }).catch(err => {
-    //     res.status(httpCodes.InternalServerError).json({
-    //         error_message: "could not get all departments",
-    //         error: err
-    //     })
-    // })
+
 }
 /************************************************************************************************************ 
 Method Type: getDepartmentById
@@ -49,7 +42,6 @@ Version: V.01
 exports.getDepartmentById =async (req, res) => {
     try{
     const data=[req.params.department_id]
-        //let departmentId= model.department_id;
         let sql = "SELECT * FROM department where department_id=?";
         await db.query(sql,data,(err,result)=>{
             console.log(result)
@@ -60,19 +52,6 @@ exports.getDepartmentById =async (req, res) => {
          res.status(httpCodes.InternalServerError).json(err.message);
 
     }
-        // .then((result) => {            
-        //     if (result == null) {
-        //         res
-        //             .status(httpCodes.BadRequest)
-        //             .json({ message: "DepartmentId does not exists" });
-        //     } else {
-        //         res.status(httpCodes.OK).json(result.rows);
-        //     }
-        // })
-        // .catch((err) => {
-        //     console.log(err.message);
-        //     res.status(httpCodes.InternalServerError).json(err.message);
-        // });
 };
 
 /************************************************************************************************************
@@ -86,10 +65,6 @@ Version: V.01
 //console.log("hii")
 exports.addDepartment =async (req,res) =>{
     try{
-
-        // console.log("hii")
-        // console.log(req.body.department_name+"depname");
-        // console.log(req.body.created_by+"createdby");
         const data= [req.body.department_name, 'vipul', new Date()]
         var insertQuery = 'INSERT INTO department(department_name, created_by, created_date) VALUES (?,?,?)'; 
         await db.query(insertQuery,data,(err,result)=>{
@@ -101,12 +76,6 @@ exports.addDepartment =async (req,res) =>{
         console.log(err.message)
         res.status(httpCodes.InternalServerError).json(err.message)
     }
-    // .then(result =>{
-    // })
-    // .catch(err =>{
-    //     console.log(err.message)
-    //     res.status(httpCodes.InternalServerError).json(err.message)
-    // })
 }
 /************************************************************************************************************
 Method Name: updateDepartmentById

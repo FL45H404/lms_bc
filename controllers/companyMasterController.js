@@ -10,25 +10,6 @@ Created By and Date: Garima Jain 10/12/2020
 Modified By and Date:
 Version: V.01
 **********************************************************************************************************************************************************************************************/   
-// exports.getCompanyRegistrationNumber= (req,res)=>{
-//     var company_registration_number;
-//     db.query('SELECT company_registration_number FROM company_master ORDER BY company_registration_number  DESC')
-//         .then((result1) => {
-//             if (result1.rows.length > 0 && result1.rows[0].company_registration_number!=null && result1.rows[0].company_registration_number!="") {
-//                 let lastId = parseInt(result1.rows[0].company_registration_number);
-//                 company_registration_number=lastId+1;
-//                 res.status(httpCodes.OK).json(company_registration_number)
-//             } else {
-//                 company_registration_number = 1000001; 
-//               res.status(httpCodes.OK).json(company_registration_number)
-//             }
-//           })
-//           .catch(err => {
-//             console.log(err)
-//             res.status(httpCodes.NotFound).json(err)
-//           })
-//   }
-
 
 
 
@@ -71,19 +52,25 @@ Version: V.01
 
 exports.addcompanyMaster = async (req, res) => {
   try {
-    var companyid;
     await db.query("select * from company_master ORDER BY created_date DESC LIMIT 1", (err, result) => {
       if (result.length > 0 && result[0].company_id != null) {
-        let lastId = (result[0].company_id);
-        console.log(lastId)
-        let id = (lastId.match(/(\d+)/));
-        let intid = parseInt(id) + 1;
-        companyid = 'CMP000000' + intid;
-
+        var keyid = (result[0].company_id);
+        var keyLength = keyid.length;
+        var previousKey = keyid.substring(0, 3)
+        var lastKey = parseInt(keyid.substring(3, keyLength))
+        var nextKey = String(lastKey + 1);
+        var id = previousKey;
+        var lengthofnextkey = nextKey.length;
+        while (lengthofnextkey < keyLength - 3) {
+            nextKey = "0" + nextKey;
+            lengthofnextkey += 1;
+    
+        }
+        id += nextKey
       } else {
-        companyid = 'CMP0000001';
+        id = 'CMP0000001';
       }
-      var data = [companyid,
+      var data = [id,
         req.body.company_name,
         req.body.company_registration_number,
         req.body.company_logo,
@@ -248,68 +235,6 @@ Created By and Date: Santoshkumar 03-Dec-2020
 Modified By and Date:
 Version: V.01
 **********************************************************************************************************************************************************************************************/   
-// exports.getcityFromCompanyMaster =  (req, res) => {    
-//     db.query('select distinct(city) from company_master order by city').then(allConditions => {
-//         res.status(httpCodes.OK).json(allConditions.rows);
-//     }).catch(err => {
-//         res.status(httpCodes.InternalServerError).json({
-//             error_message: "could not get all city names from Company",
-//             error: err
-//         })
-//     })
-// }
-
-
-
-
-
-// exports.getcityFromCompanyMaster = async (req, res) => {
-//   try {
-//     //let data = [req.params.company_name];
-//     let sql = 'select distinct(city) from company_master order by city';
-//     //let sql = 'select company_id,company_name from company_master ORDER BY company_name ASC';
-//     await db.query(sql,(err, result)=>{
-//       console.log(result)
-//           return res.status(200).json(result)
-//         })
-
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({
-//       success: false,
-//       message: err.message
-//     })
-//   }
-// }
-
-
-
-
-
-
-
-
-
-
-/***************************************************************************************************************************************************************************************** 
-Method Type: getcompanyNames
-Parameter list: NA
-Purpose: Get company names from Company Master
-Created By and Date: Santoshkumar 08-Dec-2020
-Modified By and Date:
-Version: V.01
-**********************************************************************************************************************************************************************************************/   
-// exports.getcompanyNames =  (req, res) => {    
-//     db.query('select company_id,company_name from company_master').then(allConditions => {
-//         res.status(httpCodes.OK).json(allConditions.rows);
-//     }).catch(err => {
-//         res.status(httpCodes.InternalServerError).json({
-//             error_message: "could not get all company names from Company",
-//             error: err
-//         })
-//     })
-// }
-
 
 
 

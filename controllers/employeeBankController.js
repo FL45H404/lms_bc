@@ -37,15 +37,23 @@ exports.addemployeeBank = async (req, res) => {
         var bank_detailsid;
         db.query("select * from employee_bank_details ORDER BY created_date DESC LIMIT 1", (err, result) => {
             if (result.length > 0 && result[0].bank_details_id != null) {
-                let lastId = (result[0].bank_details_id);
-                let id = (lastId.match(/(\d+)/));
-                let intid = parseInt(id) + 1;
-                bank_detailsid = 'EBD000000' + intid;
-
+                var keyid = (result[0].bank_details_id);
+                var keyLength = keyid.length;
+                var previousKey = keyid.substring(0, 3)
+                var lastKey = parseInt(keyid.substring(3, keyLength))
+                var nextKey = String(lastKey + 1);
+                var id = previousKey;
+                var lengthofnextkey = nextKey.length;
+                while (lengthofnextkey < keyLength - 3) {
+                    nextKey = "0" + nextKey;
+                    lengthofnextkey += 1;
+            
+                }
+                id += nextKey
             } else {
-                bank_detailsid = 'EBD0000001';
+                id = 'EBD0000001';
             }
-            var data = [bank_detailsid,
+            var data = [id,
                 req.body.employee_id, 
                 req.body.bank_account_number, 
                 req.body.bank_ifsc, 

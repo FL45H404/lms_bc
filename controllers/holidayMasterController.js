@@ -8,18 +8,25 @@ const router = express.Router();
 
 exports.addHolidayMaster = async (req, res) => {
   try {
-    var holidayid;
     db.query("select * from holidaymaster ORDER BY created_date DESC LIMIT 1", (err, result) => {
       if (result.length > 0 && result[0].holiday_id != null) {
-        let lastId = (result[0].holiday_id);
-        let id = (lastId.match(/(\d+)/));
-        let intid = parseInt(id) + 1;
-        holidayid = 'HOL000000' + intid;
-
+        var keyid = (result[0].holiday_id);
+        var keyLength = keyid.length;
+        var previousKey = keyid.substring(0, 3)
+        var lastKey = parseInt(keyid.substring(3, keyLength))
+        var nextKey = String(lastKey + 1);
+        var id = previousKey;
+        var lengthofnextkey = nextKey.length;
+        while (lengthofnextkey < keyLength - 3) {
+            nextKey = "0" + nextKey;
+            lengthofnextkey += 1;
+    
+        }
+        id += nextKey
       } else {
-        holidayid = 'HOL0000001';
+        id = 'HOL0000001';
       }
-      var data = [holidayid, req.body.holiday_name, req.body.date, req.body.comments, new Date()]
+      var data = [id, req.body.holiday_name, req.body.date, req.body.comments, new Date()]
       var insertQuery = 'INSERT INTO holidaymaster(holiday_id,holiday_name,date, comments, created_date) VALUES (?,?,?,?,?)';
       db.query(insertQuery, data, (err, result) => {
         if (err) return res.send(err);

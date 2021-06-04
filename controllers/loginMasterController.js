@@ -11,19 +11,27 @@ const router = express.Router();
 
 exports.addloginMaster = async (req, res) => {
   try {
-    var loginId;
     db.query("select * from login ORDER BY created_date DESC LIMIT 1", (err, result) => {
-      if (result.length > 0 && result[0].role_id != null) {
-        let lastId = (result[0].role_id);
-        let id = (lastId.match(/(\d+)/));
-        let intid = parseInt(id) + 1;
-        loginId = 'LOGIN00000' + intid;
+      if (result.length > 0 && result[0].login_id != null) {
+        var keyid = (result[0].login_id);
+        var keyLength = keyid.length;
+        var previousKey = keyid.substring(0, 3)
+        var lastKey = parseInt(keyid.substring(3, keyLength))
+        var nextKey = String(lastKey + 1);
+        var id = previousKey;
+        var lengthofnextkey = nextKey.length;
+        while (lengthofnextkey < keyLength - 3) {
+            nextKey = "0" + nextKey;
+            lengthofnextkey += 1;
+    
+        }
+        id += nextKey
       } else {
-        loginId = 'LOGIN000001';
+        id = 'LOG000001';
       }
       var created_date = new Date();
       const data = [
-        loginId,
+        id,
         req.body.user_id,
         req.body.user_name,
         req.body.password,
@@ -127,7 +135,7 @@ exports.auth = async (req, res) => {
       }
       else {
         console.log("invalid user id and password");
-        return res.status(httpCodes.NotFound).json({ status: "fail", message: 'invalid id and password' });
+        return res.status(httpCodes.NotFound).json({ status: "fail", message: 'Invalid Id or Password' });
       }
     })
   } catch (err) {

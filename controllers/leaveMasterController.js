@@ -14,18 +14,25 @@ const router = express.Router();
 
 exports.addLeaveMaster = async (req, res) => {
   try {
-    var leaveid;
     db.query("select * from leave_master ORDER BY created_date DESC LIMIT 1", (err, result) => {
       if (result.length > 0 && result[0].leave_id != null) {
-        let lastId = (result[0].leave_id);
-        let id = (lastId.match(/(\d+)/));
-        let intid = parseInt(id) + 1;
-        leaveid = 'LEV000000' + intid;
-
+        var keyid = (result[0].leave_id);
+        var keyLength = keyid.length;
+        var previousKey = keyid.substring(0, 3)
+        var lastKey = parseInt(keyid.substring(3, keyLength))
+        var nextKey = String(lastKey + 1);
+        var id = previousKey;
+        var lengthofnextkey = nextKey.length;
+        while (lengthofnextkey < keyLength - 3) {
+            nextKey = "0" + nextKey;
+            lengthofnextkey += 1;
+    
+        }
+        id += nextKey
       } else {
-        leaveid = 'LEV0000001';
+        id = 'LEV0000001';
       }
-      var data = [leaveid, req.body.leave_type, req.body.number_of_leaves, req.body.year, req.body.comments, new Date()]
+      var data = [id, req.body.leave_type, req.body.number_of_leaves, req.body.year, req.body.comments, new Date()]
       var insertQuery = 'INSERT INTO leave_master(leave_id,leave_type,number_of_leaves,year, comments, created_date) VALUES (?,?,?,?,?,?)';
       db.query(insertQuery, data, (err, result) => {
         if (err) return res.send(err);

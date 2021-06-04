@@ -129,18 +129,25 @@ Version: V.01
 
 exports.addDepartmentMaster = async (req, res) => {
     try {
-      var departmentid;
       db.query("select * from department_master ORDER BY created_date DESC LIMIT 1", (err, result) => {
         if (result.length > 0 && result[0].department_id != null) {
-          let lastId = (result[0].department_id);
-          let id = (lastId.match(/(\d+)/));
-          let intid = parseInt(id) + 1;
-          departmentid = 'DPT000000' + intid;
-  
+            var keyid = (result[0].department_id);
+            var keyLength = keyid.length;
+            var previousKey = keyid.substring(0, 3)
+            var lastKey = parseInt(keyid.substring(3, keyLength))
+            var nextKey = String(lastKey + 1);
+            var id = previousKey;
+            var lengthofnextkey = nextKey.length;
+            while (lengthofnextkey < keyLength - 3) {
+                nextKey = "0" + nextKey;
+                lengthofnextkey += 1;
+        
+            }
+            id += nextKey
         } else {
-          departmentid = 'DPT0000001';
+          id = 'DPT0000001';
         }
-        var data = [departmentid, 
+        var data = [id, 
             req.body.department_name,
             req.body.department_code,
             req.body.department_head,

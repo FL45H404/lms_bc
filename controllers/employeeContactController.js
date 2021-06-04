@@ -9,44 +9,28 @@ Created By and Date: Santoshkumar 12-NOV-2020
 Modified By and Date:
 Version: V.01
 ************************************************************************************************************************************************************************************/ 
-// exports.addemployeeContacts = async(req,res) =>{
-//     try{
-//         var data=[req.body.employee_id,req.body.mobile_phone, req.body.home_phone,req.body.alternative_contact_number,req.body.personal_email, req.body.official_email, req.body.contact_type, req.body.contact_relationship, req.body.contact_relation_name];
-//         var insertQuery = 'INSERT INTO employee_contacts(employee_id, mobile_phone, home_phone, alternative_contact_number, personal_email, official_email, contact_type, contact_relationship, contact_relation_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-//         await db.query(insertQuery, data,(err,result)=>{
-// if (err) return res.send(err);
-// console.log("employee contact record added succesfully");
-//             res.status(httpCodes.Created).json({message:"Employee Contact record added Successfully"})
-//         })
-//     }catch(err){
-//         console.log(err.message)
-//         res.status(httpCodes.InternalServerError).json(err.message)
-//     }
-   
-//     // })
-//     // .catch(err =>{
-        
-//     // })
-// }
-
-
-
-
 
 exports.addemployeeContacts = async (req, res) => {
     try {
-        var employee_contactid;
         db.query("select * from employee_contacts ORDER BY created_date DESC LIMIT 1", (err, result) => {
             if (result.length > 0 && result[0].employee_contact_id != null) {
-                let lastId = (result[0].employee_contact_id);
-                let id = (lastId.match(/(\d+)/));
-                let intid = parseInt(id) + 1;
-                employee_contactid = 'ECT000000' + intid;
-
+                var keyid = (result[0].employee_contact_id);
+                var keyLength = keyid.length;
+                var previousKey = keyid.substring(0, 3)
+                var lastKey = parseInt(keyid.substring(3, keyLength))
+                var nextKey = String(lastKey + 1);
+                var id = previousKey;
+                var lengthofnextkey = nextKey.length;
+                while (lengthofnextkey < keyLength - 3) {
+                    nextKey = "0" + nextKey;
+                    lengthofnextkey += 1;
+            
+                }
+                id += nextKey
             } else {
-                employee_contactid = 'ECT0000001';
+                id = 'ECT0000001';
             }
-            var data = [employee_contactid,
+            var data = [id,
                 req.body.employee_id,
                 req.body.mobile_phone, 
                 req.body.home_phone,

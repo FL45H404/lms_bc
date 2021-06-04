@@ -10,41 +10,30 @@ Created By and Date: Santoshkumar 11-NOV-2020
 Modified By and Date:
 Version: V.01
 **************************************************************************************************************************************************/
-// exports.addQualification = async (req, res) => {
-//     try {
-//         var data = [req.body.employee_id, req.body.qualification_type_id, req.body.qualification_specialization_id, req.body.year_of_pass,
-//         req.body.specialization, req.body.institute_name, req.body.university, req.body.grade]
-//         var insertQuery = 'INSERT INTO employee_qualification(employee_id, qualification_type_id, qualification_specialization_id, year_of_pass, specialization, institute_name, university, grade) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-//         await db.query(insertQuery, data, (err, result) => {
-//             if (err) return res.send(err);
-//             console.log("Employee Qualification record added succesfully");
-//             res.status(httpCodes.Created).json({ message: "Employee Qualification record added Successfully" })
-//         })
-//     } catch (err) {
-//         console.log(err.message)
-//         res.status(httpCodes.InternalServerError).json(err.message)
-//     }
-
-// }
-
-
-
-
 
 exports.addQualification = async (req, res) => {
     try {
-        var employee_qualificationid;
         db.query("select * from employee_qualification ORDER BY employee_qualification_id DESC", (err, result) => {
             if (result.length > 0 && result[0].employee_qualification_id != null) {
-                let lastId = (result[0].employee_qualification_id);
-                let id = (lastId.match(/(\d+)/));
-                let intid = parseInt(id) + 1;
-                employee_qualificationid = 'EQN000000' + intid;
+            
+                var keyid = (result[0].employee_qualification_id);
+                var keyLength = keyid.length;
+                var previousKey = keyid.substring(0, 3)
+                var lastKey = parseInt(keyid.substring(3, keyLength))
+                var nextKey = String(lastKey + 1);
+                var id = previousKey;
+                var lengthofnextkey = nextKey.length;
+                while (lengthofnextkey < keyLength - 3) {
+                    nextKey = "0" + nextKey;
+                    lengthofnextkey += 1;
+            
+                }
+                id += nextKey
 
             } else {
-                employee_qualificationid = 'EQN0000001';
+                id = 'EQN0000001';
             }
-            var data = [employee_qualificationid,
+            var data = [id,
                 req.body.employee_id,
                 req.body.qualification_type_id,
                 req.body.qualification_specialization_id,
@@ -98,20 +87,6 @@ exports.getQualification = async (req, res) => {
             error: err
         })
     }
-    // db.query('SELECT empQual.employee_id,empProf.employee_name,qualType.qualification_type,qualSpec.qualification_specialization_type, empQual.employee_qualification_id, empQual.qualification_type_id, empQual.qualification_specialization_id,' 
-    // +' empQual.year_of_pass, empQual.specialization, empQual.institute_name, empQual.university, empQual.grade'
-    // +' FROM employee_qualification empQual,qualification_specialization qualSpec,qualification_type qualType, employee_master empProf '
-    // +' WHERE empQual.employee_id = empProf.employee_id '
-    // +' AND empQual.qualification_type_id = qualType.qualification_type_id'
-    // +' AND empQual.qualification_specialization_id = qualSpec.qualification_specialization_id')
-    // .then(allConditions => {
-    // res.status(httpCodes.OK).json(allConditions.rows);
-    // }).catch(err => {
-    // res.status(httpCodes.InternalServerError).json({
-    //     error_message: "could not get all Qualification",
-    //     error: err
-    // // })
-    // })
 }
 /************************************************************************************************************ 
 Method Type: getQualificationById
@@ -146,20 +121,6 @@ exports.getQualificationById = async (req, res) => {
         console.log(err.message);
         res.status(httpCodes.InternalServerError).json(err.message);
     }
-
-    // .then((result) => {            
-    //     if (result == null) {
-    //         res
-    //             .status(httpCodes.BadRequest)
-    //             .json({ message: "Qualification Id does not exists" });
-    //     } else {
-    //         res.status(httpCodes.OK).json(result.rows);
-    //     }
-    // })
-    // .catch((err) => {
-    //     // console.log(err.message);
-    //     // res.status(httpCodes.InternalServerError).json(err.message);
-    // });
 }
 /************************************************************************************************************ 
 Method Type: updateQualificationById
@@ -192,27 +153,8 @@ exports.updateQualificationById = async (req, res) => {
         console.log(err.message)
         res.status(httpCodes.InternalServerError).json(err.message)
     }
-    // var employee_qualificationId = req.params.employee_qualification_id;   
-    // var data=[
-    //     req.body.employee_id,
-    //     req.body.qualification_type_id,
-    //     req.body.qualification_specialization_id,
-    //     req.body.year_of_pass,
-    //     req.body.specialization,
-    //     req.body.institute_name,
-    //     req.body.university,
-    //     req.body.grade,
-    //     employee_qualificationId]
-    // var updateQuery = 'UPDATE employee_qualification SET employee_id=?, qualification_type_id=?, qualification_specialization_id=?, year_of_pass=?, specialization=?, institute_name=?, university=?, grade=? WHERE employee_qualification_id=?';
-    // db.query(updateQuery, data)
-    // .then(result =>{
-    // res.status(ht/tpCodes.Created).json({message:"Employee Qualification record updated Successfully"})
-    // })
-    // .catch(err =>{
-    // console.log(err.message)
-    // res.status(httpCodes.InternalServerError).json(err.message)
-    // })
 }
+
 exports.deleteQualificationById = async (req, res) => {
     try {
         var Id = req.params.employee_qualification_id;

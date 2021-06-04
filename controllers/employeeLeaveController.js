@@ -54,19 +54,6 @@ exports.getEmployeeLeaveById = async (req, res) => {
         })
     }
 
-    // .then((result) => {            
-    //     if (result == null) {
-    //         res
-    //             .status(httpCodes.BadRequest)
-    //             .json({ message: "Department does not exists" });
-    //     } else {
-    //         res.status(httpCodes.OK).json(result.rows);
-    //     }
-    // })
-    // .catch((err) => {
-    //     console.log(err.message);
-    //     res.status(httpCodes.InternalServerError).json(err.message);
-    // });
 };
 
 /************************************************************************************************************
@@ -144,45 +131,6 @@ exports.updateEmployeeLeaveById = async (req, res) => {
     }
    
 }
-
-
-// exports.getDepartmentCode = async (req, res) => {
-//     try {
-//         var department_code;
-//         await db.query('SELECT department_code FROM department_master ORDER BY department_id  DESC', (err, result) => {
-//             if (err) return res.send(err);
-//             if (result.length > 0 && result[0].department_code != null) {
-//                 let lastId = parseInt(result[0].department_code);
-//                 department_code = lastId + 1;
-//                 res.status(httpCodes.OK).json(department_code)
-//             } else {
-//                 department_code = 100001;
-//                 res.status(httpCodes.OK).json(department_code)
-//             }
-//         })
-//     } catch (err) {
-//         console.log(err);
-//         res.status(httpCodes.InternalServerError).json(err)
-//     }
-//     // .then((result1) => {
-//     //     if (result1.rows.length > 0 && result1.rows[0].department_code!=null ) {
-//     //         let lastId = parseInt(result1.rows[0].department_code);
-//     //         department_code=lastId+1;
-//     //         res.status(httpCodes.OK).json(department_code)
-//     //     } else {
-//     //         department_code = 1000001; 
-//     //       res.status(httpCodes.OK).json(department_code)
-//     //     }
-//     //   })
-//     //   .catch(err => {
-//     //     console.log(err)
-//     //     res.status(httpCodes.NotFound).json(err)
-//     //   })
-// }
-
-
-
-
 
 
 

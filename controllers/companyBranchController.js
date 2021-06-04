@@ -4,18 +4,26 @@ const db = require('../db');
 
 exports.addcompanyBranch = async (req, res) => {
   try {
-    var branchid;
     db.query("select * from company_branch ORDER BY created_date DESC LIMIT 1", (err, result) => {
       if (result.length > 0 && result[0].branch_id != null) {
-        let lastId = (result[0].branch_id);
-        let id = (lastId.match(/(\d+)/));
-        let intid = parseInt(id) + 1;
-        branchid = 'BRH000000' + intid;
+        var keyid = (result[0].branch_id);
+        var keyLength = keyid.length;
+        var previousKey = keyid.substring(0, 3)
+        var lastKey = parseInt(keyid.substring(3, keyLength))
+        var nextKey = String(lastKey + 1);
+        var id = previousKey;
+        var lengthofnextkey = nextKey.length;
+        while (lengthofnextkey < keyLength - 3) {
+            nextKey = "0" + nextKey;
+            lengthofnextkey += 1;
+    
+        }
+        id += nextKey
 
       } else {
-        branchid = 'BRH0000001';
+        id = 'BRH0000001';
       }
-      var data = [branchid,
+      var data = [id,
         req.body.company_id,
         req.body.branch_name,
         req.body.branch_code,
@@ -57,20 +65,6 @@ Created By and Date: Santoshkumar 08-Dec-2020
 Modified By and Date:
 Version: V.01
 **********************************************************************************************************************************************************************************************/
-// exports.getcompanyBranch =  (req, res) => {    
-//     db.query('SELECT cmpBranch.branch_id, cmpBranch.company_id, cmpBranch.branch_name, comProf.company_name, cmpBranch.branch_code, cmpBranch.branch_address1, cmpBranch.branch_address2, cmpBranch.branch_address3,'  
-//     +' cmpBranch.city,cmpBranch.state,cmpBranch.country,cmpBranch.pincode,cmpBranch.contact_no, cmpBranch.alternative_contact_no, cmpBranch.email, cmpBranch.alternative_email, cmpBranch.status '
-//     +' FROM company_branch cmpBranch, company_master comProf '
-//     +' WHERE cmpBranch.company_id = comProf.company_id')
-//     .then(allConditions => {
-//         res.status(httpCodes.OK).json(allConditions.rows);
-//     }).catch(err => {
-//         res.status(httpCodes.InternalServerError).json({
-//             error_message: "could not get all Company Branch",
-//             error: err
-//         })
-//     })
-// }
 
 
 exports.getcompanyBranch = async (req, res) => {
@@ -99,30 +93,6 @@ Created By and Date: Santoshkumar 13-NOV-2020
 Modified By and Date:
 Version: V.01
 ************************************************************************************************************************************************************************/
-// exports.getcompanyBranchById = (req, res) => {
-//     let branch_Id = req.params.branch_id;  
-//     let sql = 'SELECT cmpBranch.branch_id, cmpBranch.company_id, cmpBranch.branch_name, comProf.company_name, cmpBranch.branch_code, cmpBranch.branch_address1, cmpBranch.branch_address2, cmpBranch.branch_address3,'  
-//     +' cmpBranch.city, cmpBranch.state, cmpBranch.country, cmpBranch.pincode, cmpBranch.contact_no, cmpBranch.alternative_contact_no, cmpBranch.email, cmpBranch.alternative_email, cmpBranch.status '
-//     +' FROM company_branch cmpBranch, company_master comProf '
-//     +' WHERE cmpBranch.company_id = comProf.company_id '
-//     +' AND cmpBranch.branch_id = $1';
-//     db.query(sql, [branch_Id])
-//         .then((result) => {            
-//             if (result == null) {
-//                 res
-//                     .status(httpCodes.BadRequest)
-//                     .json({ message: "Company Branch Id does not exists" });
-//             } else {
-//                 res.status(httpCodes.OK).json(result.rows);
-//             }
-//         })
-//         .catch((err) => {
-//             console.log(err.message);
-//             res.status(httpCodes.InternalServerError).json(err.message);
-//         });
-// }
-
-
 
 
 exports.getcompanyBranchById = async (req, res) => {
@@ -194,33 +164,6 @@ exports.updatecompanyBranchById = async (req, res) => {
   }
 
 }
-
-
-
-
-
-
-
-// exports.getBranchCode= (req,res)=>{
-//     var branch_code;
-//     db.query('SELECT branch_code FROM company_branch ORDER BY branch_code  DESC')
-//         .then((result1) => {
-//             if (result1.rows.length > 0 && result1.rows[0].branch_code!=null ) {
-//                 let lastId = parseInt(result1.rows[0].branch_code);
-//                 branch_code=lastId+1;
-//                 res.status(httpCodes.OK).json(branch_code)
-//             } else {
-//                 branch_code = 1000001; 
-//               res.status(httpCodes.OK).json(branch_code)
-//             }
-//           })
-//           .catch(err => {
-//             console.log(err)
-//             res.status(httpCodes.NotFound).json(err)
-//           })
-//   }
-
-
 
 
 exports.getBranchCode = async (req, res) => {

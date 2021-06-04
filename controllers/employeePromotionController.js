@@ -29,18 +29,27 @@ Version: V.01
 
 exports.addEmployeePromotion = async (req, res) => {
     try {
-        var promotionid;
+        
         db.query("select * from employee_promotion ORDER BY created_date DESC LIMIT 1", (err, result) => {
             if (result.length > 0 && result[0].promotion_id != null) {
-                let lastId = (result[0].promotion_id);
-                let id = (lastId.match(/(\d+)/));
-                let intid = parseInt(id) + 1;
-                promotionid = 'EPN000000' + intid;
+                var keyid = (result[0].promotion_id);
+                var keyLength = keyid.length;
+                var previousKey = keyid.substring(0, 3)
+                var lastKey = parseInt(keyid.substring(3, keyLength))
+                var nextKey = String(lastKey + 1);
+                var id = previousKey;
+                var lengthofnextkey = nextKey.length;
+                while (lengthofnextkey < keyLength - 3) {
+                    nextKey = "0" + nextKey;
+                    lengthofnextkey += 1;
+            
+                }
+                id += nextKey
 
             } else {
-                promotionid = 'EPN0000001';
+                id = 'EPN0000001';
             }
-            var data = [promotionid,
+            var data = [id,
                 req.body.employee_id,
                 req.body.designation_id, 
                 req.body.effective_promotion_date, 

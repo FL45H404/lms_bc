@@ -16,58 +16,38 @@ Modified By and Date:
 Version: V.01
 ************************************************************************************************************/
 
-// app.use('/uploads', express.static(path.join(__dirname,'/uploads')));
-
-// const storage = multer.diskStorage({
-//    destination: (req, file, callback) => {
-//     callback(null, 'uploads');
-//   },
-
-//   filename:  (  req, file, callback) => {
-//     avatarFile = file.originalname;
-//    // let date_var= new Date().toLocaleString("en-GB",{ timeZone: "Asia/Kolkata" });
-//     let date_var= new Date().toLocaleDateString();
-
-//     date_var= date_var.replace('/', '-');
-//     date_var= date_var.replace('/', '-');
-//     console.log(date_var);
-
-//    callback(null, avatarFile+"_" + date_var );
-//   }
-// });
-
-// const fileFilter = (req,file,callback) => {
-//   if(file.mimetype == 'image/jpeg'  || file.mimetype == 'image/png' ){
-//     callback(null,true);
-//   }else{
-//     callback(null,false);
-//   }
-// }
-
-// const upload = multer({ storage: storage, limits : {fileSize : 1000000}, fileFilter: fileFilter});
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.addRole = async (req, res) => {
-try{
-    var roleid;
-    db.query("select * from role_master ORDER BY created_date DESC LIMIT 1",(err,result)=>{
-        if(result.length>0 && result[0].role_id!=null){
-            let lastId=(result[0].role_id);
-            let id=(lastId.match(/(\d+)/));
-            let intid= parseInt(id)+1;
-            roleid='ROL000000'+intid;
+    try {
+        db.query("select * from role_master ORDER BY created_date DESC LIMIT 1", (err, result) => {
+            if (result.length > 0 && result[0].role_id != null) {
+                var keyid = result[0].role_id;
+                var keyLength = keyid.length;
+                var previousKey = keyid.substring(0, 3)
+                var lastKey = parseInt(keyid.substring(3, keyLength))
+                var nextKey = String(lastKey + 1);
+                var id = previousKey;
+                var lengthofnextkey = nextKey.length;
+                while (lengthofnextkey < keyLength - 3) {
+                    nextKey = "0" + nextKey;
+                    lengthofnextkey += 1;
+            
+                }
+                id += nextKey
+                console.log(roleid)
 
-        }else{
-            roleid='ROL0000001';
-        }
-        var data=[roleid,req.body.role_name,req.body.role_description, 'vipul', new Date()]
-                var insertQuery = 'INSERT INTO role_master(role_id,role_name,role_description, created_by, created_date) VALUES (?,?,?,?,?)';
-                db.query(insertQuery, data,(err,result)=>{
-                    if (err) return res.send(err);
-                    console.log(data)
-                    res.status(httpCodes.Created).json({message:"Role record added Successfully"})
-                })
-        
-    })
+            } else {
+                id = 'ROL0000001';
+            }
+            var data = [id, req.body.role_name, req.body.role_description, 'vipul', new Date()]
+            var insertQuery = 'INSERT INTO role_master(role_id,role_name,role_description, created_by, created_date) VALUES (?,?,?,?,?)';
+            db.query(insertQuery, data, (err, result) => {
+                if (err) return res.send(err);
+                console.log(data)
+                res.status(httpCodes.Created).json({ message: "Role record added Successfully" })
+            })
+
+        })
     } catch (err) {
         console.log(err.message)
         res.status(httpCodes.InternalServerError).json(err.message)
@@ -76,35 +56,6 @@ try{
 }
 
 
-
-// exports.addRole = async (req, res) => {
-//     try {
-//         var roleid;
-//         db.query("select * from role_master ORDER BY role_id DESC", (err, result) => {
-//             if (result.length > 0 && result[0].role_id!= null) {
-//                 let lastId = (result[0].role_id);
-//                 let id = (lastId.match(/(\d+)/));
-//                 let intid = parseInt(id) + 1;
-//                 roleid = 'ROLE00000' + intid;
-//                 console.log(roleid)
-//             } else {
-//                 roleid = 'ROLE00001';
-//             }
-//         })
-//         console.log(roleid)
-//         var data = [roleid, req.body.role_name, req.body.role_description, 'vipul', new Date()]
-//         var insertQuery = 'INSERT INTO role_master(role_id, role_name, role_description, created_by, created_date) VALUES (?,?,?,?,?)';
-//         await db.query(insertQuery, data, (err, result) => {
-//             if (err) return res.send(err);
-//             console.log(result)
-//             res.status(httpCodes.Created).json({ message: "Role record added Successfully" })
-//         })
-//     } catch (err) {
-//         console.log(err.message)
-//         res.status(httpCodes.InternalServerError).json(err.message)
-//     }
-
-// }
 /************************************************************************************************************ 
 Method Type: getRole
 Parameter list: NA

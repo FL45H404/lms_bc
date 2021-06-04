@@ -95,15 +95,24 @@ exports.addDesignation = async (req, res) => {
       var designationid;
       db.query("select * from designation ORDER BY created_date DESC LIMIT 1", (err, result) => {
         if (result.length > 0 && result[0].designation_id != null) {
-          let lastId = (result[0].designation_id);
-          let id = (lastId.match(/(\d+)/));
-          let intid = parseInt(id) + 1;
-          designationid = 'DSN000000' + intid;
-  
+            var keyid = (result[0].designation_id);
+            var keyLength = keyid.length;
+            var previousKey = keyid.substring(0, 3)
+            var lastKey = parseInt(keyid.substring(3, keyLength))
+            var nextKey = String(lastKey + 1);
+            var id = previousKey;
+            var lengthofnextkey = nextKey.length;
+            while (lengthofnextkey < keyLength - 3) {
+                nextKey = "0" + nextKey;
+                lengthofnextkey += 1;
+        
+            }
+            id += nextKey
         } else {
-          designationid = 'DSN0000001';
+          id = 'DSN0000001';
         }
-        var data = [designationid, 
+        var data = [
+            id, 
             req.body.designation_name,
             req.body.level, 
             req.body.created_by,

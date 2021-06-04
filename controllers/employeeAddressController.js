@@ -13,19 +13,25 @@ Version: V.01
 
 exports.addemployeeAddress = async (req, res) => {
     try {
-        var employee_addressid;
         db.query("select * from employee_address ORDER BY created_date DESC LIMIT 1", (err, result) => {
             if (result.length > 0 && result[0].employee_address_id != null) {
-                let lastId = (result[0].employee_address_id);
-                console.log(lastId)
-                let id = (lastId.match(/(\d+)/));
-                let intid = parseInt(id) + 1;
-                employee_addressid = 'EAD000000' + intid;
-
+                var keyid = (result[0].employee_address_id);
+        var keyLength = keyid.length;
+        var previousKey = keyid.substring(0, 3)
+        var lastKey = parseInt(keyid.substring(3, keyLength))
+        var nextKey = String(lastKey + 1);
+        var id = previousKey;
+        var lengthofnextkey = nextKey.length;
+        while (lengthofnextkey < keyLength - 3) {
+            nextKey = "0" + nextKey;
+            lengthofnextkey += 1;
+    
+        }
+        id += nextKey
             } else {
-                employee_addressid = 'EAD0000001';
+                id = 'EAD0000001';
             }
-            var data = [employee_addressid,
+            var data = [id,
                 req.body.employee_id, 
                 req.body.address_type, 
                 req.body.address_status, 
@@ -186,30 +192,8 @@ exports.updateemployeeAddressById = async (req, res) => {
         console.log(err.message)
         res.status(httpCodes.InternalServerError).json(err.message)
     }
-    // var employee_AddressId = req.params.employee_address_id;
-    //   var data = [
-    //     req.body.employee_id,
-    //     req.body.address_type, 
-    //     req.body.address_status, 
-    //     req.body.address_line1,
-    //     req.body.address_line2,
-    //     req.body.address_line3,
-    //     req.body.city,
-    //     req.body.state,
-    //     req.body.country,
-    //     req.body.pincode, 
-    //     employee_AddressId]
-
-    // var updateQuery = 'UPDATE employee_address SET employee_id=$1, address_type=$2, address_status=$3, address_line1=$4, address_line2=$5, address_line3=$6, city=$7, state=$8, country=$9, pincode=$10 WHERE employee_address_id=$11 RETURNING *';
-    // db.query(updateQuery, data)
-    // .then(result =>{
-    // res.status(httpCodes.Created).json({message:"Employee Address record updated Successfully"})
-    // })
-    // .catch(err =>{
-    //     console.log(err.message)
-    //     res.status(httpCodes.InternalServerError).json(err.message)
-    // })
 }
+
 exports.deleteemployeeAddressById = async (req, res) => {
     try {
         var Id = req.params.employee_address_id;
