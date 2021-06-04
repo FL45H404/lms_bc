@@ -6,11 +6,15 @@ const mysql = require('mysql');
 // const db = new Pool({
 //connectionString: 'postgres://isvfxhjtvulgxc:21c91a20eeab3d0f830a27a94393d2ba07d8d80d67304df45322e1b9266520ca@ec2-174-129-199-54.compute-1.amazonaws.com:5432/ddkmpapq4co4ko',
 var db = mysql.createPool({
-  connectionLimit:10,
+  connectionLimit:50,
+  queueLimit: 100,
   user: 'mca',
   host: 'mcadb.cm47ztrqmu4p.ap-south-1.rds.amazonaws.com',
   database: 'HRLMS',
   password: 'mcafinch',
+  connectTimeout : 10000, // The milliseconds before a timeout occurs during the initial connection to the MySQL server. (Default: 10000)
+  waitForConnections: true, // Determines the pool's action when no connections are available and the limit has been reached. (Default: true)
+  acquireTimeout: 10000, // The milliseconds before a timeout occurs during the connection acquisition. (Default: 10000)
   debug:false,
 
 ssl: {

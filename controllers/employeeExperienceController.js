@@ -81,7 +81,7 @@ Version: V.01
 *****************************************************************************************************************************************************************/   
 exports.getemployeeExperience = async (req, res) => {
     try{
-        var sql='SELECT empExper.employee_experience_id,empProf.employee_fname, empExper.employee_id, empExper.previous_company_name, empExper.previous_company_designation, empExper.previous_experience_start_date, empExper.previous_experience_end_date,empExper.remarks FROM employee_experience empExper, employee_master empProf WHERE empExper.employee_id = empProf.employee_id';
+        var sql='SELECT empExper.employee_experience_id,empProf.employee_fname, empExper.employee_id, empExper.previous_company_name, empExper.previous_company_designation, empExper.previous_experience_start_date, empExper.previous_experience_end_date,empExper.remarks FROM employee_experience empExper, employee_master empProf WHERE empExper.employee_id = empProf.employee_id ORDER BY empExper.created_date DESC';
         await db.query(sql,(err,result)=>{
             if (err) return res.send(err);
             console.log(result)
