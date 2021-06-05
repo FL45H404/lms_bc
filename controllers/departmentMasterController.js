@@ -27,31 +27,6 @@ exports.getDepartmentMaster =  async (req, res) => {
             message:err.message
         })
     }
-  
-    // db.query('SELECT distinct dept.department_id,dept.department_name, dept.department_code,dept.department_head,emp.employee_name, '
-    //         +' dept.department_type,dept.department_location '
-    //         +' FROM department_master dept, employee_master emp,company_master cmp '
-    //         +' WHERE dept.department_head = emp.employee_id')
-    // var sql="SELECT * FROM department_master";
-    // db.query(sql ,(err,result)=>{
-    //     if(err){
-    //         console.log(err);
-    //         result(null,err);
-    //         return;
-    //     }
-    //     console.log(result);
-    //     res.status(httpCodes.OK).json(result);
-    // })
-
-    //         .then((result) => {
-    //             console.log(result.rows)  
-    //             res.status(httpCodes.OK).json(result.rows);
-    //           }).catch(err => {
-    //     res.status(httpCodes.InternalServerError).json({
-    //         error_message: "could not get all departments",
-    //         error: err
-    //     })
-    // })
 }
 /************************************************************************************************************ 
 Method Type: getDepartmentMasterById
@@ -100,32 +75,6 @@ Created By and Date: Santoshkumar 03-Dec-2020
 Modified By and Date:
 Version: V.01
 *************************************************************************************************************/
-// exports.addDepartmentMaster = async(req,res) =>{
-//     try{
-//         var created_date=new Date();
-//         const data = [req.body.department_name,
-//             req.body.department_code,
-//             req.body.department_head,
-//             req.body.department_type,
-//             req.body.department_location, 
-//             'vipul',
-//             created_date
-//           ]
-//         var insertQuery = "INSERT INTO department_master (department_name,department_code, department_head, department_type, department_location, created_by, created_date) VALUES (?,?,?,?,?,?,?)";
-//         await db.query(insertQuery,data,(err,result)=>{
-//             console.log('Data created for id '+result.insertId)
-//                 return res.status(httpCodes.OK).json('Data succesfully created for id '+result.insertId)
-//         })
-//     }catch(err){
-//         console.log(err.message)
-//         res.status(httpCodes.InternalServerError).json(err.message)
-
-//     }
-    
-// }
-
-
-
 
 exports.addDepartmentMaster = async (req, res) => {
     try {
@@ -147,13 +96,14 @@ exports.addDepartmentMaster = async (req, res) => {
         } else {
           id = 'DPT0000001';
         }
+        console.log(id)
         var data = [id, 
             req.body.department_name,
             req.body.department_code,
             req.body.department_head,
             req.body.department_type,
             req.body.department_location, 
-            req.body.created_by,
+            'neel',
          new Date()]
          var insertQuery = "INSERT INTO department_master (department_id, department_name,department_code, department_head, department_type, department_location, created_by, created_date) VALUES (?,?,?,?,?,?,?,?)";
         db.query(insertQuery, data, (err, result) => {

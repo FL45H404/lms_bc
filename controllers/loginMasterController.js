@@ -124,20 +124,41 @@ exports.auth = async (req, res) => {
   try {
     var data = [req.body.user_name,
     req.body.password];
-    var sql = "SELECT user_id,role,user_name from login WHERE user_name=? and password=md5(?)";
-    await db.query(sql, data, (err, result) => {
-      if (result.length > 0) {
-        console.log("login succesfully")
-        return res.status(httpCodes.OK).json({
-          status: "success", user_id: result[0].user_id,
-          message: 'login succesfully'
-        });
-      }
-      else {
-        console.log("invalid user id and password");
-        return res.status(httpCodes.NotFound).json({ status: "fail", message: 'Invalid Id or Password' });
+    var sql="select * from login where user_name=?";
+    db.query(sql,[req.body.user_name],(err,result)=>{
+      if (err) return err;
+      if (result.length>0){
+        var sql="select * from login WHERE user_name=? and password=md5(?)"
+        db.query(sql,data,(err,result)=>{
+          if (result.length>0){
+            console.log("login succesfully")
+                return res.status(httpCodes.OK).json({
+                  status: "success", user_id: result[0].user_id,
+                  message: 'login succesfully'
+                });
+          }else{
+            return res.status(httpCodes.NotFound).json({status:"fail",message:"invalid password"})
+          }
+        })
+
+      }else{
+        return res.status(httpCodes.NotFound).json({status:'fail',message:"invalid username"})
       }
     })
+    // var sql = "SELECT user_id,role,user_name from login WHERE user_name=? and password=md5(?)";
+    // await db.query(sql, data, (err, result) => {
+    //   if (result.length > 0) {
+    //     console.log("login succesfully")
+    //     return res.status(httpCodes.OK).json({
+    //       status: "success", user_id: result[0].user_id,
+    //       message: 'login succesfully'
+    //     });
+    //   }
+    //   else {
+    //     console.log("invalid user id and password");
+    //     return res.status(httpCodes.NotFound).json({ status: "fail", message: 'Invalid Id or Password' });
+    //   }
+    // })
   } catch (err) {
     console.log(err.message)
     res.status(httpCodes.InternalServerError).json({ message: err.message })

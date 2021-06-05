@@ -57,10 +57,6 @@ exports.getDesignationById = async (req, res) => {
         console.log(err.message);
             res.status(httpCodes.InternalServerError).json(err.message);
     }
-        // .catch((err) => {
-        //     console.log(err.message);
-        //     res.status(httpCodes.InternalServerError).json(err.message);
-        // });
 }
 /************************************************************************************************************
 Method Name: addDesignation
@@ -70,29 +66,8 @@ Created By and Date: Santoshkumar 03-Nov-2020
 Modified By and Date:
 Version: V.01
 *************************************************************************************************************/
-// exports.addDesignation =async (req,res) =>{
-//     try{
-
-//     var data=[req.body.designation_name,req.body.level, 'vipul', new Date()];
-//     var insertQuery = 'INSERT INTO designation(designation_name,level ,created_by, created_date) VALUES (?,?,?,?)';
-//     await db.query(insertQuery,data,(err,result)=>{
-//         res.status(httpCodes.Created).json({message:"Designation record added Successfully"})
-//     })
-// }catch(err){
-//         console.log(err.message)
-//         res.status(httpCodes.InternalServerError).json(err.message)
-
-// }
-    
-// }
-
-
-
-
-
 exports.addDesignation = async (req, res) => {
     try {
-      var designationid;
       db.query("select * from designation ORDER BY created_date DESC LIMIT 1", (err, result) => {
         if (result.length > 0 && result[0].designation_id != null) {
             var keyid = (result[0].designation_id);
@@ -115,7 +90,7 @@ exports.addDesignation = async (req, res) => {
             id, 
             req.body.designation_name,
             req.body.level, 
-            req.body.created_by,
+            'neel',
          new Date()]
          var insertQuery = 'INSERT INTO designation(designation_id, designation_name,level ,created_by, created_date) VALUES (?,?,?,?,?)';
         db.query(insertQuery, data, (err, result) => {
