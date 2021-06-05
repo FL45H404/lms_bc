@@ -97,14 +97,15 @@ exports.addDepartmentMaster = async (req, res) => {
           id = 'DPT0000001';
         }
         console.log(id)
-        var data = [id, 
+        var data = [
+            id, 
             req.body.department_name,
             req.body.department_code,
             req.body.department_head,
             req.body.department_type,
             req.body.department_location, 
             'neel',
-         new Date()]
+            new Date()]
          var insertQuery = "INSERT INTO department_master (department_id, department_name,department_code, department_head, department_type, department_location, created_by, created_date) VALUES (?,?,?,?,?,?,?,?)";
         db.query(insertQuery, data, (err, result) => {
           if (err) return res.send(err);
