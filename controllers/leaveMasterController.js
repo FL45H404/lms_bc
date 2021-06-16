@@ -32,8 +32,8 @@ exports.addLeaveMaster = async (req, res) => {
       } else {
         id = 'LEV0000001';
       }
-      var data = [id, req.body.leave_type, req.body.number_of_leaves, req.body.year, req.body.comments, new Date()]
-      var insertQuery = 'INSERT INTO leave_master(leave_id,leave_type,number_of_leaves,year, comments, created_date) VALUES (?,?,?,?,?,?)';
+      var data = [id, req.body.leave_type, req.body.number_of_leaves, req.body.date, req.body.comments, new Date()]
+      var insertQuery = 'INSERT INTO leave_master(leave_id,leave_type,number_of_leaves,date, comments, created_date) VALUES (?,?,?,?,?,?)';
       db.query(insertQuery, data, (err, result) => {
         if (err) return res.send(err);
         console.log(data)
