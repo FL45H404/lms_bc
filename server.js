@@ -1,10 +1,20 @@
 const express = require('express')
 const app = express()
-var cors = require("cors");
 const db = require('./db');
 const router=require('./routes/leaveRoute')
 var cors = require("cors");
 //const leaveType = require('./helper/leaveType');
+var session = require('express-session');
+const cookieParser=require('cookie-parser');
+
+app.use(cookieParser());
+app.use(session({
+    key:'uid',
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {expires:60000000 }
+  }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
