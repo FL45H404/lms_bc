@@ -19,7 +19,7 @@ Version: V.01
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.addRole = async (req, res) => {
     try {
-        db.query("select * from role_master ORDER BY created_date DESC LIMIT 1", (err, result) => {
+        db.query("select * from role_master ORDER BY role_id DESC LIMIT 1", (err, result) => {
             if (result.length > 0 && result[0].role_id != null) {
                 var keyid = result[0].role_id;
                 var keyLength = keyid.length;
@@ -66,7 +66,7 @@ Version: V.01
 ************************************************************************************************************/
 exports.getRole = async (req, res) => {
     try {
-        await db.query('SELECT * FROM role_master ORDER BY created_date DESC', (err, result) => {
+        await db.query('SELECT * FROM role_master ORDER BY role_id DESC', (err, result) => {
             if (err) return res.send(err);
             console.log(result)
             res.status(httpCodes.OK).json(result);
