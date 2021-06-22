@@ -34,7 +34,7 @@ exports.addRole = async (req, res) => {
             
                 }
                 id += nextKey
-                console.log(roleid)
+                console.log(id)
 
             } else {
                 id = 'ROL0000001';
